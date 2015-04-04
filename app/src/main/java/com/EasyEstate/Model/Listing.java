@@ -15,13 +15,15 @@ public abstract class Listing {
     private int squareMeter;
     private String  estateType;
     private boolean post;
+    private ListingLocation location ;
     private boolean krediyeUygun;
+    private User listingOwner;
 
     protected Listing(String adID){
         this.setAdID(adID);
     }
 
-    protected Listing(String adID,ArrayList<String> imagesURL,String description,String title,Double price,int squareMeter,String estateType,boolean post, boolean krediyeUygun){
+    protected Listing(String adID,ArrayList<String> imagesURL,String description,String title,Double price,int squareMeter,String estateType,boolean post, boolean krediyeUygun,ListingLocation location,User listingOwner){
         this.adID=adID;
         this.imagesURL = imagesURL;
         this.description = description;
@@ -31,6 +33,8 @@ public abstract class Listing {
         this.estateType = estateType ;
         this.post = post;
         this.krediyeUygun = krediyeUygun;
+        this.location = location;
+        this.listingOwner = listingOwner;
     }
     public String getAdID() {
         return adID;
@@ -38,6 +42,14 @@ public abstract class Listing {
 
     public void setAdID(String adID) {
         this.adID = adID;
+    }
+
+    public ListingLocation getLocation() {
+        return location;
+    }
+
+    public void setLocation(ListingLocation location) {
+        this.location = location;
     }
 
     public ArrayList<String> getImagesURL() {
