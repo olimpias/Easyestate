@@ -17,7 +17,7 @@ import java.io.InputStreamReader;
  */
 public class DatabaseConnection {
     private User user;
-    private static final String URL = "www.yeicmobil.com";
+    private static final String URL = "www.yeicmobil.com/EasyEstate/";
     private static final String secretKey = "1234ASD";
     private HttpClient httpClient ;
     private HttpPost httpPost ;
