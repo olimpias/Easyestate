@@ -3,4 +3,9 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="drawer_open">Drawer Open</string>
+    <string name="drawer_close">Drawer Close</string>
+    <string name="SearchButton">Search</string>
+    <string name="Nearby_Search">Nearby Search</string>
+    <string name="My_Account">My Account</string>
 </resources>
