@@ -10,6 +10,7 @@ public class House extends  Listing {
     private String numberOfBath;
     private String houseAge;
     private String numberOfFloor;
+    private String currentFloor;
     private int aidat;
     private String heating;
     private String category;
@@ -103,4 +104,8 @@ public class House extends  Listing {
     public void setKullanimDurumu(String kullanimDurumu) {
         this.kullanimDurumu = kullanimDurumu;
     }
+
+    public String getCurrentFloor() { return currentFloor; }
+
+    public void setCurrentFloor(String currentFloor) { this.currentFloor = currentFloor;}
 }
