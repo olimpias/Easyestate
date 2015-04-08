@@ -19,9 +19,9 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.homefragment,container,false);
-        searchButton = (Button)container.findViewById(R.id.searchButton);
-        nearbySearch = (Button)container.findViewById(R.id.NearbySearchButton);
-        myAccountSearch = (Button)container.findViewById(R.id.MyAccountButton);
+        searchButton = (Button)view.findViewById(R.id.searchButton);
+        nearbySearch = (Button)view.findViewById(R.id.NearbySearchButton);
+        myAccountSearch = (Button)view.findViewById(R.id.MyAccountButton);
         searchButton.setOnClickListener(buttonListener);
         nearbySearch.setOnClickListener(buttonListener);
         myAccountSearch.setOnClickListener(buttonListener);
