@@ -126,6 +126,9 @@ public class MainActivity extends ActionBarActivity {
                     fragment =null ;
                     break;
             }
+            if(connection.getUser()==null){
+                if(position != 0)return;
+            }
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.content_frame,fragment).commit();
             setTitle(MENUS[position]);
@@ -133,8 +136,6 @@ public class MainActivity extends ActionBarActivity {
             drawerLayout.closeDrawer(drawerListView);
         }
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -11,6 +11,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -34,6 +35,7 @@ public class DatabaseConnection {
     private static final String URL = "www.yeicmobil.com/EasyEstate/";
     private static final String secretKey = "1234ASD";
     private HttpClient httpClient ;
+    private HttpGet httpGet;
     private HttpPost httpPost ;
 
     public DatabaseConnection() {
