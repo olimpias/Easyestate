@@ -5,6 +5,7 @@ import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -26,6 +27,7 @@ public class MainActivity extends ActionBarActivity {
     private ListView drawerListView;
     public static DatabaseConnection connection = new DatabaseConnection();
     private DrawerLayout drawerLayout;
+    private ActionBar actionBar;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationAdapter navigationAdapter;
     private static final String EMAIL ="EMAIL";
@@ -39,8 +41,9 @@ public class MainActivity extends ActionBarActivity {
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         drawerListView = (ListView)findViewById(R.id.left_drawer);
         navigationAdapter = new NavigationAdapter(MENUS,this,MENU_ICON);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout,R.drawable.ic_drawer,R.string.drawer_open,R.string.drawer_close) {
 
             @Override
