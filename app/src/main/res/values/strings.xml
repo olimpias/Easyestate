@@ -9,4 +9,8 @@
     <string name="Nearby_Search">Nearby Search</string>
     <string name="My_Account">My Account</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="phone">Phone:</string>
+    <string name="email">Email:</string>
+    <string name="Name">Name:</string>
+    <string name="Loading">Please Wait Loading...</string>
 </resources>

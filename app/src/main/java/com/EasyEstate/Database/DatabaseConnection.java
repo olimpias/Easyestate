@@ -62,14 +62,18 @@ public class DatabaseConnection {
     }
 
 
-    public User getUser() {
-        return user;
+    public User getUser() throws UserDoesNotLoginException {
+        if(user == null){
+            throw new UserDoesNotLoginException();
+        }else{
+            return user;
+        }
     }
 
     public boolean uploadHouse(House house){
         String result = null;
         try {
-            httpPost=new HttpPost("http://yeicmobil.com");
+            httpPost=new HttpPost(URL);
             JSONObject json=new JSONObject();
             JSONArray jsonArray=new JSONArray();
             try {
@@ -132,7 +136,47 @@ public class DatabaseConnection {
 
         return false;
     }
-
+    private ArrayList<NameValuePair> InitializingKey(){
+        ArrayList<NameValuePair> nameValuePairs=new ArrayList<NameValuePair>();
+        nameValuePairs.add(new BasicNameValuePair("secretKey",secretKey));
+        return nameValuePairs;
+    }
+    public boolean isUserExit(String email) throws IOException, JSONException {
+         httpPost = new HttpPost(URL+"isUserExits.php");
+        ArrayList<NameValuePair> nameValuePairs = InitializingKey();
+        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        HttpResponse response = httpClient.execute(httpPost);
+        String result = getResponse(response);
+        JSONObject jsonObject = new JSONObject(result);
+        if(jsonObject.getInt("Code") == 1){
+            return true;
+        }
+        return false;
+    }
+    public void LoginUser (User user) throws IOException, JSONException {
+        if(!isUserExit(user.getEmail())){
+            boolean result = InsertUser(user);
+            if (result)this.user = user;
+        }else{
+            this.user = new User(user.getEmail());
+        }
+    }
+    public boolean InsertUser(User user) throws IOException, JSONException {
+        httpPost = new HttpPost(URL+"insertUser.php");
+        ArrayList<NameValuePair> nameValuePairs = InitializingKey();
+        nameValuePairs.add(new BasicNameValuePair("email",user.getEmail()));
+        nameValuePairs.add(new BasicNameValuePair("name",user.getName()));
+        nameValuePairs.add(new BasicNameValuePair("imageURL",user.getImageURL()));
+        nameValuePairs.add(new BasicNameValuePair("phone",""));
+        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        HttpResponse response = httpClient.execute(httpPost);
+        String result = getResponse(response);
+        JSONObject jsonObject = new JSONObject(result);
+        if(jsonObject.getInt("Code") == 1){
+            return true;
+        }
+        return false;
+    }
 
 }
 

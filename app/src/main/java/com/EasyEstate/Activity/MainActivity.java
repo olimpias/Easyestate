@@ -2,6 +2,7 @@ package com.EasyEstate.Activity;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.support.v4.widget.DrawerLayout;
@@ -16,7 +17,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import com.EasyEstate.Adapter.NavigationAdapter;
 import com.EasyEstate.Database.DatabaseConnection;
+import com.EasyEstate.Database.UserDoesNotLoginException;
 import com.EasyEstate.Fragment.HomeFragment;
+import com.EasyEstate.Fragment.MyAccountFragment;
 import com.EasyEstate.Model.User;
 import com.EasyEstate.R;
 
@@ -31,7 +34,9 @@ public class MainActivity extends ActionBarActivity {
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationAdapter navigationAdapter;
     private static final String EMAIL ="EMAIL";
-    public static final  String SHARED_PREFERENCE_REF = "EASY_ESTATE";
+    protected static final int LOGIN_FLAG = 4;
+    protected static final  String SHARED_PREFERENCE_REF = "EASY_ESTATE";
+    private static int PAGE = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +63,7 @@ public class MainActivity extends ActionBarActivity {
             }
         };
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
+        drawerListView.setAdapter(navigationAdapter);
         drawerListView.setOnItemClickListener(new DrawerItemListener());
         FragmentTransaction tx = getFragmentManager().beginTransaction();
         tx.replace(R.id.content_frame,new HomeFragment()).commit();
@@ -117,26 +123,59 @@ public class MainActivity extends ActionBarActivity {
         /*
         Passing between fragments according to user choose on navigator drawer.
          */
-        void selection(int position){
-            Fragment fragment = null ;
-            switch (position){
-                case 0:
-                    fragment = new HomeFragment();
-                    break;
-                case 1:
-                    break;
-                default:
-                    fragment =null ;
-                    break;
+
+    }
+    void selection(int position){
+        Fragment fragment = null ;
+        switch (position){
+            case 0:
+                fragment = new HomeFragment();
+                break;
+            case 1:
+                fragment = new MyAccountFragment();
+                break;
+            default:
+                fragment =null ;
+                break;
+        }
+
+        DirectFragment(fragment,position);
+    }
+    private void ChangeFragment(Fragment fragment,int position){
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.content_frame,fragment).commit();
+        setTitle(MENUS[position]);
+        drawerListView.setItemChecked(position,true);
+        drawerLayout.closeDrawer(drawerListView);
+    }
+    private void DirectFragment(Fragment fragment,int position){
+        try {
+            if(connection.getUser()!= null){
+                ChangeFragment(fragment,position);
             }
-            if(connection.getUser()==null){
-                if(position != 0)return;
+        } catch (UserDoesNotLoginException e) {
+            e.printStackTrace();
+            if(position == 0){
+                ChangeFragment(fragment,position);
+            }else{
+                PAGE = position;
+                Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                startActivityForResult(intent,LOGIN_FLAG);
             }
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.content_frame,fragment).commit();
-            setTitle(MENUS[position]);
-            drawerListView.setItemChecked(position,true);
-            drawerLayout.closeDrawer(drawerListView);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            if(requestCode == LOGIN_FLAG){
+                if(PAGE != -1){
+                    selection(PAGE);
+                }else{
+                    selection(0);
+                }
+            }
         }
     }
 

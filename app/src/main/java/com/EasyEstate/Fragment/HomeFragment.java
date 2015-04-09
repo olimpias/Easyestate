@@ -27,6 +27,9 @@ public class HomeFragment extends Fragment {
         myAccountSearch.setOnClickListener(buttonListener);
         return view;
     }
+
+
+
     /*
     Buttons will replace home fragment with selected.
      */

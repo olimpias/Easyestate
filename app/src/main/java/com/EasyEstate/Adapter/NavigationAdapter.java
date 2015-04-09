@@ -26,6 +26,7 @@ public class NavigationAdapter extends BaseAdapter{
     public  NavigationAdapter(String [] menus,Context context,int [] icons){
         this.menus= menus;
         this.icons = icons;
+        this.context = context;
     }
     @Override
     public int getCount() {
@@ -80,7 +81,7 @@ public class NavigationAdapter extends BaseAdapter{
             if (position>3){
                 holder.imageView.setVisibility(View.INVISIBLE);
             }else{
-                holder.imageView.setImageResource(icons[position]);
+                //holder.imageView.setImageResource(icons[position]);
             }
             holder.textView.setText(menus[position]);
         }else{
