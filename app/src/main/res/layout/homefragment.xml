@@ -2,15 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:background="#FFFFFF">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageView"
+        android:src="@drawable/logo"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:src="@mipmap/ic_launcher" />
+        android:layout_marginTop="62dp" />
 
     <Button
         android:layout_width="wrap_content"
@@ -18,11 +20,13 @@
         android:text="@string/SearchButton"
         android:id="@+id/searchButton"
         android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/NearbySearchButton"
-        android:layout_alignStart="@+id/NearbySearchButton"
-        android:layout_alignRight="@+id/NearbySearchButton"
-        android:layout_alignEnd="@+id/NearbySearchButton"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/button_shape"
+        android:textColor="#FFFFFF"
+        android:layout_alignRight="@+id/imageView"
+        android:layout_alignEnd="@+id/imageView"
+        android:layout_alignLeft="@+id/imageView"
+        android:layout_alignStart="@+id/imageView" />
 
     <Button
         android:layout_width="wrap_content"
@@ -30,8 +34,13 @@
         android:text="@string/Nearby_Search"
         android:id="@+id/NearbySearchButton"
         android:layout_below="@+id/searchButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/button_shape"
+        android:textColor="#FFFFFF"
+        android:layout_alignRight="@+id/searchButton"
+        android:layout_alignEnd="@+id/searchButton"
+        android:layout_alignLeft="@+id/searchButton"
+        android:layout_alignStart="@+id/searchButton" />
 
     <Button
         android:layout_width="wrap_content"
@@ -43,5 +52,7 @@
         android:layout_alignEnd="@+id/NearbySearchButton"
         android:layout_alignLeft="@+id/NearbySearchButton"
         android:layout_alignStart="@+id/NearbySearchButton"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/button_shape"
+        android:textColor="#FFFFFF"/>
 </RelativeLayout>

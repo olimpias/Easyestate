@@ -36,7 +36,7 @@ public class LoginActivity extends ActionBarActivity implements GoogleApiClient.
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(Plus.API)
-                .addScope(Plus.SCOPE_PLUS_LOGIN)
+                .addScope(Plus.SCOPE_PLUS_PROFILE)
                 .build();
     }
     private View.OnClickListener signInButtonListener = new View.OnClickListener() {
