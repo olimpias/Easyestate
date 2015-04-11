@@ -1,5 +1,6 @@
 package com.EasyEstate.Activity;
 import android.app.PendingIntent;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -11,6 +12,7 @@ import com.EasyEstate.Model.User;
 import com.EasyEstate.R;
 import com.EasyEstate.SupportTool.ProgressLoading;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -47,8 +49,12 @@ public class LoginActivity extends ActionBarActivity implements GoogleApiClient.
     private View.OnClickListener signInClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
             mSignInProgress = STATE_SIGN_IN;
-            mGoogleApiClient.connect();
+           if(!mGoogleApiClient.isConnecting()){
+               resolveSignInError();
+               mGoogleApiClient.connect();
+           }
         }
     };
 
@@ -124,7 +130,11 @@ public class LoginActivity extends ActionBarActivity implements GoogleApiClient.
     public void onConnectionFailed(ConnectionResult result) {
         Log.i(TAG, "onConnectionFailed: ConnectionResult.getErrorCode() = "
                 + result.getErrorCode());
-
+        if (!result.hasResolution()) {
+            GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), this,
+                    0).show();
+            return;
+        }
         if (result.getErrorCode() == ConnectionResult.API_UNAVAILABLE) {
             // An API requested for GoogleApiClient is not available. The device's current
             // configuration might not be supported with the requested API or a required component
@@ -179,8 +189,9 @@ public class LoginActivity extends ActionBarActivity implements GoogleApiClient.
         @Override
         protected Boolean doInBackground(User... params) {
             try {
-                MainActivity.connection.LoginUser(params[0]);
+                boolean result = MainActivity.connection.LoginUser(params[0]);
                 SaveUser(params[0].getEmail());
+                return result;
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
@@ -194,7 +205,11 @@ public class LoginActivity extends ActionBarActivity implements GoogleApiClient.
             super.onPostExecute(aBoolean);
             if(progressLoading != null)progressLoading.dismiss();
             Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+            Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient);
             mGoogleApiClient.disconnect();
+            Intent intent = new Intent();
+            intent.putExtra(MainActivity.IS_IT_FIRST_LOGIN,aBoolean.booleanValue());
+            setResult(RESULT_OK,intent);
             finish();
         }
     }

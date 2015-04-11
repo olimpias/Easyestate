@@ -6,7 +6,5 @@
     android:title="@string/ProfileEditMenu"
     EasyEstate:showAsAction="always"
     >
-
-
 </item>
 </menu>

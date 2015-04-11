@@ -18,4 +18,5 @@
     <string name="ChooseFromGallery">Choose From Gallery</string>
     <string name="Done">Done</string>
     <string name="ProfileEditMenu">Profile Edit Menu</string>
+    <string name="Logout">Logout</string>
 </resources>

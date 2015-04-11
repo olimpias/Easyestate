@@ -149,6 +149,7 @@ public class DatabaseConnection {
     public boolean isUserExit(String email) throws IOException, JSONException {
          httpPost = new HttpPost(URL+"isUserExits.php");
         ArrayList<NameValuePair> nameValuePairs = InitializingKey();
+        nameValuePairs.add(new BasicNameValuePair("email",email));
         httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
         HttpResponse response = httpClient.execute(httpPost);
         String result = getResponse(response);
@@ -158,15 +159,19 @@ public class DatabaseConnection {
         }
         return false;
     }
+    /*
+    It logs in the user.Return value represents that if user is logging in first time or not
+    Return value true represents first time.False represent second or more time..
+     */
     public boolean LoginUser (User user) throws IOException, JSONException {
 
          if(!isUserExit(user.getEmail())){
             boolean result = InsertUser(user);
             if (result)this.user = user;
-            return false;
+            return true;
         }else{
             this.user = user;
-            return true;
+            return false;
         }
 
     }

@@ -37,8 +37,13 @@ public class MainActivity extends ActionBarActivity {
     private static final String TAG = "MainActivity";
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationAdapter navigationAdapter;
+    public static final int HOME_POSITION = 0;
+    public static final int MY_ACCOUNT_POSITION = 1;
+    public static final int MY_FAVORITES_POSIITON = 2;
+    public static final int MY_LISTING_POSITION = 3;
     protected static final String EMAIL ="EMAIL";
     protected static final int LOGIN_FLAG = 4;
+    protected static final String IS_IT_FIRST_LOGIN="FIRSTLOGIN";
     public static final int PROFILE_EDIT =1;
     protected static final  String SHARED_PREFERENCE_REF = "EASY_ESTATE";
     public static int PAGE = -1;
@@ -49,7 +54,7 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         GetSavedUser();
         /*
-        Session Blocker...
+        //Session Blocker...
         connection.setUser(null);
         */
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
@@ -81,13 +86,23 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(actionBarDrawerToggle.onOptionsItemSelected(item))return true;
+        if(item.getItemId() == R.id.Logout){
+            deleteUser();
+            connection.setUser(null);
+            ChangeFragment(new HomeFragment(),0);
+            invalidateOptionsMenu();
+        }
        /* if(item.getItemId()==R.id.action_logOut){
 
             return true;
         }*/
         return super.onOptionsItemSelected(item);
     }
-
+    private void deleteUser(){
+        SharedPreferences.Editor editor = getSharedPreferences(MainActivity.SHARED_PREFERENCE_REF, MODE_PRIVATE).edit();
+        editor.clear();
+        editor.apply();
+    }
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -130,6 +145,9 @@ public class MainActivity extends ActionBarActivity {
          */
 
     }
+    private void LogOut(){
+
+    }
     void selection(int position){
         Fragment fragment = null ;
         switch (position){
@@ -153,7 +171,7 @@ public class MainActivity extends ActionBarActivity {
         drawerListView.setItemChecked(position,true);
         drawerLayout.closeDrawer(drawerListView);
     }
-    private void DirectFragment(Fragment fragment,int position){
+    public void DirectFragment(Fragment fragment,int position){
         try {
             if(connection.getUser()!= null){
                 ChangeFragment(fragment,position);
@@ -175,12 +193,20 @@ public class MainActivity extends ActionBarActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK){
             if(requestCode == LOGIN_FLAG){
-                if(PAGE != -1){
-                    selection(PAGE);
-                    PAGE = -1;
+                this.invalidateOptionsMenu();
+                boolean isFirst = data.getBooleanExtra(IS_IT_FIRST_LOGIN,false);
+                if(isFirst) {
+                    Intent intent = new Intent(MainActivity.this,ProfileActivity.class);
+                    startActivityForResult(intent,MainActivity.PROFILE_EDIT);
                 }else{
-                    selection(0);
+                    if(PAGE != -1){
+                        selection(PAGE);
+                        PAGE = -1;
+                    }else{
+                        selection(0);
+                    }
                 }
+
             }
             if(requestCode == PROFILE_EDIT){
                 if(PAGE != -1){
@@ -196,9 +222,18 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        try {
+            if(connection.getUser() != null){
+                getMenuInflater().inflate(R.menu.menu_main, menu);
+            }
+        } catch (UserDoesNotLoginException e) {
+            e.printStackTrace();
+            getMenuInflater().inflate(R.menu.menu_default_main, menu);
+
+        }
         return true;
     }
+
     public static void AlertDialog (Context context,String message){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("ERROR");
