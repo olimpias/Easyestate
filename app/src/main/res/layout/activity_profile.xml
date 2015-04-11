@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.EasyEstate.Activity.ProfileActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -12,8 +12,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/profilePictureImageView"
-            android:layout_centerInParent="true"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@mipmap/ic_launcher"
+            android:padding="5dp"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ChooseFromGallery"
+            android:id="@+id/chooseFromGalleryButton"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/profilePictureImageView"
+            android:layout_toEndOf="@+id/profilePictureImageView" />
 
     </RelativeLayout>
 
@@ -58,12 +67,12 @@
                 android:text="@string/Name"
                 android:id="@+id/textView" />
 
-            <TextView
+            <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Empty"
                 android:layout_weight="1"
-                android:id="@+id/nameTextView" />
+                android:id="@+id/nameEditView" />
         </TableRow>
 
         <TableRow
@@ -77,13 +86,19 @@
                 android:text="@string/phone"
                 android:id="@+id/textView5" />
 
-            <TextView
+            <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Empty"
                 android:layout_weight="1"
-                android:id="@+id/phoneTextView" />
+                android:id="@+id/phoneEditView" />
         </TableRow>
     </TableLayout>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Done"
+        android:id="@+id/doneButton"
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>

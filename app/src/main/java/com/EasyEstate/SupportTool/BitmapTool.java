@@ -131,8 +131,8 @@ public class BitmapTool {
         return null;
     }
     public static Bitmap getRoundedShape(Bitmap scaleBitmapImage) {
-        int targetWidth = 50;
-        int targetHeight = 50;
+        int targetWidth = 250;
+        int targetHeight = 250;
         Bitmap targetBitmap = Bitmap.createBitmap(targetWidth,
                 targetHeight,Bitmap.Config.ARGB_8888);
 

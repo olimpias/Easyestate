@@ -1,119 +1,172 @@
 package com.EasyEstate.Activity;
-
+import android.app.PendingIntent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import com.EasyEstate.Model.User;
 import com.EasyEstate.R;
 import com.EasyEstate.SupportTool.ProgressLoading;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.plus.People;
 import com.google.android.gms.plus.Plus;
-import com.google.android.gms.plus.model.people.Person;
+import com.google.android.gms.plus.model.people.PersonBuffer;
 
 import org.json.JSONException;
 
 import java.io.IOException;
-
-public class LoginActivity extends ActionBarActivity implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener{
+// SHA1 KEY PATH keytool -list -v -keystore /Users/canturker/EasyEstate.jks -alias EasyEstate
+public class LoginActivity extends ActionBarActivity implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener,ResultCallback<People.LoadPeopleResult> {
     private boolean mIntentInProgress;
     private SignInButton signInButton;
+    private PendingIntent mSignInIntent;
+    private int mSignInError;
+    private int mSignInProgress;
     private static final int PROFILE_PIC_SIZE = 300;
-    private GoogleApiClient googleApiClient;
-    private ConnectionResult connectionResult;
+    private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 0;
+    private static final int STATE_DEFAULT = 0;
+    private static final int STATE_SIGN_IN = 1;
+    private static final int STATE_IN_PROGRESS = 2;
+    private static final String TAG = "LOGIN";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         signInButton = (SignInButton)findViewById(R.id.btn_sign_in);
-        signInButton.setOnClickListener(signInButtonListener);
-        googleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(Plus.API)
-                .addScope(Plus.SCOPE_PLUS_PROFILE)
-                .build();
+        signInButton.setOnClickListener(signInClickListener);
+        mGoogleApiClient = buildGoogleApiClient();
     }
-    private View.OnClickListener signInButtonListener = new View.OnClickListener() {
+    private View.OnClickListener signInClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(!googleApiClient.isConnecting()){
-                    resolveSignInError();
-            }
-
+            mSignInProgress = STATE_SIGN_IN;
+            mGoogleApiClient.connect();
         }
     };
-    private void resolveSignInError() {
-        if (connectionResult.hasResolution()) {
-            try {
-                mIntentInProgress = true;
-                connectionResult.startResolutionForResult(this, RC_SIGN_IN);
-            } catch (IntentSender.SendIntentException e) {
-                mIntentInProgress = false;
-                googleApiClient.connect();
-            }
-        }
-    }
+
     @Override
     public void onConnected(Bundle bundle) {
-        StoreUserProfile();
-        //Database Operations...
-    }
-    protected void onStart() {
-        super.onStart();
-        googleApiClient.connect();
-    }
-
-    protected void onStop() {
-        super.onStop();
-        if (googleApiClient.isConnected()) {
-            googleApiClient.disconnect();
-        }
+        Plus.PeopleApi.loadVisible(mGoogleApiClient,"").setResultCallback(this);
+        getUserInformation();
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        googleApiClient.connect();
+        mGoogleApiClient.connect();
+    }
+    private void resolveSignInError() {
+        if (mSignInIntent != null) {
+            // We have an intent which will allow our user to sign in or
+            // resolve an error.  For example if the user needs to
+            // select an account to sign in with, or if they need to consent
+            // to the permissions your app is requesting.
+
+            try {
+                // Send the pending intent that we stored on the most recent
+                // OnConnectionFailed callback.  This will allow the user to
+                // resolve the error currently preventing our connection to
+                // Google Play services.
+                mSignInProgress = STATE_IN_PROGRESS;
+                startIntentSenderForResult(mSignInIntent.getIntentSender(),
+                        RC_SIGN_IN, null, 0, 0, 0);
+            } catch (IntentSender.SendIntentException e) {
+                Log.i(TAG, "Sign in intent could not be sent: "
+                        + e.getLocalizedMessage());
+                // The intent was canceled before it was sent.  Attempt to connect to
+                // get an updated ConnectionResult.
+                mGoogleApiClient.connect();
+            }
+        }
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        if (!connectionResult.hasResolution()) {
-            GooglePlayServicesUtil.getErrorDialog(connectionResult.getErrorCode(), this,
-                    0).show();
-            return;
-        }
-        if (!mIntentInProgress) {
-            // Store the ConnectionResult for later usage
-            this.connectionResult = connectionResult;
+    protected void onStop() {
+        super.onStop();
 
-
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
         }
     }
-    /*
-    Get user profile information from google account.
-     */
-    private void StoreUserProfile(){
-        User user;
-        if(Plus.PeopleApi.getCurrentPerson(googleApiClient)!=null){
-            Person person = Plus.PeopleApi.getCurrentPerson(googleApiClient);
-            user  = new User(Plus.AccountApi.getAccountName(googleApiClient));
-            user.setName(person.getDisplayName());
-            String photoURL=person.getImage().getUrl();
-            photoURL = photoURL.substring(0,photoURL.length()-2)+PROFILE_PIC_SIZE;
-            user.setImageURL(photoURL);
-            new LoginProcess().execute(user);
+    private void getUserInformation(){
+        // Reaching onConnected means we consider the user signed in.
+        Log.i(TAG, "onConnected");
+        // Retrieve some profile information to personalize our app for the user.
+        User user = new User(Plus.AccountApi.getAccountName(mGoogleApiClient));
+       /*user.setName(currentUser.getDisplayName());
+        user.setImageURL(currentUser.getImage().getUrl().substring(0,currentUser.getImage().getUrl().length()-2)+PROFILE_PIC_SIZE);*/
+        new LoginProcess().execute(user);
+    }
+    private GoogleApiClient buildGoogleApiClient() {
+        // When we build the GoogleApiClient we specify where connected and
+        // connection failed callbacks should be returned, which Google APIs our
+        // app uses and which OAuth 2.0 scopes our app requests.
+        GoogleApiClient.Builder builder = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Plus.API, Plus.PlusOptions.builder().build()).addScope(Plus.SCOPE_PLUS_PROFILE)
+                .addScope(Plus.SCOPE_PLUS_LOGIN);
+        return builder.build();
+    }
+    @Override
+    public void onConnectionFailed(ConnectionResult result) {
+        Log.i(TAG, "onConnectionFailed: ConnectionResult.getErrorCode() = "
+                + result.getErrorCode());
+
+        if (result.getErrorCode() == ConnectionResult.API_UNAVAILABLE) {
+            // An API requested for GoogleApiClient is not available. The device's current
+            // configuration might not be supported with the requested API or a required component
+            // may not be installed, such as the Android Wear application. You may need to use a
+            // second GoogleApiClient to manage the application's optional APIs.
+            Log.w(TAG, "API Unavailable.");
+        } else if (mSignInProgress != STATE_IN_PROGRESS) {
+            // We do not have an intent in progress so we should store the latest
+            // error resolution intent for use when the sign in button is clicked.
+            mSignInIntent = result.getResolution();
+            mSignInError = result.getErrorCode();
+
+            if (mSignInProgress == STATE_SIGN_IN) {
+                // STATE_SIGN_IN indicates the user already clicked the sign in button
+                // so we should continue processing errors until the user is signed in
+                // or they click cancel.
+                resolveSignInError();
+            }
         }
     }
+
+    @Override
+    public void onResult(People.LoadPeopleResult peopleData) {
+        if (peopleData.getStatus().getStatusCode() == CommonStatusCodes.SUCCESS) {
+            PersonBuffer personBuffer = peopleData.getPersonBuffer();
+            try {
+                int count = personBuffer.getCount();
+                for (int i = 0; i < count; i++) {
+                    Log.d(TAG, "Display name: " + personBuffer.get(i).getDisplayName());
+                }
+            } finally {
+                personBuffer.close();
+            }
+        } else {
+            Log.e(TAG, "Error requesting people data: " + peopleData.getStatus());
+        }
+    }
+
     /*
     Make login process at background.On front ProgressLoading dialog will be activated.
      */
-    private class LoginProcess extends AsyncTask<User,Void,Void>{
+    private class LoginProcess extends AsyncTask<User,Void,Boolean>{
         ProgressLoading progressLoading;
         @Override
         protected void onPreExecute() {
@@ -124,9 +177,10 @@ public class LoginActivity extends ActionBarActivity implements GoogleApiClient.
         }
 
         @Override
-        protected Void doInBackground(User... params) {
+        protected Boolean doInBackground(User... params) {
             try {
                 MainActivity.connection.LoginUser(params[0]);
+                SaveUser(params[0].getEmail());
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
@@ -134,12 +188,19 @@ public class LoginActivity extends ActionBarActivity implements GoogleApiClient.
             }
             return null;
         }
-
+        //According to boolean value edit profile page might be open on main activity...
         @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
             if(progressLoading != null)progressLoading.dismiss();
+            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+            mGoogleApiClient.disconnect();
             finish();
         }
+    }
+    private void SaveUser(String email){
+        SharedPreferences.Editor editor = getSharedPreferences(MainActivity.SHARED_PREFERENCE_REF, MODE_PRIVATE).edit();
+        editor.putString(MainActivity.EMAIL,email);
+        editor.apply();
     }
 }

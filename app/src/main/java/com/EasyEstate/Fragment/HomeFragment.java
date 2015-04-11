@@ -16,6 +16,8 @@ public class HomeFragment extends Fragment {
     private Button searchButton;
     private Button nearbySearch;
     private Button myAccountSearch;
+    public static final int PAGE_ID= 0;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.homefragment,container,false);

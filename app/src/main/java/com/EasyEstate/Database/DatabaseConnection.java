@@ -1,9 +1,12 @@
 package com.EasyEstate.Database;
 
+import android.graphics.Bitmap;
 import android.media.session.MediaSessionManager;
+import android.util.Log;
 
 import com.EasyEstate.Model.House;
 import com.EasyEstate.Model.User;
+import com.EasyEstate.SupportTool.BitmapTool;
 
 
 import org.apache.http.Header;
@@ -32,7 +35,8 @@ import java.util.ArrayList;
 
 public class DatabaseConnection {
     private User user;
-    private static final String URL = "www.yeicmobil.com/EasyEstate/";
+    private static final String TAG ="DATABASE_CONNECTON";
+    private static final String URL = "http://www.yeicmobil.com/EasyEstate/";
     private static final String secretKey = "1234ASD";
     private HttpClient httpClient ;
     private HttpGet httpGet;
@@ -54,6 +58,7 @@ public class DatabaseConnection {
         }
         is.close();
         String result = sb.toString();
+        Log.d(TAG,result);
         return result;
     }
 
@@ -153,21 +158,22 @@ public class DatabaseConnection {
         }
         return false;
     }
-    public void LoginUser (User user) throws IOException, JSONException {
-        if(!isUserExit(user.getEmail())){
+    public boolean LoginUser (User user) throws IOException, JSONException {
+
+         if(!isUserExit(user.getEmail())){
             boolean result = InsertUser(user);
             if (result)this.user = user;
+            return false;
         }else{
-            this.user = new User(user.getEmail());
+            this.user = user;
+            return true;
         }
+
     }
     public boolean InsertUser(User user) throws IOException, JSONException {
         httpPost = new HttpPost(URL+"insertUser.php");
         ArrayList<NameValuePair> nameValuePairs = InitializingKey();
         nameValuePairs.add(new BasicNameValuePair("email",user.getEmail()));
-        nameValuePairs.add(new BasicNameValuePair("name",user.getName()));
-        nameValuePairs.add(new BasicNameValuePair("imageURL",user.getImageURL()));
-        nameValuePairs.add(new BasicNameValuePair("phone",""));
         httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
         HttpResponse response = httpClient.execute(httpPost);
         String result = getResponse(response);
@@ -176,6 +182,41 @@ public class DatabaseConnection {
             return true;
         }
         return false;
+    }
+    public boolean UpdateUser(User user,Bitmap bitmap) throws IOException, JSONException {
+        httpPost = new HttpPost(URL+"updateUser.php");
+        ArrayList<NameValuePair> nameValuePairs = InitializingKey();
+        nameValuePairs.add(new BasicNameValuePair("email",user.getEmail()));
+        nameValuePairs.add(new BasicNameValuePair("name",user.getName()));
+        nameValuePairs.add(new BasicNameValuePair("phone",user.getPhone()));
+        if(bitmap != null)
+        nameValuePairs.add(new BasicNameValuePair("image", BitmapTool.encodeTo64BitBitmap(bitmap)));
+        else
+        nameValuePairs.add(new BasicNameValuePair("image", "NULL"));
+        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        HttpResponse response = httpClient.execute(httpPost);
+        String result = getResponse(response);
+        JSONObject jsonObject = new JSONObject(result);
+        if(jsonObject.getInt("code") == 1){
+            return true;
+        }
+        return false;
+    }
+    public boolean SelectUser(String email) throws IOException, JSONException {
+        httpPost = new HttpPost(URL+"selectUser.php");
+        ArrayList<NameValuePair> nameValuePairs = InitializingKey();
+        nameValuePairs.add(new BasicNameValuePair("email",email));
+        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        HttpResponse response = httpClient.execute(httpPost);
+        String result = getResponse(response);
+        JSONObject jsonObject = new JSONObject(result);
+        if(!jsonObject.isNull("imageURL"))
+        this.user.setImageURL(jsonObject.getString("imageURL"));
+        if(!jsonObject.isNull("name"))
+        this.user.setName(jsonObject.getString("name"));
+        if(!jsonObject.isNull("phone"))
+        this.user.setPhone(jsonObject.getString("phone"));
+        return true;
     }
 
 }

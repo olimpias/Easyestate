@@ -12,9 +12,13 @@ public class User {
     private ArrayList<Listing> userListings;
     private ArrayList<Listing> userFavorites;
     private String name;
+    public static final String IMAGE_URL = "http://www.yeicmobil.com/EasyEstate/EasyEstateImage/";
 
     public User(String email) {
         this.setEmail(email);
+        this.phone = "";
+        this.imageURL ="";
+        this.name = "";
         setUserListings(new ArrayList<Listing>());
         setUserFavorites(new ArrayList<Listing>());
     }
@@ -63,7 +67,9 @@ public class User {
     public void setUserFavorites(ArrayList<Listing> userFavorites) {
         this.userFavorites = userFavorites;
     }
-
+    public String getLoadImageURL(){
+        return IMAGE_URL+imageURL;
+    }
     public String getName() {
         return name;
     }

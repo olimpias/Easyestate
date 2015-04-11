@@ -1,7 +1,10 @@
 package com.EasyEstate.Activity;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -25,24 +28,30 @@ import com.EasyEstate.R;
 
 
 public class MainActivity extends ActionBarActivity {
-    public static final String [] MENUS = {"Home","My Account","My Favorites", "My Listings","New Listing","Edit Listing","Delete Listing"};
+    public static final String [] MENUS = {"Home","My Account","My Favorites", "My Listings"};
     private static final int [] MENU_ICON = {} ;
     private ListView drawerListView;
     public static DatabaseConnection connection = new DatabaseConnection();
     private DrawerLayout drawerLayout;
     private ActionBar actionBar;
+    private static final String TAG = "MainActivity";
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationAdapter navigationAdapter;
-    private static final String EMAIL ="EMAIL";
+    protected static final String EMAIL ="EMAIL";
     protected static final int LOGIN_FLAG = 4;
+    public static final int PROFILE_EDIT =1;
     protected static final  String SHARED_PREFERENCE_REF = "EASY_ESTATE";
-    private static int PAGE = -1;
+    public static int PAGE = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         GetSavedUser();
+        /*
+        Session Blocker...
+        connection.setUser(null);
+        */
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         drawerListView = (ListView)findViewById(R.id.left_drawer);
         navigationAdapter = new NavigationAdapter(MENUS,this,MENU_ICON);
@@ -108,11 +117,7 @@ public class MainActivity extends ActionBarActivity {
     /*
     user will be saved on sharedPreference
      */
-    private void SaveUser(String email){
-        SharedPreferences.Editor editor = getSharedPreferences(SHARED_PREFERENCE_REF, MODE_PRIVATE).edit();
-        editor.putString(EMAIL,email);
-        editor.apply();
-    }
+
     private class DrawerItemListener implements AdapterView.OnItemClickListener{
 
 
@@ -172,6 +177,15 @@ public class MainActivity extends ActionBarActivity {
             if(requestCode == LOGIN_FLAG){
                 if(PAGE != -1){
                     selection(PAGE);
+                    PAGE = -1;
+                }else{
+                    selection(0);
+                }
+            }
+            if(requestCode == PROFILE_EDIT){
+                if(PAGE != -1){
+                    selection(PAGE);
+                    PAGE = -1;
                 }else{
                     selection(0);
                 }
@@ -184,5 +198,18 @@ public class MainActivity extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+    public static void AlertDialog (Context context,String message){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("ERROR");
+        builder.setMessage(message);
+        builder.setPositiveButton("OK",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

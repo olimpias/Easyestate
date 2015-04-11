@@ -13,4 +13,9 @@
     <string name="email">Email:</string>
     <string name="Name">Name:</string>
     <string name="Loading">Please Wait Loading...</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="Empty"></string>
+    <string name="ChooseFromGallery">Choose From Gallery</string>
+    <string name="Done">Done</string>
+    <string name="ProfileEditMenu">Profile Edit Menu</string>
 </resources>
