@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:EasyEstate="http://schemas.android.com/apk/res-auto">
 <item android:id="@+id/OpenProfileEdit"
-    android:icon="@android:drawable/edit_text"
+    android:icon="@android:drawable/ic_menu_edit"
     android:title="@string/ProfileEditMenu"
     EasyEstate:showAsAction="always"
     >

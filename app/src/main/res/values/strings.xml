@@ -19,4 +19,5 @@
     <string name="Done">Done</string>
     <string name="ProfileEditMenu">Profile Edit Menu</string>
     <string name="Logout">Logout</string>
+    <string name="Add_Listing">Add Listing</string>
 </resources>

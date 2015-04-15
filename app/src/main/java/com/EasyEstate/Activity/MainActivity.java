@@ -23,6 +23,8 @@ import com.EasyEstate.Database.DatabaseConnection;
 import com.EasyEstate.Database.UserDoesNotLoginException;
 import com.EasyEstate.Fragment.HomeFragment;
 import com.EasyEstate.Fragment.MyAccountFragment;
+import com.EasyEstate.Fragment.MyFavoritesFragment;
+import com.EasyEstate.Fragment.MyListingsFragment;
 import com.EasyEstate.Model.User;
 import com.EasyEstate.R;
 
@@ -39,7 +41,7 @@ public class MainActivity extends ActionBarActivity {
     private NavigationAdapter navigationAdapter;
     public static final int HOME_POSITION = 0;
     public static final int MY_ACCOUNT_POSITION = 1;
-    public static final int MY_FAVORITES_POSIITON = 2;
+    public static final int MY_FAVORITES_POSITION = 2;
     public static final int MY_LISTING_POSITION = 3;
     protected static final String EMAIL ="EMAIL";
     protected static final int LOGIN_FLAG = 4;
@@ -156,6 +158,12 @@ public class MainActivity extends ActionBarActivity {
                 break;
             case 1:
                 fragment = new MyAccountFragment();
+                break;
+            case 2:
+                fragment = new MyFavoritesFragment();
+                break;
+            case 3:
+                fragment = new MyListingsFragment();
                 break;
             default:
                 fragment =null ;

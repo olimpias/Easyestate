@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/PictureImageView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/TitleTextView"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/PictureImageView"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/DeleteImageButton"
+        android:src="@android:drawable/ic_delete"
+        android:background="@android:color/transparent"
+        android:layout_alignBottom="@+id/PictureImageView"
+        android:layout_alignRight="@+id/TitleTextView"
+        android:layout_alignEnd="@+id/TitleTextView" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/EditImageButton"
+        android:background="@android:color/transparent"
+        android:src="@android:drawable/ic_menu_edit"
+        android:layout_alignBottom="@+id/PictureImageView"
+        android:layout_toLeftOf="@+id/DeleteImageButton"
+        android:layout_toStartOf="@+id/DeleteImageButton" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/IdTextView"
+        android:layout_alignTop="@+id/EditImageButton"
+        android:layout_toRightOf="@+id/PictureImageView"
+        android:layout_toLeftOf="@+id/EditImageButton"
+        android:layout_toStartOf="@+id/EditImageButton" />
+</RelativeLayout>

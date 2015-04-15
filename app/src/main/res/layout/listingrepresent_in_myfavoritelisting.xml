@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/pictureImageView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/TitleTextView"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/pictureImageView"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/AddressTextView"
+        android:layout_below="@+id/TitleTextView"
+        android:layout_toRightOf="@+id/pictureImageView"
+        android:layout_alignRight="@+id/TitleTextView"
+        android:layout_alignEnd="@+id/TitleTextView" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/FavoriteImageButton"
+        android:src="@android:drawable/btn_star_big_on"
+        android:background="@android:color/transparent"
+        android:layout_alignBottom="@+id/pictureImageView"
+        android:layout_alignRight="@+id/AddressTextView"
+        android:layout_alignEnd="@+id/AddressTextView"
+        android:layout_below="@+id/AddressTextView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/priceTextView"
+        android:layout_alignBottom="@+id/pictureImageView"
+        android:layout_toRightOf="@+id/pictureImageView"
+        android:layout_toLeftOf="@+id/FavoriteImageButton"
+        android:layout_toStartOf="@+id/FavoriteImageButton" />
+
+</RelativeLayout>
