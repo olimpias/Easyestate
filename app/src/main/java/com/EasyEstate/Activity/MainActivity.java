@@ -46,6 +46,7 @@ public class MainActivity extends ActionBarActivity {
     protected static final String EMAIL ="EMAIL";
     protected static final int LOGIN_FLAG = 4;
     protected static final String IS_IT_FIRST_LOGIN="FIRSTLOGIN";
+    public  static final int INSERT_LISTING = 3;
     public static final int PROFILE_EDIT =1;
     protected static final  String SHARED_PREFERENCE_REF = "EASY_ESTATE";
     public static int PAGE = -1;
@@ -217,6 +218,14 @@ public class MainActivity extends ActionBarActivity {
 
             }
             if(requestCode == PROFILE_EDIT){
+                if(PAGE != -1){
+                    selection(PAGE);
+                    PAGE = -1;
+                }else{
+                    selection(0);
+                }
+            }
+            if(requestCode == INSERT_LISTING){
                 if(PAGE != -1){
                     selection(PAGE);
                     PAGE = -1;

@@ -100,7 +100,7 @@ public class ProfileActivity extends ActionBarActivity {
             cursor.close();
             isChanged = true;
             // Set the Image in ImageView
-            this.profilPic = BitmapTool.getRoundedShape(BitmapTool.generateBit(imgPath));
+            this.profilPic = BitmapTool.getRoundedShape(BitmapTool.imageOrientationValidator(BitmapTool.generateBit(imgPath),imgPath));
             profileImage.setImageBitmap(profilPic);
         }
 
