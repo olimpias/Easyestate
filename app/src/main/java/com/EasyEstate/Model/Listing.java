@@ -22,7 +22,7 @@ public abstract class Listing {
     protected Listing(String adID){
         this.setAdID(adID);
     }
-
+    protected Listing(){}
     protected Listing(String adID,ArrayList<String> imagesURL,String description,String title,Double price,int squareMeter,String estateType,boolean post, boolean krediyeUygun,ListingLocation location,User listingOwner){
         this.adID=adID;
         this.imagesURL = imagesURL;

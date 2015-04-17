@@ -17,10 +17,10 @@ public class House extends  Listing {
     private boolean esyali;
     private boolean siteIcerisinde;
     private String kullanimDurumu;
-    protected House(String adID) {
+    public House(String adID) {
         super(adID);
     }
-
+    public House(){}
     public House(String adID, ArrayList<String> imagesURL, String description, String title, Double price, int squareMeter, String estateType, boolean post, boolean krediyeUygun, ListingLocation location, User listingOwner) {
         super(adID, imagesURL, description, title, price, squareMeter, estateType, post, krediyeUygun, location, listingOwner);
     }
