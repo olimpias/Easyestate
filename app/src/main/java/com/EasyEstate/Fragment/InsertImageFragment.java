@@ -13,7 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SeekBar;
+
+import com.EasyEstate.Activity.MyListingControlActivity;
 import com.EasyEstate.Adapter.PictureChooseAdapter;
+import com.EasyEstate.Model.Listing;
 import com.EasyEstate.R;
 import com.EasyEstate.SupportTool.BitmapTool;
 
@@ -28,6 +32,8 @@ public class InsertImageFragment extends Fragment {
     private static int RESULT_LOAD_IMG = 1;
     private static final int CAPTURE_PHOTO=0;
     private static final int RESULT_PHOTO_CHOOSE =1;
+    private SeekBar seekbar;
+    private Listing listing;
     private LruCache<String,Bitmap> mMemoryCache;
     private PictureChooseAdapter adaptor;
     private InsertImageFragment insertImageFragment;
@@ -38,11 +44,15 @@ public class InsertImageFragment extends Fragment {
         nextButton = (Button)view.findViewById(R.id.nextImageButton);
         galleryButton = (Button)view.findViewById(R.id.galleryButton);
         takePictureButton = (Button)view.findViewById(R.id.takePictureButton);
+        seekbar = (SeekBar)view.findViewById(R.id.seekBar2);
+        seekbar.setEnabled(false);
         galleryButton.setOnClickListener(buttonListeners);
         takePictureButton.setOnClickListener(buttonListeners);
         nextButton.setOnClickListener(buttonListeners);
         insertImageFragment = this;
+        listing = MyListingControlActivity.getListing();
         adaptor=new PictureChooseAdapter(getActivity(),insertImageFragment);
+        listView.setAdapter(adaptor);
         return view;
     }
     private View.OnClickListener buttonListeners = new View.OnClickListener() {
@@ -100,7 +110,7 @@ public class InsertImageFragment extends Fragment {
             adaptor.AddImage(BitmapTool.generateBit(imgPath),imgPath);
             adaptor.notifyDataSetChanged();
         }
-        if(requestCode == CAPTURE_PHOTO){
+        if(requestCode == CAPTURE_PHOTO  && data !=null ){
             Bitmap bp = (Bitmap) data.getExtras().get("data");
             bp = BitmapTool.newScaledBitmap(bp);
             String name = System.currentTimeMillis()+".jpeg";

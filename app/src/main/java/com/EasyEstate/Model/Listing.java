@@ -14,7 +14,6 @@ public abstract class Listing {
     private Double price;
     private int squareMeter;
     private String  estateType;
-    private boolean post;
     private ListingLocation location;
     private User listingOwner;
 
@@ -31,7 +30,6 @@ public abstract class Listing {
         this.price = price;
         this.squareMeter = squareMeter;
         this.estateType = estateType ;
-        this.post = post;
         this.location = location;
         this.listingOwner = listingOwner;
     }
@@ -101,11 +99,4 @@ public abstract class Listing {
         this.estateType = estateType;
     }
 
-    public boolean isPost() {
-        return post;
-    }
-
-    public void setPost(boolean post) {
-        this.post = post;
-    }
 }

@@ -1,18 +1,17 @@
 package com.EasyEstate.Model;
 
-import java.util.ArrayList;
-
 /**
  * Created by canturker on 04/04/15.
  */
 public class Land extends  Listing {
-    private String imarDurumu;
-    private int adaNo;
-    private int parseNo;
-    private int pafraNo;
+    private int zoningStatus;
+    private int islandNo;
+    private int parcelNo;
+    private int layoutNo;
     private int gabari;
-    private String tapuDurumu;
-    private boolean katKarsiligi;
+    private int deedStatus;
+    private boolean provisionFloor;
+    private boolean loanEligibility;
 
 
     public Land(String adID) {
@@ -20,37 +19,52 @@ public class Land extends  Listing {
     }
     public Land(){}
 
-
-    public String getImarDurumu() {
-        return imarDurumu;
+    public boolean isLoanEligibility() {
+        return loanEligibility;
     }
 
-    public void setImarDurumu(String imarDurumu) {
-        this.imarDurumu = imarDurumu;
+    public void setLoanEligibility(boolean loanEligibility) {
+        this.loanEligibility = loanEligibility;
     }
 
-    public int getAdaNo() {
-        return adaNo;
+    public void setDeedStatus(int deedStatus) {
+        this.deedStatus = deedStatus;
     }
 
-    public void setAdaNo(int adaNo) {
-        this.adaNo = adaNo;
+    public int getDeedStatus() {
+        return deedStatus;
     }
 
-    public int getParseNo() {
-        return parseNo;
+    public int getZoningStatus() {
+        return zoningStatus;
     }
 
-    public void setParseNo(int parseNo) {
-        this.parseNo = parseNo;
+    public void setZoningStatus(int zoningStatus) {
+        this.zoningStatus = zoningStatus;
     }
 
-    public int getPafraNo() {
-        return pafraNo;
+    public int getIslandNo() {
+        return islandNo;
     }
 
-    public void setPafraNo(int pafraNo) {
-        this.pafraNo = pafraNo;
+    public void setIslandNo(int islandNo) {
+        this.islandNo = islandNo;
+    }
+
+    public int getParcelNo() {
+        return parcelNo;
+    }
+
+    public void setParcelNo(int parcelNo) {
+        this.parcelNo = parcelNo;
+    }
+
+    public int getLayoutNo() {
+        return layoutNo;
+    }
+
+    public void setLayoutNo(int layoutNo) {
+        this.layoutNo = layoutNo;
     }
 
     public int getGabari() {
@@ -61,19 +75,13 @@ public class Land extends  Listing {
         this.gabari = gabari;
     }
 
-    public String getTapuDurumu() {
-        return tapuDurumu;
+
+
+    public boolean isProvisionFloor() {
+        return provisionFloor;
     }
 
-    public void setTapuDurumu(String tapuDurumu) {
-        this.tapuDurumu = tapuDurumu;
-    }
-
-    public boolean isKatKarsiligi() {
-        return katKarsiligi;
-    }
-
-    public void setKatKarsiligi(boolean katKarsiligi) {
-        this.katKarsiligi = katKarsiligi;
+    public void setProvisionFloor(boolean provisionFloor) {
+        this.provisionFloor = provisionFloor;
     }
 }

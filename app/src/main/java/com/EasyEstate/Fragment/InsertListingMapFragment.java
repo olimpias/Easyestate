@@ -4,16 +4,19 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.SeekBar;
+
+import com.EasyEstate.Activity.MyListingControlActivity;
 import com.EasyEstate.Model.ListingLocation;
 import com.EasyEstate.R;
 import com.EasyEstate.SupportTool.GpsTracker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -26,16 +29,19 @@ import java.util.Locale;
  * Created by canturker on 17/04/15.
  */
 public class InsertListingMapFragment extends Fragment {
+    private static final String TAG = "INSERT_LISTING_MAP";
     private GoogleMap googleMap;
     private Button nextButton;
     private ListingLocation location;
-
+    private SeekBar seekBar;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.insert_listing_map_fragment,container,false);
+        View view = inflater.inflate(R.layout.insert_listing_map_fragment, container, false);
         if(googleMap==null){
-            googleMap=((SupportMapFragment)getFragmentManager().findFragmentById(R.id.googleMap)).getMap();
+             googleMap=((SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.googleMap)).getMap();
         }
+        seekBar = (SeekBar)view.findViewById(R.id.seekBar3);
+        seekBar.setEnabled(false);
         nextButton = (Button)view.findViewById(R.id.nextMapButton);
         GpsTracker tracker = new GpsTracker(getActivity());
         if(tracker.getLocation() != null){
@@ -58,7 +64,7 @@ public class InsertListingMapFragment extends Fragment {
         @Override
         public void onClick(View v) {
                   if(v.getId() == nextButton.getId()){
-                        // next
+                      ((MyListingControlActivity)getActivity()).ChangeFragment(new InsertImageFragment());
                   }
 
         }
@@ -77,7 +83,7 @@ public class InsertListingMapFragment extends Fragment {
         googleMap.clear();
 
         // Animating to the touched position
-        googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
 
         // Placing a marker on the touched position
         googleMap.addMarker(markerOptions);
@@ -97,6 +103,7 @@ public class InsertListingMapFragment extends Fragment {
                     description = description+" "+address.getAddressLine(i);
                 }
                 location.setAddress(description);
+                Log.d(TAG,description);
             }
         }catch (IOException ex){
 

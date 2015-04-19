@@ -95,7 +95,6 @@ public class DatabaseConnection {
                 json.put("isitma", house.getHeating());
                 json.put("kullanimDurumu", house.getUseStatusSpinner());
                 json.put("siteIcerisinde", house.isInSideSite());
-                json.put("post", house.isPost());
                 json.put("ilanTipi", house.getEstateType());
                 json.put("category", house.getCategory());
 

@@ -62,6 +62,11 @@ public class InsertListingFragment extends Fragment {
                 listing.setTitle(titleEditText.getText().toString());
                 listing.setSquareMeter(Integer.parseInt(squareMeterEditText.getText().toString()));
                 listing.setPrice(Double.parseDouble(primeEditText.getText().toString()));
+                if(saleRadioButton.isChecked()){
+                    listing.setEstateType("Sale");
+                }else{
+                    listing.setEstateType("Rent");
+                }
                 // Change Fragment...
                 if( listing instanceof House){
                     ((MyListingControlActivity)getActivity()).ChangeFragment(new InsertHouseFragment());
