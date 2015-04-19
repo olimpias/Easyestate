@@ -251,9 +251,11 @@ public class MainActivity extends ActionBarActivity {
         return true;
     }
 
-    public static void AlertDialog (Context context,String message){
+    public static void AlertDialog (Context context,String message,String title){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        if(title == null)
         builder.setTitle("ERROR");
+        else builder.setTitle(title);
         builder.setMessage(message);
         builder.setPositiveButton("OK",new DialogInterface.OnClickListener() {
             @Override

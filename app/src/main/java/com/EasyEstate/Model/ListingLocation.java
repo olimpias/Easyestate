@@ -6,19 +6,14 @@ package com.EasyEstate.Model;
 public class ListingLocation {
     private double longitude;
     private double latitude;
-    private String province;
-    private String district;
-    private String country;
-
-    public ListingLocation(double longitude,double latitude,String province,String district,String country){
+    private String address;
+    public ListingLocation(){}
+    public ListingLocation(double longitude,double latitude,String Address){
         this.setLongitude(longitude);
         this.setLatitude(latitude);
-        this.setProvince(province);
-        this.setDistrict(district);
-        this.setCountry(country);
+        this.setAddress(Address);
+
     }
-
-
     public double getLongitude() {
         return longitude;
     }
@@ -35,32 +30,15 @@ public class ListingLocation {
         this.latitude = latitude;
     }
 
-    public String getProvince() {
-        return province;
+    public String getAddress() {
+        return address;
     }
 
-    public void setProvince(String province) {
-        this.province = province;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getDistrict() {
-        return district;
-    }
 
-    public void setDistrict(String district) {
-        this.district = district;
-    }
 
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
     //View da belirtmek için sonradan eklenicek
-    @Override
-    public String toString() {
-        return "";
-    }
 }

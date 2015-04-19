@@ -15,7 +15,7 @@ public abstract class Listing {
     private int squareMeter;
     private String  estateType;
     private boolean post;
-    private ListingLocation location ;
+    private ListingLocation location;
     private boolean krediyeUygun;
     private User listingOwner;
 
@@ -23,6 +23,7 @@ public abstract class Listing {
         this.setAdID(adID);
     }
     protected Listing(){}
+
     protected Listing(String adID,ArrayList<String> imagesURL,String description,String title,Double price,int squareMeter,String estateType,boolean post, boolean krediyeUygun,ListingLocation location,User listingOwner){
         this.adID=adID;
         this.imagesURL = imagesURL;

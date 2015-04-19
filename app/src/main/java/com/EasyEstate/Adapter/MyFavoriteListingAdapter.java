@@ -68,7 +68,7 @@ public class MyFavoriteListingAdapter extends BaseAdapter{
         }
         Listing listing = listingList.get(position);
         holder.titleTextView.setText(listing.getTitle());
-        holder.addressTextView.setText(listing.getLocation().getCountry());//Edit here!!!!!
+        holder.addressTextView.setText(listing.getLocation().getAddress());//Edit here!!!!!
         holder.priceTextView.setText(listing.getPrice()+"");
 
         if(listing.getImagesURL().size()!=0){

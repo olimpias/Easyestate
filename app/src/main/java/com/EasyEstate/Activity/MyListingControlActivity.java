@@ -36,4 +36,8 @@ public class MyListingControlActivity extends ActionBarActivity {
     public static Listing getListing() {
         return listing;
     }
+
+    public static void setListing(Listing listing) {
+        MyListingControlActivity.listing = listing;
+    }
 }

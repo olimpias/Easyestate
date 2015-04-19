@@ -138,7 +138,7 @@ public class ProfileActivity extends ActionBarActivity {
             if(aBoolean){
                 finish();
             }else{
-                MainActivity.AlertDialog(ProfileActivity.this,"Connection problem");
+                MainActivity.AlertDialog(ProfileActivity.this,"Connection problem",null);
             }
         }
     }

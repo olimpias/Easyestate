@@ -10,6 +10,11 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 
+import com.EasyEstate.Activity.MainActivity;
+import com.EasyEstate.Activity.MyListingControlActivity;
+import com.EasyEstate.Model.House;
+import com.EasyEstate.Model.Land;
+import com.EasyEstate.Model.Listing;
 import com.EasyEstate.R;
 
 /**
@@ -47,7 +52,26 @@ public class InsertListingFragment extends Fragment {
     private View.OnClickListener buttonNextListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            if(titleEditText.getText().toString().trim().length() != 0 && descriptionEditText.getText().toString().trim().length() != 0 && squareMeterEditText.toString().trim().length() != 0 && primeEditText.toString().trim().length() != 0){
+                if(houseRadioButton.isChecked()){
+                    MyListingControlActivity.setListing(new House());
+                }else{
+                    MyListingControlActivity.setListing(new Land());
+                }
+                Listing listing = MyListingControlActivity.getListing();
+                listing.setDescription(descriptionEditText.getText().toString());
+                listing.setTitle(titleEditText.getText().toString());
+                listing.setSquareMeter(Integer.parseInt(squareMeterEditText.getText().toString()));
+                listing.setPrice(Double.parseDouble(primeEditText.getText().toString()));
+                // Change Fragment...
+                if( listing instanceof House){
 
+                }else{
+
+                }
+            }else{
+                MainActivity.AlertDialog(getActivity(),"Fill the fields please","Warning!");
+            }
         }
     };
 }
