@@ -31,6 +31,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/numberOfRoomSpinner"
+                    android:entries="@array/planets_array"
+                    android:spinnerMode="dialog"
                     android:layout_weight="1"/>
             </TableRow>
             <TableRow
@@ -49,6 +51,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/numberOfBathSpinner"
+                    android:entries="@array/planets_array"
+                    android:spinnerMode="dialog"
                     android:layout_weight="1"/>
             </TableRow>
             <TableRow
@@ -154,6 +158,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/heatingSpinner"
                     android:layout_span="0"
+                    android:entries="@array/planets_array"
+                    android:spinnerMode="dialog"
                     android:layout_weight="1"/>
             </TableRow>
             <TableRow
@@ -194,6 +200,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/useStatusSpinner"
                     android:layout_span="0"
+                    android:entries="@array/planets_array"
+                    android:spinnerMode="dialog"
                     android:layout_weight="1"/>
             </TableRow>
             <TableRow

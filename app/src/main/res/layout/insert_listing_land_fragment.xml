@@ -30,6 +30,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/ZoningStatusSpinner"
                 android:entries="@array/planets_array"
+                android:spinnerMode="dialog"
                 android:layout_weight="1"/>
 
         </TableRow>
@@ -107,6 +108,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/GabariSpinner"
+                android:spinnerMode="dialog"
                 android:entries="@array/planets_array"
                 android:layout_weight="1"/>
         </TableRow>
@@ -126,6 +128,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/deedStatusSpinner"
                 android:entries="@array/planets_array"
+                android:spinnerMode="dialog"
                 android:layout_weight="1"/>
         </TableRow>
 

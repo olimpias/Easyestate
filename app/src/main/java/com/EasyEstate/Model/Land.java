@@ -19,9 +19,7 @@ public class Land extends  Listing {
         super(adID);
     }
     public Land(){}
-    public Land(String adID, ArrayList<String> imagesURL, String description, String title, Double price, int squareMeter, String estateType, boolean post, boolean krediyeUygun, ListingLocation location, User listingOwner) {
-        super(adID, imagesURL, description, title, price, squareMeter, estateType, post, krediyeUygun, location, listingOwner);
-    }
+
 
     public String getImarDurumu() {
         return imarDurumu;

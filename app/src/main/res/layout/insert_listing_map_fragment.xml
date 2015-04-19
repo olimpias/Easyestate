@@ -3,11 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <fragment
+        class="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="com.google.android.gms.maps.MapFragment"
         android:id="@+id/googleMap"
-        android:layout_alignParentTop="true" />
+        android:layout_height="match_parent"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

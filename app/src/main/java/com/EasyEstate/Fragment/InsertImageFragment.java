@@ -31,7 +31,6 @@ public class InsertImageFragment extends Fragment {
     private LruCache<String,Bitmap> mMemoryCache;
     private PictureChooseAdapter adaptor;
     private InsertImageFragment insertImageFragment;
-    //Activitylerden go back elicez ayar çekilicek...
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.insert_listing_image_fragment,container,false);
@@ -50,7 +49,7 @@ public class InsertImageFragment extends Fragment {
         @Override
         public void onClick(View v) {
             if(v.getId() == nextButton.getId()){
-
+                //Begin Database Insert Operation...
             }
             if(v.getId() == galleryButton.getId()){
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK,

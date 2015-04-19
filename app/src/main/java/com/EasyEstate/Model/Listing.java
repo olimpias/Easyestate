@@ -16,7 +16,6 @@ public abstract class Listing {
     private String  estateType;
     private boolean post;
     private ListingLocation location;
-    private boolean krediyeUygun;
     private User listingOwner;
 
     protected Listing(String adID){
@@ -24,7 +23,7 @@ public abstract class Listing {
     }
     protected Listing(){}
 
-    protected Listing(String adID,ArrayList<String> imagesURL,String description,String title,Double price,int squareMeter,String estateType,boolean post, boolean krediyeUygun,ListingLocation location,User listingOwner){
+    protected Listing(String adID,ArrayList<String> imagesURL,String description,String title,Double price,int squareMeter,String estateType,ListingLocation location,User listingOwner){
         this.adID=adID;
         this.imagesURL = imagesURL;
         this.description = description;
@@ -33,7 +32,6 @@ public abstract class Listing {
         this.squareMeter = squareMeter;
         this.estateType = estateType ;
         this.post = post;
-        this.krediyeUygun = krediyeUygun;
         this.location = location;
         this.listingOwner = listingOwner;
     }
@@ -57,13 +55,7 @@ public abstract class Listing {
         return imagesURL;
     }
 
-    public boolean isKrediyeUygun() {
-        return krediyeUygun;
-    }
 
-    public void setKrediyeUygun(boolean krediyeUygun) {
-        this.krediyeUygun = krediyeUygun;
-    }
 
     public void setImagesURL(ArrayList<String> imagesURL) {
         this.imagesURL = imagesURL;

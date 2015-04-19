@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
-
 import com.EasyEstate.Activity.MainActivity;
 import com.EasyEstate.Activity.MyListingControlActivity;
 import com.EasyEstate.Model.House;
@@ -65,9 +64,9 @@ public class InsertListingFragment extends Fragment {
                 listing.setPrice(Double.parseDouble(primeEditText.getText().toString()));
                 // Change Fragment...
                 if( listing instanceof House){
-
+                    ((MyListingControlActivity)getActivity()).ChangeFragment(new InsertHouseFragment());
                 }else{
-
+                    ((MyListingControlActivity)getActivity()).ChangeFragment(new InsertLandFragment());
                 }
             }else{
                 MainActivity.AlertDialog(getActivity(),"Fill the fields please","Warning!");

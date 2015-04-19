@@ -3,6 +3,7 @@ package com.EasyEstate.Fragment;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import com.EasyEstate.SupportTool.GpsTracker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -23,7 +25,7 @@ import java.util.Locale;
 /**
  * Created by canturker on 17/04/15.
  */
-public class InsertListingMapFragment extends android.app.Fragment {
+public class InsertListingMapFragment extends Fragment {
     private GoogleMap googleMap;
     private Button nextButton;
     private ListingLocation location;
@@ -32,7 +34,7 @@ public class InsertListingMapFragment extends android.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.insert_listing_map_fragment,container,false);
         if(googleMap==null){
-            googleMap=((MapFragment)getFragmentManager().findFragmentById(R.id.googleMap)).getMap();
+            googleMap=((SupportMapFragment)getFragmentManager().findFragmentById(R.id.googleMap)).getMap();
         }
         nextButton = (Button)view.findViewById(R.id.nextMapButton);
         GpsTracker tracker = new GpsTracker(getActivity());

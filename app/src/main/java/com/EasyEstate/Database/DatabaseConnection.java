@@ -1,7 +1,6 @@
 package com.EasyEstate.Database;
 
 import android.graphics.Bitmap;
-import android.media.session.MediaSessionManager;
 import android.util.Log;
 
 import com.EasyEstate.Model.House;
@@ -92,12 +91,10 @@ public class DatabaseConnection {
                 json.put("binaYasi", house.getHouseAge());
                 json.put("katSayisi", house.getNumberOfFloor());
                 json.put("bulunduguKat", house.getCurrentFloor());
-                json.put("aidat", house.getAidat());
+                json.put("aidat", house.getDues());
                 json.put("isitma", house.getHeating());
-                json.put("esyali", house.isEsyali());
-                json.put("kullanimDurumu", house.getKullanimDurumu());
-                json.put("siteIcerisinde", house.isSiteIcerisinde());
-                json.put("krediyeUygunluk", house.isKrediyeUygun());
+                json.put("kullanimDurumu", house.getUseStatusSpinner());
+                json.put("siteIcerisinde", house.isInSideSite());
                 json.put("post", house.isPost());
                 json.put("ilanTipi", house.getEstateType());
                 json.put("category", house.getCategory());

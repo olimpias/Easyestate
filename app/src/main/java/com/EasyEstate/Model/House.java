@@ -6,40 +6,62 @@ import java.util.ArrayList;
  * Created by canturker on 04/04/15.
  */
 public class House extends  Listing {
-    private String numberOfRoom;
-    private String numberOfBath;
+    private int numberOfRoom;
+    private int numberOfBath;
     private String houseAge;
     private String numberOfFloor;
     private String currentFloor;
-    private int aidat;
-    private String heating;
-    private String category;
-    private boolean esyali;
-    private boolean siteIcerisinde;
-    private String kullanimDurumu;
+    private int dues;
+    private int heating;
+    private int category;
+    private boolean loanEligibilityHouse;
+    private boolean isInSideSite;
+    private int useStatusSpinner;
     public House(String adID) {
         super(adID);
     }
     public House(){}
-    public House(String adID, ArrayList<String> imagesURL, String description, String title, Double price, int squareMeter, String estateType, boolean post, boolean krediyeUygun, ListingLocation location, User listingOwner) {
-        super(adID, imagesURL, description, title, price, squareMeter, estateType, post, krediyeUygun, location, listingOwner);
+
+    public void setUseStatusSpinner(int useStatusSpinner) {
+        this.useStatusSpinner = useStatusSpinner;
     }
 
-    public String getNumberOfRoom() {
-        return numberOfRoom;
+    public int getUseStatusSpinner() {
+        return useStatusSpinner;
     }
 
-    public void setNumberOfRoom(String numberOfRoom) {
-        this.numberOfRoom = numberOfRoom;
-    }
-
-    public String getNumberOfBath() {
+    public int getNumberOfBath() {
         return numberOfBath;
     }
 
-    public void setNumberOfBath(String numberOfBath) {
+    public void setNumberOfBath(int numberOfBath) {
         this.numberOfBath = numberOfBath;
     }
+
+    public int getNumberOfRoom() {
+        return numberOfRoom;
+    }
+
+    public void setNumberOfRoom(int numberOfRoom) {
+        this.numberOfRoom = numberOfRoom;
+    }
+
+    public void setHeating(int heating) {
+        this.heating = heating;
+    }
+
+    public int getHeating() {
+        return heating;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
+    }
+
+    public int getCategory() {
+        return category;
+    }
+
 
     public String getHouseAge() {
         return houseAge;
@@ -57,53 +79,31 @@ public class House extends  Listing {
         this.numberOfFloor = numberOfFloor;
     }
 
-    public int getAidat() {
-        return aidat;
+    public int getDues() {
+        return dues;
     }
 
-    public void setAidat(int aidat) {
-        this.aidat = aidat;
+    public void setDues(int dues) {
+        this.dues = dues;
     }
 
-    public String getHeating() {
-        return heating;
+    public boolean isLoanEligibilityHouse() {
+        return loanEligibilityHouse;
     }
 
-    public void setHeating(String heating) {
-        this.heating = heating;
+    public void setLoanEligibilityHouse(boolean loanEligibilityHouse) {
+        this.loanEligibilityHouse = loanEligibilityHouse;
     }
 
-    public String getCategory() {
-        return category;
+    public boolean isInSideSite() {
+        return isInSideSite;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setInSideSite(boolean inSideSite) {
+        this.isInSideSite = inSideSite;
     }
 
-    public boolean isEsyali() {
-        return esyali;
-    }
 
-    public void setEsyali(boolean esyali) {
-        this.esyali = esyali;
-    }
-
-    public boolean isSiteIcerisinde() {
-        return siteIcerisinde;
-    }
-
-    public void setSiteIcerisinde(boolean siteIcerisinde) {
-        this.siteIcerisinde = siteIcerisinde;
-    }
-
-    public String getKullanimDurumu() {
-        return kullanimDurumu;
-    }
-
-    public void setKullanimDurumu(String kullanimDurumu) {
-        this.kullanimDurumu = kullanimDurumu;
-    }
 
     public String getCurrentFloor() { return currentFloor; }
 
