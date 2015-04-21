@@ -2,25 +2,19 @@ package com.EasyEstate.Database;
 
 import android.graphics.Bitmap;
 import android.util.Log;
-
 import com.EasyEstate.Model.House;
+import com.EasyEstate.Model.Land;
+import com.EasyEstate.Model.Listing;
 import com.EasyEstate.Model.User;
 import com.EasyEstate.SupportTool.BitmapTool;
-
-
-import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,8 +22,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Map;
 
 
 public class DatabaseConnection {
@@ -40,11 +34,17 @@ public class DatabaseConnection {
     private HttpClient httpClient ;
     private HttpGet httpGet;
     private HttpPost httpPost ;
-
-    public DatabaseConnection() {
+    private static DatabaseConnection connection;
+    private DatabaseConnection() {
         httpClient = new DefaultHttpClient();
 
     }
+
+    public static DatabaseConnection getConnection() {
+        if(connection != null)connection = new DatabaseConnection();
+        return connection;
+    }
+
     private String getResponse(HttpResponse response) throws IOException {
         InputStream is =response.getEntity().getContent();
         BufferedReader reader = new BufferedReader
@@ -73,76 +73,26 @@ public class DatabaseConnection {
             return user;
         }
     }
-
-    public boolean uploadHouse(House house){
-        String result = null;
-        try {
-            httpPost=new HttpPost(URL);
-            JSONObject json=new JSONObject();
-            JSONArray jsonArray=new JSONArray();
-            try {
-                json.put("ilanBasligi", house.getTitle());
-                json.put("adID", house.getAdID());
-                json.put("description", house.getDescription());
-                json.put("price", house.getPrice());
-                json.put("bathNum", house.getNumberOfBath());
-                json.put("roomNum", house.getNumberOfRoom());
-                json.put("m2", house.getSquareMeter());
-                json.put("binaYasi", house.getHouseAge());
-                json.put("katSayisi", house.getNumberOfFloor());
-                json.put("bulunduguKat", house.getCurrentFloor());
-                json.put("aidat", house.getDues());
-                json.put("isitma", house.getHeating());
-                json.put("kullanimDurumu", house.getUseStatusSpinner());
-                json.put("siteIcerisinde", house.isInSideSite());
-                json.put("ilanTipi", house.getEstateType());
-                json.put("category", house.getCategory());
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            httpPost.setHeader("json", json.toString());
-            StringEntity se=new StringEntity(json.toString());
-            se.setContentEncoding((Header) new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-            httpPost.setEntity(se);
-
-
-            try {
-                HttpResponse response= httpClient.execute(httpPost);
-                result=getResponse(response);
-
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            JSONObject object= null;
-            try {
-                object = new JSONObject(result);
-                if(object.getInt("code")==1){
-                    return true;
-
-                }
-                else{
-                    return false;
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
+    public boolean insertListing(Listing listing,Map<String,Bitmap> bitmapHashMap){
 
         return false;
+    }
+
+    private int insertHouse(House house){
+        return -1;
+    }
+    private int insertLand(Land land){
+        return -1;
     }
     private ArrayList<NameValuePair> InitializingKey(){
         ArrayList<NameValuePair> nameValuePairs=new ArrayList<NameValuePair>();
         nameValuePairs.add(new BasicNameValuePair("secretKey",secretKey));
         return nameValuePairs;
     }
-    public boolean isUserExit(String email) throws IOException, JSONException {
+    /*
+       it uses in LoginUser Method checks if the email already exits in database
+     */
+    private boolean isUserExit(String email) throws IOException, JSONException {
          httpPost = new HttpPost(URL+"isUserExits.php");
         ArrayList<NameValuePair> nameValuePairs = InitializingKey();
         nameValuePairs.add(new BasicNameValuePair("email",email));
@@ -171,7 +121,10 @@ public class DatabaseConnection {
         }
 
     }
-    public boolean InsertUser(User user) throws IOException, JSONException {
+    /*
+    Insert new User to database
+     */
+    private boolean InsertUser(User user) throws IOException, JSONException {
         httpPost = new HttpPost(URL+"insertUser.php");
         ArrayList<NameValuePair> nameValuePairs = InitializingKey();
         nameValuePairs.add(new BasicNameValuePair("email",user.getEmail()));

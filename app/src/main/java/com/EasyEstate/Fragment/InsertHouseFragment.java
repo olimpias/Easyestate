@@ -63,14 +63,15 @@ public class InsertHouseFragment extends Fragment {
                     ageOfBuildingEditText.getText().toString().trim().length() != 0 && numberOfFloorEditText.getText().toString().trim().length() != 0
                     && currentFloorEditText.getText().toString().trim().length() != 0 && duesEditText.getText().toString().trim().length() != 0 ){
                 House house =(House)MyListingControlActivity.getListing();
-                house.setCurrentFloor(currentFloorEditText.getText().toString());
-                house.setNumberOfFloor(numberOfFloorEditText.getText().toString());
+                house.setHouseAge(Integer.parseInt(ageOfBuildingEditText.getText().toString()));
+                house.setCurrentFloor(Integer.parseInt(currentFloorEditText.getText().toString()));
+                house.setNumberOfFloor(Integer.parseInt(numberOfFloorEditText.getText().toString()));
                 house.setNumberOfBath(numberOfBathSpinner.getSelectedItemPosition());
                 house.setNumberOfRoom(numberOfRoomSpinner.getSelectedItemPosition());
                 house.setHeating(heatingSpinner.getSelectedItemPosition());
                 house.setInSideSite(inTheSiteCheckBox.isChecked());
                 house.setLoanEligibilityHouse(loanEligibilityHouseCheckBox.isChecked());
-                house.setUseStatusSpinner(useStatusSpinner.getSelectedItemPosition());
+                house.setUseStatus(useStatusSpinner.getSelectedItemPosition());
                 ((MyListingControlActivity)getActivity()).ChangeFragment(new InsertListingMapFragment());
             }else{
                 MainActivity.AlertDialog(getActivity(), "Fill the fields please", "Warning!");

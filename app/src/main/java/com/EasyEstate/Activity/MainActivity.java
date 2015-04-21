@@ -33,7 +33,6 @@ public class MainActivity extends ActionBarActivity {
     public static final String [] MENUS = {"Home","My Account","My Favorites", "My Listings"};
     private static final int [] MENU_ICON = {} ;
     private ListView drawerListView;
-    public static DatabaseConnection connection = new DatabaseConnection();
     private DrawerLayout drawerLayout;
     private ActionBar actionBar;
     private static final String TAG = "MainActivity";
@@ -91,7 +90,7 @@ public class MainActivity extends ActionBarActivity {
         if(actionBarDrawerToggle.onOptionsItemSelected(item))return true;
         if(item.getItemId() == R.id.Logout){
             deleteUser();
-            connection.setUser(null);
+            DatabaseConnection.getConnection().setUser(null);
             ChangeFragment(new HomeFragment(),0);
             invalidateOptionsMenu();
         }
@@ -129,7 +128,7 @@ public class MainActivity extends ActionBarActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCE_REF,MODE_PRIVATE);
         String email = sharedPreferences.getString(EMAIL,null);
         if(email !=null){
-            connection.setUser(new User(email));
+            DatabaseConnection.getConnection().setUser(new User(email));
         }
     }
     /*
@@ -182,7 +181,7 @@ public class MainActivity extends ActionBarActivity {
     }
     public void DirectFragment(Fragment fragment,int position){
         try {
-            if(connection.getUser()!= null){
+            if( DatabaseConnection.getConnection().getUser()!= null){
                 ChangeFragment(fragment,position);
             }
         } catch (UserDoesNotLoginException e) {
@@ -240,7 +239,7 @@ public class MainActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         try {
-            if(connection.getUser() != null){
+            if( DatabaseConnection.getConnection().getUser() != null){
                 getMenuInflater().inflate(R.menu.menu_main, menu);
             }
         } catch (UserDoesNotLoginException e) {

@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.EasyEstate.Activity.MainActivity;
 import com.EasyEstate.Activity.ProfileActivity;
+import com.EasyEstate.Database.DatabaseConnection;
 import com.EasyEstate.Database.UserDoesNotLoginException;
 import com.EasyEstate.Model.User;
 import com.EasyEstate.R;
@@ -55,7 +56,7 @@ public class MyAccountFragment extends Fragment {
     public void onResume() {
         super.onResume();
         try {
-            new NetworkConnection().execute(MainActivity.connection.getUser().getEmail());
+            new NetworkConnection().execute( DatabaseConnection.getConnection().getUser().getEmail());
         } catch (UserDoesNotLoginException e) {
             e.printStackTrace();
 
@@ -70,14 +71,14 @@ public class MyAccountFragment extends Fragment {
         @Override
         protected User doInBackground(String... params) {
             try {
-                MainActivity.connection.SelectUser(params[0]);
+                DatabaseConnection.getConnection().SelectUser(params[0]);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             try {
-                return  MainActivity.connection.getUser();
+                return   DatabaseConnection.getConnection().getUser();
             } catch (UserDoesNotLoginException e) {
                 e.printStackTrace();
             }

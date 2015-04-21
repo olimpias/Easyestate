@@ -8,6 +8,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+
+import com.EasyEstate.Database.DatabaseConnection;
 import com.EasyEstate.Model.User;
 import com.EasyEstate.R;
 import com.EasyEstate.SupportTool.ProgressLoading;
@@ -19,6 +21,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.plus.People;
 import com.google.android.gms.plus.Plus;
+import com.google.android.gms.plus.model.people.Person;
 import com.google.android.gms.plus.model.people.PersonBuffer;
 
 import org.json.JSONException;
@@ -109,6 +112,12 @@ public class LoginActivity extends ActionBarActivity implements GoogleApiClient.
     private void getUserInformation(){
         // Reaching onConnected means we consider the user signed in.
         Log.i(TAG, "onConnected");
+        if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+            Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+            String personName = currentPerson.getDisplayName();
+            String personPhoto = currentPerson.getImage().getUrl();
+            String personGooglePlusProfile = currentPerson.getUrl();
+        }
         // Retrieve some profile information to personalize our app for the user.
         User user = new User(Plus.AccountApi.getAccountName(mGoogleApiClient));
        /*user.setName(currentUser.getDisplayName());
@@ -189,7 +198,7 @@ public class LoginActivity extends ActionBarActivity implements GoogleApiClient.
         @Override
         protected Boolean doInBackground(User... params) {
             try {
-                boolean result = MainActivity.connection.LoginUser(params[0]);
+                boolean result =  DatabaseConnection.getConnection().LoginUser(params[0]);
                 SaveUser(params[0].getEmail());
                 return result;
             } catch (IOException e) {

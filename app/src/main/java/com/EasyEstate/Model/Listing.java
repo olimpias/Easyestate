@@ -13,7 +13,7 @@ public abstract class Listing {
     private String title;
     private Double price;
     private int squareMeter;
-    private String  estateType;
+    private String estateType;
     private ListingLocation location;
     private User listingOwner;
 
@@ -22,17 +22,6 @@ public abstract class Listing {
     }
     protected Listing(){}
 
-    protected Listing(String adID,ArrayList<String> imagesURL,String description,String title,Double price,int squareMeter,String estateType,ListingLocation location,User listingOwner){
-        this.adID=adID;
-        this.imagesURL = imagesURL;
-        this.description = description;
-        this.title = title;
-        this.price = price;
-        this.squareMeter = squareMeter;
-        this.estateType = estateType ;
-        this.location = location;
-        this.listingOwner = listingOwner;
-    }
     public String getAdID() {
         return adID;
     }

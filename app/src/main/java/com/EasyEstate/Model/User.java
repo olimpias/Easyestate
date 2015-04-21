@@ -12,7 +12,7 @@ public class User {
     private ArrayList<Listing> userListings;
     private ArrayList<Listing> userFavorites;
     private String name;
-    public static final String IMAGE_URL = "http://www.yeicmobil.com/EasyEstate/EasyEstateImage/";
+    protected static final String IMAGE_URL = "http://www.yeicmobil.com/EasyEstate/EasyEstateImage/";
 
     public User(String email) {
         this.setEmail(email);

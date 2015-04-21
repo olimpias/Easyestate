@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.EasyEstate.Database.DatabaseConnection;
 import com.EasyEstate.Database.UserDoesNotLoginException;
 import com.EasyEstate.Model.User;
 import com.EasyEstate.R;
@@ -52,7 +53,7 @@ public class ProfileActivity extends ActionBarActivity {
         doneButton.setOnClickListener(buttonClickListener);
         isChanged = false;
         try {
-            user = MainActivity.connection.getUser();
+            user =  DatabaseConnection.getConnection().getUser();
         } catch (UserDoesNotLoginException e) {
             e.printStackTrace();
         }
@@ -119,9 +120,9 @@ public class ProfileActivity extends ActionBarActivity {
         protected Boolean doInBackground(User... params) {
             try {
                 if(isChanged)
-                return MainActivity.connection.UpdateUser(params[0],profilPic);
+                return  DatabaseConnection.getConnection().UpdateUser(params[0],profilPic);
                 else
-                return MainActivity.connection.UpdateUser(params[0],null);
+                return  DatabaseConnection.getConnection().UpdateUser(params[0],null);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {

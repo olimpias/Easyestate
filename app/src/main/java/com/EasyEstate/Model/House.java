@@ -8,26 +8,25 @@ import java.util.ArrayList;
 public class House extends  Listing {
     private int numberOfRoom;
     private int numberOfBath;
-    private String houseAge;
-    private String numberOfFloor;
-    private String currentFloor;
+    private int houseAge;
+    private int numberOfFloor;
+    private int currentFloor;
     private int dues;
     private int heating;
-    private int category;
     private boolean loanEligibilityHouse;
     private boolean isInSideSite;
-    private int useStatusSpinner;
+    private int useStatus;
     public House(String adID) {
         super(adID);
     }
     public House(){}
 
-    public void setUseStatusSpinner(int useStatusSpinner) {
-        this.useStatusSpinner = useStatusSpinner;
+    public int getUseStatus() {
+        return useStatus;
     }
 
-    public int getUseStatusSpinner() {
-        return useStatusSpinner;
+    public void setUseStatus(int useStatus) {
+        this.useStatus = useStatus;
     }
 
     public int getNumberOfBath() {
@@ -54,31 +53,6 @@ public class House extends  Listing {
         return heating;
     }
 
-    public void setCategory(int category) {
-        this.category = category;
-    }
-
-    public int getCategory() {
-        return category;
-    }
-
-
-    public String getHouseAge() {
-        return houseAge;
-    }
-
-    public void setHouseAge(String houseAge) {
-        this.houseAge = houseAge;
-    }
-
-    public String getNumberOfFloor() {
-        return numberOfFloor;
-    }
-
-    public void setNumberOfFloor(String numberOfFloor) {
-        this.numberOfFloor = numberOfFloor;
-    }
-
     public int getDues() {
         return dues;
     }
@@ -103,9 +77,27 @@ public class House extends  Listing {
         this.isInSideSite = inSideSite;
     }
 
+    public int getHouseAge() {
+        return houseAge;
+    }
 
+    public void setHouseAge(int houseAge) {
+        this.houseAge = houseAge;
+    }
 
-    public String getCurrentFloor() { return currentFloor; }
+    public int getNumberOfFloor() {
+        return numberOfFloor;
+    }
 
-    public void setCurrentFloor(String currentFloor) { this.currentFloor = currentFloor;}
+    public void setNumberOfFloor(int numberOfFloor) {
+        this.numberOfFloor = numberOfFloor;
+    }
+
+    public int getCurrentFloor() {
+        return currentFloor;
+    }
+
+    public void setCurrentFloor(int currentFloor) {
+        this.currentFloor = currentFloor;
+    }
 }
