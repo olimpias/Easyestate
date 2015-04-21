@@ -17,7 +17,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,10 +40,12 @@ public class DatabaseConnection {
     }
 
     public static DatabaseConnection getConnection() {
-        if(connection != null)connection = new DatabaseConnection();
+        if(connection == null)connection = new DatabaseConnection();
         return connection;
     }
-
+    /*
+    Convert response inputStream to String return string
+     */
     private String getResponse(HttpResponse response) throws IOException {
         InputStream is =response.getEntity().getContent();
         BufferedReader reader = new BufferedReader
@@ -73,16 +74,98 @@ public class DatabaseConnection {
             return user;
         }
     }
-    public boolean insertListing(Listing listing,Map<String,Bitmap> bitmapHashMap){
-
-        return false;
+    /*
+    Insert listing and images to server.If it success returns true else false
+     */
+    public boolean insertListing(Listing listing,Map<String,Bitmap> bitmapHashMap) throws IOException, JSONException {
+        int id = -1;
+        if(listing instanceof House){
+            id = insertHouse(((House)listing));
+        }
+        else if(listing instanceof Land){
+            id = insertLand(((Land)listing));
+        }
+        if(id != -1){
+            for(String key:bitmapHashMap.keySet()){
+                String filename = System.currentTimeMillis()+"_"+id+".jpeg";
+                upLoadImage(id,filename,bitmapHashMap.get(key));
+            }
+        }
+        if(id == -1)return false;
+        return true;
     }
-
-    private int insertHouse(House house){
-        return -1;
+    /*
+    Upload Image to php server
+     */
+    private void upLoadImage(int adID,String filename,Bitmap bitmap) throws IOException {
+        httpPost = new HttpPost(URL+"uploadImage.php");
+        ArrayList<NameValuePair> nameValuePairs = InitializingKey();
+        Bitmap image = BitmapTool.newScaledBitmap(bitmap);
+        String encodeImage = BitmapTool.encodeTo64BitBitmap(image);
+        nameValuePairs.add(new BasicNameValuePair("image",encodeImage));
+        nameValuePairs.add(new BasicNameValuePair("adID",adID+""));
+        nameValuePairs.add(new BasicNameValuePair("filename",filename));
+        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        HttpResponse response = httpClient.execute(httpPost);
+        String result = getResponse(response);
+        Log.e(TAG,result);
     }
-    private int insertLand(Land land){
-        return -1;
+    /*
+    Insert house values to json and sends it to php server url
+    return new adID
+     */
+    private int insertHouse(House house) throws IOException, JSONException {
+        httpPost = new HttpPost(URL+"insertHouse.php");
+        ArrayList<NameValuePair> nameValuePairs = InitializingKey();
+        JSONObject jsonObject = new JSONObject();
+        nameValuePairs.add(new BasicNameValuePair("json",jsonObject.toString()));
+        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        HttpResponse response = httpClient.execute(httpPost);
+        String result = getResponse(response);
+        Log.e(TAG,result);
+        return new JSONObject(result).getInt("id");
+    }
+    /*
+    Insert land values to json and sends it to php server url
+    return new adID
+     */
+    private int insertLand(Land land) throws IOException, JSONException {
+        httpPost = new HttpPost(URL+"insertLand.php");
+        ArrayList<NameValuePair> nameValuePairs = InitializingKey();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("email",user.getEmail());
+        jsonObject.put("description",land.getDescription());
+        jsonObject.put("title",land.getTitle());
+        jsonObject.put("price",land.getPrice());
+        jsonObject.put("squareMeter",land.getSquareMeter());
+        if(land.getEstateType().equals("Sale")){
+            jsonObject.put("estateType","1");
+        }else{
+            jsonObject.put("estateType","0");
+        }
+        jsonObject.put("zoningStatus",land.getZoningStatus());
+        jsonObject.put("islandNo",land.getIslandNo());
+        jsonObject.put("parcelNo",land.getParcelNo());
+        jsonObject.put("layoutNo",land.getLayoutNo());
+        jsonObject.put("gabari",land.getGabari());
+        jsonObject.put("deedStatus",land.getDeedStatus());
+        if(land.isProvisionFloor())
+            jsonObject.put("provisionFloor","1");
+        else
+            jsonObject.put("provisionFloor","0");
+        if(land.isLoanEligibility())
+            jsonObject.put("loanEligibility","1");
+        else
+            jsonObject.put("loanEligibility","0");
+        jsonObject.put("longitude",land.getLocation().getLongitude());
+        jsonObject.put("latitude",land.getLocation().getLatitude());
+        jsonObject.put("address",land.getLocation().getAddress());
+        nameValuePairs.add(new BasicNameValuePair("json",jsonObject.toString()));
+        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        HttpResponse response = httpClient.execute(httpPost);
+        String result = getResponse(response);
+        Log.e(TAG,result);
+        return new JSONObject(result).getInt("id");
     }
     private ArrayList<NameValuePair> InitializingKey(){
         ArrayList<NameValuePair> nameValuePairs=new ArrayList<NameValuePair>();
@@ -128,6 +211,8 @@ public class DatabaseConnection {
         httpPost = new HttpPost(URL+"insertUser.php");
         ArrayList<NameValuePair> nameValuePairs = InitializingKey();
         nameValuePairs.add(new BasicNameValuePair("email",user.getEmail()));
+        nameValuePairs.add(new BasicNameValuePair("name",user.getName()));
+        nameValuePairs.add(new BasicNameValuePair("image", user.getImageURL()));
         httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
         HttpResponse response = httpClient.execute(httpPost);
         String result = getResponse(response);
@@ -137,6 +222,7 @@ public class DatabaseConnection {
         }
         return false;
     }
+    /*
     public boolean UpdateUser(User user,Bitmap bitmap) throws IOException, JSONException {
         httpPost = new HttpPost(URL+"updateUser.php");
         ArrayList<NameValuePair> nameValuePairs = InitializingKey();
@@ -147,6 +233,21 @@ public class DatabaseConnection {
         nameValuePairs.add(new BasicNameValuePair("image", BitmapTool.encodeTo64BitBitmap(bitmap)));
         else
         nameValuePairs.add(new BasicNameValuePair("image", "NULL"));
+        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        HttpResponse response = httpClient.execute(httpPost);
+        String result = getResponse(response);
+        JSONObject jsonObject = new JSONObject(result);
+        if(jsonObject.getInt("code") == 1){
+            return true;
+        }
+        return false;
+    }
+    */
+    public boolean UpdateUser(User user) throws IOException, JSONException {
+        httpPost = new HttpPost(URL+"updateUser.php");
+        ArrayList<NameValuePair> nameValuePairs = InitializingKey();
+        nameValuePairs.add(new BasicNameValuePair("email",user.getEmail()));
+        nameValuePairs.add(new BasicNameValuePair("phone",user.getPhone()));
         httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
         HttpResponse response = httpClient.execute(httpPost);
         String result = getResponse(response);

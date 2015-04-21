@@ -29,29 +29,23 @@ import java.io.IOException;
 import java.net.URL;
 
 public class ProfileActivity extends ActionBarActivity {
-    private EditText nameEditText;
+    private TextView nameEditText;
     private EditText phoneEditText;
     private TextView emailTextView;
     private ImageView profileImage;
-    private Button chooseFromGalleryButton;
     private Button doneButton;
     private User user;
     private final static int RESULT_LOAD_IMG = 2;
-    private Bitmap profilPic;
-    private boolean isChanged;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        nameEditText = (EditText)findViewById(R.id.nameEditView);
+        nameEditText = (TextView)findViewById(R.id.nameEditView);
         phoneEditText = (EditText)findViewById(R.id.phoneEditView);
         emailTextView = (TextView)findViewById(R.id.emailTextView);
         profileImage = (ImageView)findViewById(R.id.profilePictureImageView);
-        chooseFromGalleryButton = (Button)findViewById(R.id.chooseFromGalleryButton);
         doneButton = (Button)findViewById(R.id.doneButton);
-        chooseFromGalleryButton.setOnClickListener(buttonClickListener);
         doneButton.setOnClickListener(buttonClickListener);
-        isChanged = false;
         try {
             user =  DatabaseConnection.getConnection().getUser();
         } catch (UserDoesNotLoginException e) {
@@ -61,19 +55,13 @@ public class ProfileActivity extends ActionBarActivity {
         phoneEditText.setText(user.getPhone());
         emailTextView.setText(user.getEmail());
         if(user.getImageURL().length()!=0){
-            new LoadImage().execute(user.getLoadImageURL());
+            new LoadImage().execute(user.getImageURL());
         }
     }
     private View.OnClickListener buttonClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
-            if(v.getId() == chooseFromGalleryButton.getId()){
-                Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                // Start the Intent
-                startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
-            }
             if(v.getId() == doneButton.getId()){
                 user.setPhone(phoneEditText.getText().toString());
                 user.setName(nameEditText.getText().toString());
@@ -84,7 +72,7 @@ public class ProfileActivity extends ActionBarActivity {
 
 
 
-    @Override
+   /* @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==RESULT_LOAD_IMG && resultCode == RESULT_OK && data !=null ){
@@ -107,6 +95,7 @@ public class ProfileActivity extends ActionBarActivity {
 
 
     }
+    */
     private class NetworkConnection extends AsyncTask<User,Void,Boolean>{
         ProgressLoading progressLoading;
         @Override
@@ -119,10 +108,8 @@ public class ProfileActivity extends ActionBarActivity {
         @Override
         protected Boolean doInBackground(User... params) {
             try {
-                if(isChanged)
-                return  DatabaseConnection.getConnection().UpdateUser(params[0],profilPic);
-                else
-                return  DatabaseConnection.getConnection().UpdateUser(params[0],null);
+
+                return  DatabaseConnection.getConnection().UpdateUser(params[0]);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
@@ -148,7 +135,7 @@ public class ProfileActivity extends ActionBarActivity {
         @Override
         protected Bitmap doInBackground(String... params) {
             try {
-                return BitmapTool.getRoundedShape(BitmapTool.newScaledThumbnailBitmap(new URL(params[0]).openStream()));
+                return BitmapTool.getRoundedShape(BitmapTool.URLConnection(new URL(params[0]).openStream()));
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
@@ -159,7 +146,6 @@ public class ProfileActivity extends ActionBarActivity {
         protected void onPostExecute(Bitmap bitmap) {
             super.onPostExecute(bitmap);
             if(bitmap!=null){
-                profilPic = bitmap;
                 profileImage.setImageBitmap(bitmap);
             }
         }

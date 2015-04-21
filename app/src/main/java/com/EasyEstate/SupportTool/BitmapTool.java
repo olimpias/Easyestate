@@ -42,6 +42,9 @@ public class BitmapTool {
         Bitmap bitmap = BitmapFactory.decodeStream(in);
         return Bitmap.createScaledBitmap(bitmap,Thumbnail_WIDTH  , Thumbnail_HEIGHT, false);
     }
+    public static Bitmap URLConnection(InputStream in){
+        return BitmapFactory.decodeStream(in);
+    }
     public static Bitmap newScaledBitmap(Bitmap bitmap,String path){
         return Bitmap.createScaledBitmap(BitmapTool.imageOrientationValidator(bitmap, path),Image_WIDTH  , Image_HEIGHT, false);
     }

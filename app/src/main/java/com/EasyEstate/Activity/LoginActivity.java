@@ -1,5 +1,4 @@
 package com.EasyEstate.Activity;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
@@ -8,7 +7,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-
 import com.EasyEstate.Database.DatabaseConnection;
 import com.EasyEstate.Model.User;
 import com.EasyEstate.R;
@@ -16,30 +14,22 @@ import com.EasyEstate.SupportTool.ProgressLoading;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.plus.People;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
-import com.google.android.gms.plus.model.people.PersonBuffer;
-
 import org.json.JSONException;
 
 import java.io.IOException;
 // SHA1 KEY PATH keytool -list -v -keystore /Users/canturker/EasyEstate.jks -alias EasyEstate
-public class LoginActivity extends ActionBarActivity implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener,ResultCallback<People.LoadPeopleResult> {
+public class LoginActivity extends ActionBarActivity implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener{
     private boolean mIntentInProgress;
     private SignInButton signInButton;
-    private PendingIntent mSignInIntent;
-    private int mSignInError;
-    private int mSignInProgress;
+    private ConnectionResult mConnectionResult;
+    private boolean mSignInClicked;
     private static final int PROFILE_PIC_SIZE = 300;
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 0;
-    private static final int STATE_DEFAULT = 0;
-    private static final int STATE_SIGN_IN = 1;
-    private static final int STATE_IN_PROGRESS = 2;
+
     private static final String TAG = "LOGIN";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +43,7 @@ public class LoginActivity extends ActionBarActivity implements GoogleApiClient.
         @Override
         public void onClick(View v) {
 
-            mSignInProgress = STATE_SIGN_IN;
+            mSignInClicked = true;
            if(!mGoogleApiClient.isConnecting()){
                resolveSignInError();
                mGoogleApiClient.connect();
@@ -63,34 +53,22 @@ public class LoginActivity extends ActionBarActivity implements GoogleApiClient.
 
     @Override
     public void onConnected(Bundle bundle) {
-        Plus.PeopleApi.loadVisible(mGoogleApiClient,"").setResultCallback(this);
-        getUserInformation();
+        mSignInClicked = false;
+        getProfileInformation();
     }
 
     @Override
     public void onConnectionSuspended(int i) {
         mGoogleApiClient.connect();
     }
-    private void resolveSignInError() {
-        if (mSignInIntent != null) {
-            // We have an intent which will allow our user to sign in or
-            // resolve an error.  For example if the user needs to
-            // select an account to sign in with, or if they need to consent
-            // to the permissions your app is requesting.
 
+    private void resolveSignInError() {
+        if (mConnectionResult.hasResolution()) {
             try {
-                // Send the pending intent that we stored on the most recent
-                // OnConnectionFailed callback.  This will allow the user to
-                // resolve the error currently preventing our connection to
-                // Google Play services.
-                mSignInProgress = STATE_IN_PROGRESS;
-                startIntentSenderForResult(mSignInIntent.getIntentSender(),
-                        RC_SIGN_IN, null, 0, 0, 0);
+                mIntentInProgress = true;
+                mConnectionResult.startResolutionForResult(this, RC_SIGN_IN);
             } catch (IntentSender.SendIntentException e) {
-                Log.i(TAG, "Sign in intent could not be sent: "
-                        + e.getLocalizedMessage());
-                // The intent was canceled before it was sent.  Attempt to connect to
-                // get an updated ConnectionResult.
+                mIntentInProgress = false;
                 mGoogleApiClient.connect();
             }
         }
@@ -100,7 +78,21 @@ public class LoginActivity extends ActionBarActivity implements GoogleApiClient.
         super.onStart();
         mGoogleApiClient.connect();
     }
+    @Override
+    protected void onActivityResult(int requestCode, int responseCode,
+                                    Intent intent) {
+        if (requestCode == RC_SIGN_IN) {
+            if (responseCode != RESULT_OK) {
+                mSignInClicked = false;
+            }
 
+            mIntentInProgress = false;
+
+            if (!mGoogleApiClient.isConnecting()) {
+                mGoogleApiClient.connect();
+            }
+        }
+    }
     @Override
     protected void onStop() {
         super.onStop();
@@ -109,20 +101,32 @@ public class LoginActivity extends ActionBarActivity implements GoogleApiClient.
             mGoogleApiClient.disconnect();
         }
     }
-    private void getUserInformation(){
-        // Reaching onConnected means we consider the user signed in.
-        Log.i(TAG, "onConnected");
-        if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
-            Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-            String personName = currentPerson.getDisplayName();
-            String personPhoto = currentPerson.getImage().getUrl();
-            String personGooglePlusProfile = currentPerson.getUrl();
-        }
-        // Retrieve some profile information to personalize our app for the user.
-        User user = new User(Plus.AccountApi.getAccountName(mGoogleApiClient));
-       /*user.setName(currentUser.getDisplayName());
-        user.setImageURL(currentUser.getImage().getUrl().substring(0,currentUser.getImage().getUrl().length()-2)+PROFILE_PIC_SIZE);*/
-        new LoginProcess().execute(user);
+
+    private void getProfileInformation() {
+
+            if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+                Person currentPerson = Plus.PeopleApi
+                        .getCurrentPerson(mGoogleApiClient);
+                String personName = currentPerson.getDisplayName();
+                String personPhotoUrl = currentPerson.getImage().getUrl();
+                String personGooglePlusProfile = currentPerson.getUrl();
+                String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
+
+                Log.e(TAG, "Name: " + personName + ", plusProfile: "
+                        + personGooglePlusProfile + ", email: " + email
+                        + ", Image: " + personPhotoUrl);
+                // by default the profile url gives 50x50 px image only
+                // we can replace the value with whatever dimension we want by
+                // replacing sz=X
+                personPhotoUrl = personPhotoUrl.substring(0,
+                        personPhotoUrl.length() - 2)
+                        + PROFILE_PIC_SIZE;
+                User user = new User(email);
+                user.setImageURL(personPhotoUrl);
+                user.setName(personName);
+                new LoginProcess().execute(user);
+            }
+
     }
     private GoogleApiClient buildGoogleApiClient() {
         // When we build the GoogleApiClient we specify where connected and
@@ -137,7 +141,7 @@ public class LoginActivity extends ActionBarActivity implements GoogleApiClient.
     }
     @Override
     public void onConnectionFailed(ConnectionResult result) {
-        Log.i(TAG, "onConnectionFailed: ConnectionResult.getErrorCode() = "
+        /*Log.i(TAG, "onConnectionFailed: ConnectionResult.getErrorCode() = "
                 + result.getErrorCode());
         if (!result.hasResolution()) {
             GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), this,
@@ -162,25 +166,25 @@ public class LoginActivity extends ActionBarActivity implements GoogleApiClient.
                 // or they click cancel.
                 resolveSignInError();
             }
+        }*/
+        if (!result.hasResolution()) {
+            GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), this,
+                    0).show();
+            return;
+        }if (!mIntentInProgress) {
+            // Store the ConnectionResult for later usage
+            mConnectionResult = result;
+
+            if (mSignInClicked) {
+                // The user has already clicked 'sign-in' so we attempt to
+                // resolve all
+                // errors until the user is signed in, or they cancel.
+                resolveSignInError();
+            }
         }
     }
 
-    @Override
-    public void onResult(People.LoadPeopleResult peopleData) {
-        if (peopleData.getStatus().getStatusCode() == CommonStatusCodes.SUCCESS) {
-            PersonBuffer personBuffer = peopleData.getPersonBuffer();
-            try {
-                int count = personBuffer.getCount();
-                for (int i = 0; i < count; i++) {
-                    Log.d(TAG, "Display name: " + personBuffer.get(i).getDisplayName());
-                }
-            } finally {
-                personBuffer.close();
-            }
-        } else {
-            Log.e(TAG, "Error requesting people data: " + peopleData.getStatus());
-        }
-    }
+
 
     /*
     Make login process at background.On front ProgressLoading dialog will be activated.

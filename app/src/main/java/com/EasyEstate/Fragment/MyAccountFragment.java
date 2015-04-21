@@ -96,7 +96,7 @@ public class MyAccountFragment extends Fragment {
 
                 emailTextView.setText(user.getEmail());
                 if(user.getImageURL() != null && user.getImageURL().length()!=0)
-                new LoadImage().execute(user.getLoadImageURL());
+                new LoadImage().execute(user.getImageURL());
             }
         }
     }
@@ -105,7 +105,7 @@ public class MyAccountFragment extends Fragment {
         @Override
         protected Bitmap doInBackground(String... params) {
             try {
-                return BitmapTool.getRoundedShape(BitmapTool.newScaledThumbnailBitmap(new URL(params[0]).openStream()));
+                return BitmapTool.getRoundedShape(BitmapTool.URLConnection(new URL(params[0]).openStream()));
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
