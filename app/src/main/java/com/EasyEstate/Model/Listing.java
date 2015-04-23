@@ -5,9 +5,11 @@ import java.util.HashMap;
 
 /**
  * Created by canturker on 04/04/15.
+ *
  */
+//!! ListingType in database 1 represent Land, 0 represent House
 public abstract class Listing {
-    private  String adID;
+    private  int adID;
     private ArrayList<String> imagesURL;
     private String description;
     private String title;
@@ -17,16 +19,16 @@ public abstract class Listing {
     private ListingLocation location;
     private User listingOwner;
 
-    protected Listing(String adID){
+    protected Listing(int adID){
         this.setAdID(adID);
     }
     protected Listing(){}
 
-    public String getAdID() {
+    public int getAdID() {
         return adID;
     }
 
-    public void setAdID(String adID) {
+    public void setAdID(int adID) {
         this.adID = adID;
     }
 
@@ -42,7 +44,13 @@ public abstract class Listing {
         return imagesURL;
     }
 
+    public User getListingOwner() {
+        return listingOwner;
+    }
 
+    public void setListingOwner(User listingOwner) {
+        this.listingOwner = listingOwner;
+    }
 
     public void setImagesURL(ArrayList<String> imagesURL) {
         this.imagesURL = imagesURL;

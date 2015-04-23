@@ -1,9 +1,12 @@
 package com.EasyEstate.Fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
@@ -15,11 +18,18 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SeekBar;
 
+import com.EasyEstate.Activity.MainActivity;
 import com.EasyEstate.Activity.MyListingControlActivity;
 import com.EasyEstate.Adapter.PictureChooseAdapter;
+import com.EasyEstate.Database.DatabaseConnection;
 import com.EasyEstate.Model.Listing;
 import com.EasyEstate.R;
 import com.EasyEstate.SupportTool.BitmapTool;
+import com.EasyEstate.SupportTool.ProgressLoading;
+
+import org.json.JSONException;
+
+import java.io.IOException;
 
 /**
  * Created by canturker on 17/04/15.
@@ -60,6 +70,7 @@ public class InsertImageFragment extends Fragment {
         public void onClick(View v) {
             if(v.getId() == nextButton.getId()){
                 //Begin Database Insert Operation...
+                new NetworkConnection().execute();
             }
             if(v.getId() == galleryButton.getId()){
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK,
@@ -122,6 +133,52 @@ public class InsertImageFragment extends Fragment {
         if (getBitmapFromMemCache(key) == null) {
             mMemoryCache.put(key, bitmap);
         }
+    }
+    private class NetworkConnection extends AsyncTask<Void,Void,Boolean>{
+    private ProgressLoading dialog ;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = new ProgressLoading(getActivity(),"Please wait uploading...");
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            try {
+                return DatabaseConnection.getConnection().insertListing(listing,mMemoryCache.snapshot());
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if(dialog != null)dialog.dismiss();
+            if(aBoolean){
+                InformationDialog();
+            }else{
+                MainActivity.AlertDialog(getActivity(),"Error occurred","Error");
+            }
+        }
+    }
+    private void InformationDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Information");
+        builder.setMessage("Listing is saved successfully.");
+        builder.setPositiveButton("OK",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                getActivity().finish();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
     public Bitmap getBitmapFromMemCache(String key) {
         return mMemoryCache.get(key);

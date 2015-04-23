@@ -64,6 +64,7 @@ public class InsertListingMapFragment extends Fragment {
         @Override
         public void onClick(View v) {
                   if(v.getId() == nextButton.getId()){
+                      MyListingControlActivity.getListing().setLocation(location);
                       ((MyListingControlActivity)getActivity()).ChangeFragment(new InsertImageFragment());
                   }
 
@@ -102,7 +103,7 @@ public class InsertListingMapFragment extends Fragment {
                 for(int i = 0;i<address.getMaxAddressLineIndex();i++){
                     description = description+" "+address.getAddressLine(i);
                 }
-                location.setAddress(description);
+                location.setAddress(description.toLowerCase());
                 Log.d(TAG,description);
             }
         }catch (IOException ex){
