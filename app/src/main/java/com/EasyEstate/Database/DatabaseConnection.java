@@ -125,7 +125,36 @@ public class DatabaseConnection {
         httpPost = new HttpPost(URL+"insertHouse.php");
         ArrayList<NameValuePair> nameValuePairs = InitializingKey();
         JSONObject jsonObject = new JSONObject();
-        nameValuePairs.add(new BasicNameValuePair("json",jsonObject.toString()));
+        nameValuePairs.add(new BasicNameValuePair("email",user.getEmail()));
+        nameValuePairs.add(new BasicNameValuePair("title", house.getTitle()));
+        nameValuePairs.add(new BasicNameValuePair("description",house.getDescription()));
+        nameValuePairs.add(new BasicNameValuePair("price",house.getPrice()+""));
+        nameValuePairs.add(new BasicNameValuePair("squareMeter",house.getSquareMeter()+""));
+        if(house.getEstateType().equals("Sale")){
+            nameValuePairs.add(new BasicNameValuePair("estateType","1"));
+        }else{
+            nameValuePairs.add(new BasicNameValuePair("estateType","0"));
+        }
+        nameValuePairs.add(new BasicNameValuePair("numberOfRoom", house.getNumberOfRoom()+""));
+        nameValuePairs.add(new BasicNameValuePair("numberOfBath", house.getNumberOfBath()+""));
+        nameValuePairs.add(new BasicNameValuePair("houseAge", house.getHouseAge()+""));
+        nameValuePairs.add(new BasicNameValuePair("numberOfFloor", house.getNumberOfFloor()+""));
+        nameValuePairs.add(new BasicNameValuePair("currentFloor", house.getCurrentFloor()+""));
+        nameValuePairs.add(new BasicNameValuePair("dues", house.getDues()+""));
+        nameValuePairs.add(new BasicNameValuePair("heating", house.getHeating()+""));
+        if(house.isLoanEligibilityHouse())
+            nameValuePairs.add(new BasicNameValuePair("loanEligibility","1"));
+
+        else
+            nameValuePairs.add(new BasicNameValuePair("loanEligibility","0"));
+        if(house.isInSideSite())
+            nameValuePairs.add(new BasicNameValuePair("isInSideSite", "1"));
+        else
+            nameValuePairs.add(new BasicNameValuePair("isInSideSite","0"));
+        nameValuePairs.add(new BasicNameValuePair("useStatus", house.getUseStatus()+""));
+        nameValuePairs.add(new BasicNameValuePair("longitude",house.getLocation().getLongitude()+""));
+        nameValuePairs.add(new BasicNameValuePair("latitude",house.getLocation().getLatitude()+""));
+        nameValuePairs.add(new BasicNameValuePair("address", house.getLocation().getAddress()));
         httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
         HttpResponse response = httpClient.execute(httpPost);
         String result = getResponse(response);
@@ -177,6 +206,19 @@ public class DatabaseConnection {
         Log.e(TAG,result);
         return new JSONObject(result).getInt("id");
     }
+
+    private boolean deleteListing(Listing listing) throws IOException, JSONException{
+
+        ArrayList<NameValuePair> nameValuePairs = InitializingKey();
+        nameValuePairs.set(0, new BasicNameValuePair("adID", listing.getAdID()+""));
+        httpPost = new HttpPost(URL+"deleteListing.php");
+        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));
+        HttpResponse response = httpClient.execute(httpPost);
+        String result = getResponse(response);
+        Log.e(TAG,result);
+        return true;
+    }
+
     private ArrayList<NameValuePair> InitializingKey(){
         ArrayList<NameValuePair> nameValuePairs=new ArrayList<NameValuePair>();
         nameValuePairs.add(new BasicNameValuePair("secretKey",secretKey));

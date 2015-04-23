@@ -2,9 +2,6 @@ package com.EasyEstate.Model;
 
 import java.util.ArrayList;
 
-/**
- * Created by canturker on 04/04/15.
- */
 public class House extends  Listing {
     private int numberOfRoom;
     private int numberOfBath;
