@@ -30,6 +30,9 @@ public class ListingOwnerAdapter extends BaseAdapter {
     private Activity context;
     protected int serverListSize = -1;
 
+    public List<Listing> getListingList() {
+        return listingList;
+    }
 
     public void setServerListSize(int serverListSize) {
         if(serverListSize>this.serverListSize)

@@ -16,7 +16,7 @@ public class House extends  Listing {
     private boolean loanEligibilityHouse;
     private boolean isInSideSite;
     private int useStatus;
-    public House(String adID) {
+    public House(int adID) {
         super(adID);
     }
     public House(){}

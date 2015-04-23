@@ -14,7 +14,7 @@ public class Land extends  Listing {
     private boolean loanEligibility;
 
 
-    public Land(String adID) {
+    public Land(int adID) {
         super(adID);
     }
     public Land(){}
