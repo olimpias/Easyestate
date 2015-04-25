@@ -44,7 +44,20 @@ public class MyListingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.listinglistfragment,container,false);
         listingListView = (ListView)view.findViewById(R.id.ListingListView);
-
+        adapter = new ListingOwnerAdapter(new ArrayList<Listing>(),getActivity());
+        listingListView.setAdapter(adapter);
+        listingListView.setOnScrollListener(new EndlessScrollListener() {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                new ConnectNetwork().execute(page);
+            }
+        });
+        listingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Start new Activity... to view Listing...
+            }
+        });
         return view;
     }
 

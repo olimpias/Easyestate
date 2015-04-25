@@ -18,7 +18,7 @@ public abstract class Listing {
     private String estateType;
     private ListingLocation location;
     private User listingOwner;
-
+    public static final String IMAGE_URL = "http://www.yeicmobil.com/EasyEstate/EasyEstateImage/";
     protected Listing(int adID){
         this.setAdID(adID);
     }

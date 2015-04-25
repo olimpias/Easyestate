@@ -44,11 +44,18 @@ public class InsertListingMapFragment extends Fragment {
         seekBar.setEnabled(false);
         nextButton = (Button)view.findViewById(R.id.nextMapButton);
         GpsTracker tracker = new GpsTracker(getActivity());
-        if(tracker.getLocation() != null){
-            setMarker(new LatLng(tracker.getLatitude(),tracker.getLongitude()));
-            setLocationFromAddress(tracker.getLongitude(),tracker.getLatitude());
-
+        if(MyListingControlActivity.isEditing()){
+                double latitude = MyListingControlActivity.getListing().getLocation().getLatitude();
+                double longitude = MyListingControlActivity.getListing().getLocation().getLongitude();
+                setMarker(new LatLng(latitude,longitude));
+                setLocationFromAddress(longitude,latitude);
+        }else{
+            if(tracker.getLocation() != null){
+                setMarker(new LatLng(tracker.getLatitude(),tracker.getLongitude()));
+                setLocationFromAddress(tracker.getLongitude(),tracker.getLatitude());
+            }
         }
+
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         googleMap.getUiSettings().setZoomGesturesEnabled(true);
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {

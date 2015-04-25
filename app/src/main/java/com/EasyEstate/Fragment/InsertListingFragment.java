@@ -30,6 +30,7 @@ public class InsertListingFragment extends Fragment {
     private RadioButton landRadioButton;
     private SeekBar seekBar;
     private Button nextButton;
+    private Listing listing;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.insert_listing_fragment,container,false);
@@ -45,6 +46,27 @@ public class InsertListingFragment extends Fragment {
         landRadioButton = (RadioButton)view.findViewById(R.id.landRadioButton);
         nextButton = (Button)view.findViewById(R.id.nextButton);
         seekBar.setEnabled(false);
+        if(MyListingControlActivity.getListing() != null){
+            listing = MyListingControlActivity.getListing();
+            titleEditText.setText(listing.getTitle());
+            descriptionEditText.setText(listing.getDescription());
+            squareMeterEditText.setText(listing.getSquareMeter()+"");
+            primeEditText.setText(listing.getPrice()+"");
+            if(listing.getEstateType().equals("Sale")){
+                saleRadioButton.setChecked(true);
+            }else{
+                rentRadioButton.setChecked(true);
+            }
+            if(listing instanceof House){
+                 houseRadioButton.setChecked(true);
+                 landRadioButton.setChecked(false);
+            }else{
+                houseRadioButton.setChecked(false);
+                landRadioButton.setChecked(true);
+            }
+            houseRadioButton.setEnabled(false);
+            landRadioButton.setEnabled(false);
+        }
         nextButton.setOnClickListener(buttonNextListener);
         return view;
     }
@@ -52,12 +74,14 @@ public class InsertListingFragment extends Fragment {
         @Override
         public void onClick(View v) {
             if(titleEditText.getText().toString().trim().length() != 0 && descriptionEditText.getText().toString().trim().length() != 0 && squareMeterEditText.toString().trim().length() != 0 && primeEditText.toString().trim().length() != 0){
-                if(houseRadioButton.isChecked()){
+                if(listing == null){
+                    if(houseRadioButton.isChecked()){
                     MyListingControlActivity.setListing(new House());
-                }else{
+                     }else{
                     MyListingControlActivity.setListing(new Land());
+                    }
+                    listing = MyListingControlActivity.getListing();
                 }
-                Listing listing = MyListingControlActivity.getListing();
                 listing.setDescription(descriptionEditText.getText().toString());
                 listing.setTitle(titleEditText.getText().toString());
                 listing.setSquareMeter(Integer.parseInt(squareMeterEditText.getText().toString()));

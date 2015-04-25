@@ -30,6 +30,7 @@ public class InsertLandFragment extends Fragment {
     private CheckBox provisionFloorCheckBox;
     private CheckBox loanEligibilityCheckBox;
     private SeekBar seekbar;
+    private Land land;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.insert_listing_land_fragment,container,false);
         nextButton = (Button)view.findViewById(R.id.nextLandButton);
@@ -43,6 +44,17 @@ public class InsertLandFragment extends Fragment {
         loanEligibilityCheckBox = (CheckBox)view.findViewById(R.id.LoanEligibilityLandCheckBox);
         seekbar = (SeekBar)view.findViewById(R.id.seekBar);
         seekbar.setEnabled(false);
+        if(MyListingControlActivity.isEditing()){
+            land =(Land)MyListingControlActivity.getListing();
+            zoningStatusSpinner.setSelection(land.getZoningStatus());
+            islandNoEditText.setText(land.getIslandNo()+"");
+            parcelNoEditText.setText(land.getParcelNo()+"");
+            layoutNoEditText.setText(land.getLayoutNo()+"");
+            gabariSpinner.setSelection(land.getGabari());
+            deedStatusSpinner.setSelection(land.getDeedStatus());
+            provisionFloorCheckBox.setChecked(land.isProvisionFloor());
+            loanEligibilityCheckBox.setChecked(land.isLoanEligibility());
+        }
         nextButton.setOnClickListener(nextButtonListener);
         return view;
     }
@@ -53,7 +65,8 @@ public class InsertLandFragment extends Fragment {
                     parcelNoEditText.getText().toString().trim().length() != 0 && layoutNoEditText.getText().toString().trim().length() != 0 &&
                     gabariSpinner.getSelectedItemPosition()!= 0&& deedStatusSpinner.getSelectedItemPosition()!=0
                     ){
-                Land land = (Land) MyListingControlActivity.getListing();
+                if(land == null)
+                land = (Land) MyListingControlActivity.getListing();
                 land.setGabari(gabariSpinner.getSelectedItemPosition());
                 land.setDeedStatus(deedStatusSpinner.getSelectedItemPosition());
                 land.setZoningStatus(zoningStatusSpinner.getSelectedItemPosition());

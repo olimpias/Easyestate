@@ -155,7 +155,7 @@ public class DatabaseConnection {
         nameValuePairs.add(new BasicNameValuePair("longitude",house.getLocation().getLongitude()+""));
         nameValuePairs.add(new BasicNameValuePair("latitude",house.getLocation().getLatitude()+""));
         nameValuePairs.add(new BasicNameValuePair("address", house.getLocation().getAddress()));
-        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));
+        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
         HttpResponse response = httpClient.execute(httpPost);
         String result = getResponse(response);
         Log.e(TAG,result);
@@ -207,22 +207,22 @@ public class DatabaseConnection {
         return new JSONObject(result).getInt("id");
     }
 
-    public boolean deleteListing(Listing listing) throws IOException, JSONException{
 
+    public boolean deleteListing(Listing listing) throws IOException, JSONException{
         ArrayList<NameValuePair> nameValuePairs = InitializingKey();
         nameValuePairs.add(new BasicNameValuePair("adID", listing.getAdID() + ""));
         if(listing instanceof House)
             nameValuePairs.add(new BasicNameValuePair("listingType", "0"));
         else
             nameValuePairs.add(new BasicNameValuePair("listingType", "1"));
+        nameValuePairs.add(new BasicNameValuePair("adID", listing.getAdID()+""));
         httpPost = new HttpPost(URL+"deleteListing.php");
         httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));
         HttpResponse response = httpClient.execute(httpPost);
         String result = getResponse(response);
         Log.e(TAG,result);
-        return true;
+        return (new JSONObject(result).getInt("Code") == 1) ? true : false;
     }
-
     private ArrayList<NameValuePair> InitializingKey(){
         ArrayList<NameValuePair> nameValuePairs=new ArrayList<NameValuePair>();
         nameValuePairs.add(new BasicNameValuePair("secretKey",secretKey));
@@ -330,6 +330,7 @@ public class DatabaseConnection {
         httpPost = new HttpPost(URL+"selectOwnerListings.php");
         ArrayList<NameValuePair> nameValuePairs = InitializingKey();
         nameValuePairs.add(new BasicNameValuePair("email",getUser().getEmail()));
+        nameValuePairs.add(new BasicNameValuePair("offset", offset + ""));
         httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
         HttpResponse response = httpClient.execute(httpPost);
         String result = getResponse(response);
@@ -352,12 +353,100 @@ public class DatabaseConnection {
             JSONArray images = jsonObject.getJSONArray("images");
             listing.setImagesURL(new ArrayList<String>());
             for(int j = 0;j<images.length();j++){
-                JSONObject jsonObject1 = (JSONObject)images.get(i);
+                JSONObject jsonObject1 = (JSONObject)images.get(j);
                 listing.getImagesURL().add(jsonObject1.getString("imageURL"));
             }
             listingList.add(listing);
         }
         return listingList;
+    }/*
+    *Return Listing, that all attributes are filled.
+    *
+    * */
+    public Listing SelectListing(Listing listing) throws IOException, JSONException {
+        httpPost = new HttpPost(URL+"selectListing.php");
+        ArrayList<NameValuePair> nameValuePairs = InitializingKey();
+        nameValuePairs.add(new BasicNameValuePair("adID",listing.getAdID()+""));
+        if (listing instanceof House){
+            nameValuePairs.add(new BasicNameValuePair("listingType","0"));
+        }else{
+            nameValuePairs.add(new BasicNameValuePair("listingType","1"));
+        }
+        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        HttpResponse response = httpClient.execute(httpPost);
+        String result = getResponse(response);
+        JSONObject jsonObject = new JSONObject(result);
+        JSONObject basicListJson = jsonObject.getJSONObject("list");
+        if(basicListJson.getString("listingType").equals("0")){
+            listing =new House();
+        }else{
+            listing = new Land();
+        }
+        listing.setAdID(basicListJson.getInt("adID"));
+        listing.setLocation(new ListingLocation(basicListJson.getDouble("longitute"), basicListJson.getDouble("latitude"), basicListJson.getString("address")));
+        listing.setTitle(basicListJson.getString("title"));
+        listing.setDescription(basicListJson.getString("description"));
+        listing.setPrice(basicListJson.getDouble("price"));
+        JSONArray images = jsonObject.getJSONArray("images");
+        listing.setImagesURL(new ArrayList<String>());
+        for(int j = 0;j<images.length();j++){
+            JSONObject jsonObject1 = (JSONObject)images.get(j);
+            listing.getImagesURL().add(jsonObject1.getString("imageURL"));
+        }
+        JSONObject jsonObject2 = jsonObject.getJSONObject("listing");
+        if(listing instanceof House){
+            House house = (House)listing;
+            house.setHouseAge(jsonObject2.getInt("houseAge"));
+            house.setHeating(jsonObject2.getInt("houseAge"));
+            house.setNumberOfRoom(jsonObject2.getInt("numberOfRoom"));
+            house.setNumberOfBath(jsonObject2.getInt("numberOfBath"));
+            house.setNumberOfFloor(jsonObject2.getInt("numberOfFloor"));
+            house.setCurrentFloor(jsonObject2.getInt("currentFloor"));
+            house.setDues(jsonObject2.getInt("dues"));
+            house.setSquareMeter(jsonObject2.getInt("squareMeter"));
+            house.setUseStatus(jsonObject2.getInt("useStatus"));
+            if(jsonObject2.getString("isInSideSite").equals("1")){
+                house.setInSideSite(true);
+            }else{
+                house.setInSideSite(false);
+            }
+            if(jsonObject2.getString("estateType").equals("1")){
+                house.setEstateType("Sale");
+            }else{
+                house.setEstateType("Rent");
+            }
+            if(jsonObject2.getString("loanEligibilityHouse").equals("1")){
+                house.setLoanEligibilityHouse(true);
+            }else{
+                house.setLoanEligibilityHouse(false);
+            }
+
+        }else{
+            Land land = (Land)listing;
+            land.setParcelNo(jsonObject2.getInt("parcelNo"));
+            land.setGabari(jsonObject2.getInt("gabari"));
+            land.setIslandNo(jsonObject2.getInt("islandNo"));
+            land.setZoningStatus(jsonObject2.getInt("zoningStatus"));
+            land.setDeedStatus(jsonObject2.getInt("deedStatus"));
+            land.setSquareMeter(jsonObject2.getInt("squareMeter"));
+            land.setLayoutNo(jsonObject2.getInt("layoutNo"));
+            if(jsonObject2.getString("loanEligibility").equals("1")){
+                land.setLoanEligibility(true);
+            }else{
+                land.setLoanEligibility(false);
+            }
+            if(jsonObject2.getString("estateType").equals("1")){
+                land.setEstateType("Sale");
+            }else{
+                land.setEstateType("Rent");
+            }
+            if(jsonObject2.getString("provisionFloor").equals("1")){
+                land.setProvisionFloor(true);
+            }else{
+                land.setProvisionFloor(false);
+            }
+        }
+        return listing;
     }
 
 }

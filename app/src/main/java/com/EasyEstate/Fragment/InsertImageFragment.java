@@ -30,6 +30,8 @@ import com.EasyEstate.SupportTool.ProgressLoading;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Created by canturker on 17/04/15.
@@ -61,9 +63,46 @@ public class InsertImageFragment extends Fragment {
         nextButton.setOnClickListener(buttonListeners);
         insertImageFragment = this;
         listing = MyListingControlActivity.getListing();
+
         adaptor=new PictureChooseAdapter(getActivity(),insertImageFragment);
         listView.setAdapter(adaptor);
+        if(MyListingControlActivity.isEditing()){
+            new GetImages().execute();
+        }
         return view;
+    }
+    private class GetImages extends AsyncTask<Void,Void,Void>{
+        ProgressLoading progressLoading;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressLoading = new ProgressLoading(getActivity(),"Upload images please wait");
+            progressLoading.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            if(listing.getImagesURL()!=null){
+                for(int i = 0;i<listing.getImagesURL().size();i++){
+                    try {
+                        adaptor.AddImage(BitmapTool.newScaledBitmap(new URL(Listing.IMAGE_URL+listing.getImagesURL().get(i)).openStream()),i+"");
+
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if(progressLoading != null) progressLoading.dismiss();
+            adaptor.notifyDataSetChanged();
+        }
     }
     private View.OnClickListener buttonListeners = new View.OnClickListener() {
         @Override

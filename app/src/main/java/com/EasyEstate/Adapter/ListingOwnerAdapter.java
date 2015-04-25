@@ -1,6 +1,9 @@
 package com.EasyEstate.Adapter;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.view.Gravity;
@@ -12,10 +15,17 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.EasyEstate.Activity.MainActivity;
+import com.EasyEstate.Activity.MyListingControlActivity;
+import com.EasyEstate.Database.DatabaseConnection;
+import com.EasyEstate.Model.House;
 import com.EasyEstate.Model.Listing;
 import com.EasyEstate.R;
 import com.EasyEstate.SupportTool.BitmapTool;
 import com.EasyEstate.SupportTool.ImageLoad;
+import com.EasyEstate.SupportTool.ProgressLoading;
+
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.net.URL;
@@ -66,7 +76,6 @@ public class ListingOwnerAdapter extends BaseAdapter {
     }
     @Override
     public int getItemViewType(int position) {
-        // TODO Auto-generated method stub
         return (position >= listingList.size()) ? VIEW_TYPE_LOADING
                 : VIEW_TYPE_ACTIVITY;
     }
@@ -89,35 +98,42 @@ public class ListingOwnerAdapter extends BaseAdapter {
         ViewHolder viewHolder;
         if(convertView==null){
             LayoutInflater inflater= LayoutInflater.from(context);
-            convertView=inflater.inflate(R.layout.listingrepresent_in_myfavoritelisting,null);
+            convertView=inflater.inflate(R.layout.listingrepresent_in_mylistingfragment,null);
             viewHolder=new ViewHolder();
             viewHolder.titleTextView = (TextView) convertView.findViewById(R.id.TitleTextView);
             viewHolder.adIDTextView = (TextView)convertView.findViewById(R.id.IdTextView);
             viewHolder.imageView = (ImageView)convertView.findViewById(R.id.PictureImageView);
-            viewHolder.deleteListingButton = (ImageButton)convertView.findViewById(R.id.EditImageButton);
-            viewHolder.editListingButton = (ImageButton)convertView.findViewById(R.id.DeleteImageButton);
+            viewHolder.deleteListingButton = (ImageButton)convertView.findViewById(R.id.DeleteImageButton);
+            viewHolder.editListingButton = (ImageButton)convertView.findViewById(R.id.EditImageButton);
             convertView.setTag(viewHolder);
         }else{
             viewHolder=(ViewHolder)convertView.getTag();
         }
-        Listing listing = listingList.get(position);
+        final Listing listing = listingList.get(position);
         viewHolder.titleTextView.setText(listing.getTitle());
         viewHolder.adIDTextView.setText("ID: "+listing.getAdID());
         viewHolder.deleteListingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //delete operation will be added!!
-                //Refresh ListView and serverListSize
+
             }
         });
         viewHolder.editListingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Start new Activity
+                Intent intent = new Intent(context, MyListingControlActivity.class);
+                intent.putExtra(MyListingControlActivity.AD_ID,listing.getAdID());
+                if(listing instanceof House)
+                    intent.putExtra(MyListingControlActivity.LISTING_TYPE,0);
+                else
+                    intent.putExtra(MyListingControlActivity.LISTING_TYPE,1);
+                MainActivity.PAGE = MainActivity.MY_ACCOUNT_POSITION;
+                context.startActivityForResult(intent,MainActivity.INSERT_LISTING);
             }
         });
         if(listing.getImagesURL()!=null && listing.getImagesURL().size()!= 0){
-            ImageLoad imageLoad = new ImageLoad(viewHolder.imageView,listing.getImagesURL().get(0));
+            ImageLoad imageLoad = new ImageLoad(viewHolder.imageView,Listing.IMAGE_URL+listing.getImagesURL().get(0));
             new LoadImage().execute(imageLoad);
         }
         return convertView;
@@ -133,9 +149,11 @@ public class ListingOwnerAdapter extends BaseAdapter {
                               ViewGroup parent) {
         if (position >= serverListSize && serverListSize > 0) {
             // the ListView has reached the last row
+
             TextView tvLastRow = new TextView(context);
-            tvLastRow.setHint("Reached the last row.");
+            tvLastRow.setHint("");
             tvLastRow.setGravity(Gravity.CENTER);
+            tvLastRow.setVisibility(View.VISIBLE);
             return tvLastRow;
         }
 
@@ -154,6 +172,7 @@ public class ListingOwnerAdapter extends BaseAdapter {
             try {
                 return BitmapTool.newScaledThumbnailBitmap(new URL(imageLoad.getUrl()).openStream());
             } catch (IOException e) {
+                e.printStackTrace();
                 return null;
             }
 
@@ -163,6 +182,58 @@ public class ListingOwnerAdapter extends BaseAdapter {
             super.onPostExecute(bitmap);
             if(bitmap!=null){
                 imageLoad.getImageView().setImageBitmap(bitmap);
+            }
+        }
+        private void WarningDialog(){
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("Warning");
+            builder.setMessage("Are you sure to delete?");
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+
+                }
+            });
+            builder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+        private class NetworkConnection extends AsyncTask<Listing,Void,Boolean>{
+            private ProgressLoading progressLoading;
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                progressLoading = new ProgressLoading(context,null);
+                progressLoading.show();
+            }
+
+            @Override
+            protected Boolean doInBackground(Listing... params) {
+                try {
+                    return DatabaseConnection.getConnection().deleteListing(params[0]);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return false;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                super.onPostExecute(aBoolean);
+                if(progressLoading != null)progressLoading.dismiss();
+                if(aBoolean){
+                    MainActivity.AlertDialog(context,"Deleted Successfully","Information");
+                }else{
+                    MainActivity.AlertDialog(context,"Error Occurred","Error");
+                }
             }
         }
     }
