@@ -115,7 +115,7 @@ public class ListingOwnerAdapter extends BaseAdapter {
         viewHolder.deleteListingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                WarningDialog(listing);
             }
         });
         viewHolder.editListingButton.setOnClickListener(new View.OnClickListener() {
@@ -184,56 +184,62 @@ public class ListingOwnerAdapter extends BaseAdapter {
                 imageLoad.getImageView().setImageBitmap(bitmap);
             }
         }
-        private void WarningDialog(){
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle("Warning");
-            builder.setMessage("Are you sure to delete?");
-            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
 
-                }
-            });
-            builder.setNegativeButton("No",new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog dialog = builder.create();
-            dialog.show();
+    }
+    private void WarningDialog(final Listing listing){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Warning");
+        builder.setMessage("Are you sure to delete?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                new NetworkConnection().execute(listing);
+            }
+        });
+        builder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+    private class NetworkConnection extends AsyncTask<Listing,Void,Boolean>{
+        private ProgressLoading progressLoading;
+        private Listing listing;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressLoading = new ProgressLoading(context,null);
+            progressLoading.show();
         }
-        private class NetworkConnection extends AsyncTask<Listing,Void,Boolean>{
-            private ProgressLoading progressLoading;
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                progressLoading = new ProgressLoading(context,null);
-                progressLoading.show();
-            }
 
-            @Override
-            protected Boolean doInBackground(Listing... params) {
-                try {
-                    return DatabaseConnection.getConnection().deleteListing(params[0]);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                return false;
+        @Override
+        protected Boolean doInBackground(Listing... params) {
+            try {
+                listing = params[0];
+                return DatabaseConnection.getConnection().deleteListing(params[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
+            return false;
+        }
 
-            @Override
-            protected void onPostExecute(Boolean aBoolean) {
-                super.onPostExecute(aBoolean);
-                if(progressLoading != null)progressLoading.dismiss();
-                if(aBoolean){
-                    MainActivity.AlertDialog(context,"Deleted Successfully","Information");
-                }else{
-                    MainActivity.AlertDialog(context,"Error Occurred","Error");
-                }
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if(progressLoading != null)progressLoading.dismiss();
+            if(aBoolean){
+                MainActivity.AlertDialog(context,"Deleted Successfully","Information");
+                listingList.remove(listing);
+                serverListSize --;
+                notifyDataSetChanged();
+            }else{
+                MainActivity.AlertDialog(context,"Error Occurred","Error");
             }
         }
     }

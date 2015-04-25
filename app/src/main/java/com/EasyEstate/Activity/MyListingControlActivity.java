@@ -36,30 +36,35 @@ public class MyListingControlActivity extends ActionBarActivity {
             // we could end up with overlapping fragments.
             if (savedInstanceState != null) {
                 return;
-            }
-            int id = getIntent().getExtras().getInt(AD_ID,-1);
-            int listingType= getIntent().getExtras().getInt(LISTING_TYPE,-1);
-            if(id == -1){
+            }if(getIntent().getExtras() != null){
+                int id = getIntent().getExtras().getInt(AD_ID,-1);
+                int listingType= getIntent().getExtras().getInt(LISTING_TYPE,-1);
+                if(id == -1){
+                    listing = null;
+                    isEditing = false;
+                }
+                else{
+                    if(listingType == 0){
+
+                        listing = new House();
+                    }else{
+                        listing = new Land();
+                    }
+                    isEditing = true;
+                    listing.setAdID(id);
+                    try {
+                        MyListingControlActivity.listing = new NetworkConnection().execute().get();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }else{
                 listing = null;
                 isEditing = false;
             }
-            else{
-                if(listingType == 0){
 
-                    listing = new House();
-                }else{
-                    listing = new Land();
-                }
-                isEditing = true;
-                listing.setAdID(id);
-                try {
-                   MyListingControlActivity.listing = new NetworkConnection().execute().get();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
-            }
 
             // Add the fragment to the 'fragment_container' FrameLayout
         ChangeFragment(new InsertListingFragment());
