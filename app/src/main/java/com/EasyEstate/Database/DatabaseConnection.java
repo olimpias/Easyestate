@@ -155,7 +155,7 @@ public class DatabaseConnection {
         nameValuePairs.add(new BasicNameValuePair("longitude",house.getLocation().getLongitude()+""));
         nameValuePairs.add(new BasicNameValuePair("latitude",house.getLocation().getLatitude()+""));
         nameValuePairs.add(new BasicNameValuePair("address", house.getLocation().getAddress()));
-        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));
         HttpResponse response = httpClient.execute(httpPost);
         String result = getResponse(response);
         Log.e(TAG,result);
@@ -207,10 +207,14 @@ public class DatabaseConnection {
         return new JSONObject(result).getInt("id");
     }
 
-    private boolean deleteListing(Listing listing) throws IOException, JSONException{
+    public boolean deleteListing(Listing listing) throws IOException, JSONException{
 
         ArrayList<NameValuePair> nameValuePairs = InitializingKey();
-        nameValuePairs.set(0, new BasicNameValuePair("adID", listing.getAdID()+""));
+        nameValuePairs.add(new BasicNameValuePair("adID", listing.getAdID() + ""));
+        if(listing instanceof House)
+            nameValuePairs.add(new BasicNameValuePair("listingType", "0"));
+        else
+            nameValuePairs.add(new BasicNameValuePair("listingType", "1"));
         httpPost = new HttpPost(URL+"deleteListing.php");
         httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));
         HttpResponse response = httpClient.execute(httpPost);
