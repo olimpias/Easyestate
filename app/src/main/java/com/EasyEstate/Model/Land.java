@@ -1,9 +1,11 @@
 package com.EasyEstate.Model;
 
+import java.io.Serializable;
+
 /**
  * Created by canturker on 04/04/15.
  */
-public class Land extends  Listing {
+public class Land extends  Listing  {
     private int zoningStatus;
     private int islandNo;
     private int parcelNo;

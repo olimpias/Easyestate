@@ -59,6 +59,7 @@ public class NavigationAdapter extends BaseAdapter{
             holder = (ViewHolder)convertView.getTag();
         }
         // image Will be set...
+        holder.imageView.setImageResource(icons[position]);
         holder.textView.setText(menus[position]);
 
 

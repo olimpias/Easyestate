@@ -55,12 +55,12 @@ public class InsertHouseFragment extends Fragment {
         inTheSiteCheckBox = (CheckBox)view.findViewById(R.id.InTheSiteCheckBox);
         if(MyListingControlActivity.isEditing()){
             house = (House)MyListingControlActivity.getListing();
-            numberOfFloorEditText.setText(house.getNumberOfFloor());
+            numberOfFloorEditText.setText(house.getNumberOfFloor()+"");
             numberOfRoomSpinner.setSelection(house.getNumberOfRoom());
             numberOfBathSpinner.setSelection(house.getNumberOfBath());
-            ageOfBuildingEditText.setText(house.getHouseAge());
-            currentFloorEditText.setText(house.getCurrentFloor());
-            duesEditText.setText(house.getDues());
+            ageOfBuildingEditText.setText(house.getHouseAge()+"");
+            currentFloorEditText.setText(house.getCurrentFloor()+"");
+            duesEditText.setText(house.getDues()+"");
             heatingSpinner.setSelection(house.getHeating());
             loanEligibilityHouseCheckBox.setChecked(house.isLoanEligibilityHouse());
             useStatusSpinner.setSelection(house.getUseStatus());
@@ -84,6 +84,7 @@ public class InsertHouseFragment extends Fragment {
                 house.setNumberOfBath(numberOfBathSpinner.getSelectedItemPosition());
                 house.setNumberOfRoom(numberOfRoomSpinner.getSelectedItemPosition());
                 house.setHeating(heatingSpinner.getSelectedItemPosition());
+                house.setDues(Integer.parseInt(duesEditText.getText().toString()));
                 house.setInSideSite(inTheSiteCheckBox.isChecked());
                 house.setLoanEligibilityHouse(loanEligibilityHouseCheckBox.isChecked());
                 house.setUseStatus(useStatusSpinner.getSelectedItemPosition());

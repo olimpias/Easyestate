@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.EasyEstate" >
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <permission
         android:name="com.EasyEstate.Fragment.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
+
     <uses-permission android:name="com.EasyEstate.Fragment.permission.MAPS_RECEIVE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -16,9 +18,11 @@
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <uses-feature
         android:glEsVersion="0x00020000"
-        android:required="true"/>
+        android:required="true" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -29,8 +33,8 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyBNJ8TBEZlvrtfd6Swlxq0UU11yqDcCzWA"
-            />
+            android:value="AIzaSyBNJ8TBEZlvrtfd6Swlxq0UU11yqDcCzWA" />
+
         <activity
             android:name=".Activity.MainActivity"
             android:label="@string/app_name" >
@@ -58,11 +62,25 @@
         </activity>
         <activity
             android:name=".Activity.MyListingControlActivity"
-            android:label="@string/title_activity_my_listing_control"
-            >
-
+            android:label="@string/title_activity_my_listing_control" >
+        </activity>
+        <activity
+            android:name=".Activity.ListingActivity"
+            android:label="@string/title_activity_house"
+            android:parentActivityName=".Activity.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.EasyEstate.Activity.MainActivity" />
         </activity>
 
+        <activity
+            android:name=".Activity.MapDisplayActivity"
+            android:label="@string/title_activity_map_dislay"
+            android:parentActivityName=".Activity.ListingActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.EasyEstate.Activity.ListingActivity" />
+        </activity>
     </application>
 
 </manifest>

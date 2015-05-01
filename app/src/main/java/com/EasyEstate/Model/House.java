@@ -1,6 +1,6 @@
 package com.EasyEstate.Model;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 
 public class House extends  Listing {
     private int numberOfRoom;

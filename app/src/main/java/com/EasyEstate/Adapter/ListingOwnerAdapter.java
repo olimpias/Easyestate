@@ -90,6 +90,11 @@ public class ListingOwnerAdapter extends BaseAdapter {
     }
 
     @Override
+    public boolean isEnabled(int position) {
+        return getItemViewType(position) == VIEW_TYPE_ACTIVITY;
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (getItemViewType(position) == VIEW_TYPE_LOADING) {
             // display the last row
@@ -118,6 +123,8 @@ public class ListingOwnerAdapter extends BaseAdapter {
                 WarningDialog(listing);
             }
         });
+        viewHolder.deleteListingButton.setFocusable(false);
+        viewHolder.deleteListingButton.setFocusableInTouchMode(false);
         viewHolder.editListingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,10 +135,12 @@ public class ListingOwnerAdapter extends BaseAdapter {
                     intent.putExtra(MyListingControlActivity.LISTING_TYPE,0);
                 else
                     intent.putExtra(MyListingControlActivity.LISTING_TYPE,1);
-                MainActivity.PAGE = MainActivity.MY_ACCOUNT_POSITION;
+                MainActivity.PAGE = MainActivity.INSERT_LISTING;
                 context.startActivityForResult(intent,MainActivity.INSERT_LISTING);
             }
         });
+        viewHolder.editListingButton.setFocusable(false);
+        viewHolder.editListingButton.setFocusableInTouchMode(false);
         if(listing.getImagesURL()!=null && listing.getImagesURL().size()!= 0){
             ImageLoad imageLoad = new ImageLoad(viewHolder.imageView,Listing.IMAGE_URL+listing.getImagesURL().get(0));
             new LoadImage().execute(imageLoad);

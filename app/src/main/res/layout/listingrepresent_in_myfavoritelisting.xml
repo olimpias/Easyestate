@@ -17,7 +17,9 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
+        android:paddingBottom="2dp"
         android:id="@+id/TitleTextView"
+        android:maxLines="2"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/pictureImageView"
         android:layout_alignParentRight="true"
@@ -27,22 +29,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Text"
+        android:paddingBottom="2dp"
         android:id="@+id/AddressTextView"
         android:layout_below="@+id/TitleTextView"
         android:layout_toRightOf="@+id/pictureImageView"
         android:layout_alignRight="@+id/TitleTextView"
         android:layout_alignEnd="@+id/TitleTextView" />
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/FavoriteImageButton"
-        android:src="@android:drawable/btn_star_big_on"
-        android:background="@android:color/transparent"
-        android:layout_alignBottom="@+id/pictureImageView"
-        android:layout_alignRight="@+id/AddressTextView"
-        android:layout_alignEnd="@+id/AddressTextView"
-        android:layout_below="@+id/AddressTextView" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -52,7 +44,17 @@
         android:id="@+id/priceTextView"
         android:layout_alignBottom="@+id/pictureImageView"
         android:layout_toRightOf="@+id/pictureImageView"
-        android:layout_toLeftOf="@+id/FavoriteImageButton"
-        android:layout_toStartOf="@+id/FavoriteImageButton" />
+        android:layout_alignRight="@+id/AddressTextView" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/informationAboutListing"
+        android:maxLines="2"
+        android:layout_below="@+id/AddressTextView"
+        android:layout_alignLeft="@+id/AddressTextView"
+        android:layout_alignStart="@+id/AddressTextView"
+        android:layout_alignRight="@+id/AddressTextView"
+        android:layout_alignEnd="@+id/AddressTextView" />
 
 </RelativeLayout>

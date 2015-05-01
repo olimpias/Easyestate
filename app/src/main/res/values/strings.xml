@@ -65,4 +65,12 @@
     <string name="Delete">Delete</string>
     <string name="FindMyLocation">Find Location</string>
     <string name="Save">Done</string>
+    <string name="title_activity_house">HouseActivity</string>
+    <string name="title_activity_activity_land">ActivityLand</string>
+    <string name="DescriptionTitle">Description</string>
+    <string name="General_INFO">General Info</string>
+    <string name="adID">ID:</string>
+    <string name="Contact">Contact For More Info</string>
+    <string name="title_activity_map_dislay">MapDislayActivity</string>
+    <string name="DisplayOnMap">Display On Map</string>
 </resources>

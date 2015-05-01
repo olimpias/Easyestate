@@ -1,5 +1,6 @@
 package com.EasyEstate.Fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -179,13 +180,24 @@ public class InsertImageFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = new ProgressLoading(getActivity(),"Please wait uploading...");
+            String message;
+            if(MyListingControlActivity.isEditing())
+            {
+                message = "Updating your Listing.Please Wait...";
+            }else{
+                message = "Saving your Listing.Please Wait...";
+            }
+            dialog = new ProgressLoading(getActivity(),message);
+            dialog.show();
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
-                return DatabaseConnection.getConnection().insertListing(listing,mMemoryCache.snapshot());
+                if(MyListingControlActivity.isEditing())
+                return DatabaseConnection.getConnection().updateListing(listing,mMemoryCache.snapshot());
+                else
+                return DatabaseConnection.getConnection().insertListing(listing, mMemoryCache.snapshot());
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
@@ -213,6 +225,7 @@ public class InsertImageFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+                getActivity().setResult(Activity.RESULT_OK,null);
                 getActivity().finish();
             }
         });

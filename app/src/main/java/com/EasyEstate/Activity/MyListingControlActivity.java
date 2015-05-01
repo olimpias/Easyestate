@@ -29,11 +29,13 @@ public class MyListingControlActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_listing_control);
+        Bundle bundle = null;
         if (findViewById(R.id.fragment_container) != null) {
 
             // However, if we're being restored from a previous state,
             // then we don't need to do anything and should return or else
             // we could end up with overlapping fragments.
+
             if (savedInstanceState != null) {
                 return;
             }if(getIntent().getExtras() != null){
@@ -42,8 +44,7 @@ public class MyListingControlActivity extends ActionBarActivity {
                 if(id == -1){
                     listing = null;
                     isEditing = false;
-                }
-                else{
+                }else{
                     if(listingType == 0){
 
                         listing = new House();
@@ -52,13 +53,9 @@ public class MyListingControlActivity extends ActionBarActivity {
                     }
                     isEditing = true;
                     listing.setAdID(id);
-                    try {
-                        MyListingControlActivity.listing = new NetworkConnection().execute().get();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
+                    bundle = new Bundle();
+                    bundle.putInt(AD_ID,id);
+
                 }
             }else{
                 listing = null;
@@ -67,7 +64,11 @@ public class MyListingControlActivity extends ActionBarActivity {
 
 
             // Add the fragment to the 'fragment_container' FrameLayout
-        ChangeFragment(new InsertListingFragment());
+         Fragment fragment = new InsertListingFragment();
+        if(bundle != null){
+            fragment.setArguments(bundle);
+        }
+        ChangeFragment(fragment);
         }
     }
 
@@ -113,30 +114,5 @@ public class MyListingControlActivity extends ActionBarActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-        private class NetworkConnection extends AsyncTask<Void,Void,Listing>{
-        private ProgressLoading dialog;
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            dialog = new ProgressLoading(MyListingControlActivity.this,"Loading Data Wait...");
-            dialog.show();
-        }
-        @Override
-        protected Listing doInBackground(Void... params) {
-            try {
-                return DatabaseConnection.getConnection().SelectListing(MyListingControlActivity.listing);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
 
-        @Override
-        protected void onPostExecute(Listing listing) {
-            super.onPostExecute(listing);
-            if(dialog != null)dialog.dismiss();
-        }
-    }
 }

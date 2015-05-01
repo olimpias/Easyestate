@@ -31,7 +31,7 @@ import com.EasyEstate.R;
 
 public class MainActivity extends ActionBarActivity {
     public static final String [] MENUS = {"Home","My Account","My Favorites", "My Listings"};
-    private static final int [] MENU_ICON = {} ;
+    private static final int [] MENU_ICON = {R.drawable.house204,R.drawable.user,R.drawable.favorites,R.drawable.listing} ;
     private ListView drawerListView;
     private DrawerLayout drawerLayout;
     private ActionBar actionBar;

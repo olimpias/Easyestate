@@ -1,9 +1,11 @@
 package com.EasyEstate.Model;
 
+import java.io.Serializable;
+
 /**
  * Created by canturker on 04/04/15.
  */
-public class ListingLocation {
+public class ListingLocation  {
     private double longitude;
     private double latitude;
     private String address;

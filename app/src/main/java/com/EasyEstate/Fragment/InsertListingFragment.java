@@ -1,5 +1,6 @@
 package com.EasyEstate.Fragment;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,10 +12,16 @@ import android.widget.RadioButton;
 import android.widget.SeekBar;
 import com.EasyEstate.Activity.MainActivity;
 import com.EasyEstate.Activity.MyListingControlActivity;
+import com.EasyEstate.Database.DatabaseConnection;
 import com.EasyEstate.Model.House;
 import com.EasyEstate.Model.Land;
 import com.EasyEstate.Model.Listing;
 import com.EasyEstate.R;
+import com.EasyEstate.SupportTool.ProgressLoading;
+
+import org.json.JSONException;
+
+import java.io.IOException;
 
 /**
  * Created by canturker on 16/04/15.
@@ -30,7 +37,7 @@ public class InsertListingFragment extends Fragment {
     private RadioButton landRadioButton;
     private SeekBar seekBar;
     private Button nextButton;
-    private Listing listing;
+    private Listing mainListing;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.insert_listing_fragment,container,false);
@@ -46,26 +53,13 @@ public class InsertListingFragment extends Fragment {
         landRadioButton = (RadioButton)view.findViewById(R.id.landRadioButton);
         nextButton = (Button)view.findViewById(R.id.nextButton);
         seekBar.setEnabled(false);
-        if(MyListingControlActivity.getListing() != null){
-            listing = MyListingControlActivity.getListing();
-            titleEditText.setText(listing.getTitle());
-            descriptionEditText.setText(listing.getDescription());
-            squareMeterEditText.setText(listing.getSquareMeter()+"");
-            primeEditText.setText(listing.getPrice()+"");
-            if(listing.getEstateType().equals("Sale")){
-                saleRadioButton.setChecked(true);
-            }else{
-                rentRadioButton.setChecked(true);
-            }
-            if(listing instanceof House){
-                 houseRadioButton.setChecked(true);
-                 landRadioButton.setChecked(false);
-            }else{
-                houseRadioButton.setChecked(false);
-                landRadioButton.setChecked(true);
-            }
-            houseRadioButton.setEnabled(false);
-            landRadioButton.setEnabled(false);
+        int id;
+        if(getArguments() != null)
+         id = getArguments().getInt(MyListingControlActivity.AD_ID,-1);
+        else
+         id = -1;
+        if(id != -1){
+            new NetworkConnection().execute();
         }
         nextButton.setOnClickListener(buttonNextListener);
         return view;
@@ -74,25 +68,25 @@ public class InsertListingFragment extends Fragment {
         @Override
         public void onClick(View v) {
             if(titleEditText.getText().toString().trim().length() != 0 && descriptionEditText.getText().toString().trim().length() != 0 && squareMeterEditText.toString().trim().length() != 0 && primeEditText.toString().trim().length() != 0){
-                if(listing == null){
+                if(mainListing == null){
                     if(houseRadioButton.isChecked()){
                     MyListingControlActivity.setListing(new House());
                      }else{
                     MyListingControlActivity.setListing(new Land());
                     }
-                    listing = MyListingControlActivity.getListing();
+                    mainListing = MyListingControlActivity.getListing();
                 }
-                listing.setDescription(descriptionEditText.getText().toString());
-                listing.setTitle(titleEditText.getText().toString());
-                listing.setSquareMeter(Integer.parseInt(squareMeterEditText.getText().toString()));
-                listing.setPrice(Double.parseDouble(primeEditText.getText().toString()));
+                mainListing.setDescription(descriptionEditText.getText().toString());
+                mainListing.setTitle(titleEditText.getText().toString());
+                mainListing.setSquareMeter(Integer.parseInt(squareMeterEditText.getText().toString()));
+                mainListing.setPrice(Double.parseDouble(primeEditText.getText().toString()));
                 if(saleRadioButton.isChecked()){
-                    listing.setEstateType("Sale");
+                    mainListing.setEstateType("Sale");
                 }else{
-                    listing.setEstateType("Rent");
+                    mainListing.setEstateType("Rent");
                 }
                 // Change Fragment...
-                if( listing instanceof House){
+                if( mainListing instanceof House){
                     ((MyListingControlActivity)getActivity()).ChangeFragment(new InsertHouseFragment());
                 }else{
                     ((MyListingControlActivity)getActivity()).ChangeFragment(new InsertLandFragment());
@@ -102,4 +96,52 @@ public class InsertListingFragment extends Fragment {
             }
         }
     };
+    private class NetworkConnection extends AsyncTask<Void,Void,Listing> {
+        private ProgressLoading dialog;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = new ProgressLoading(getActivity(),"Loading Data Wait...");
+            dialog.show();
+        }
+        @Override
+        protected Listing doInBackground(Void... params) {
+            try {
+                return DatabaseConnection.getConnection().SelectListing(MyListingControlActivity.getListing());
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Listing listing) {
+            super.onPostExecute(listing);
+            if(dialog != null)dialog.dismiss();
+            if(listing != null){
+                MyListingControlActivity.setListing(listing);
+                mainListing = MyListingControlActivity.getListing();
+                titleEditText.setText(listing.getTitle());
+                descriptionEditText.setText(listing.getDescription());
+                squareMeterEditText.setText(listing.getSquareMeter()+"");
+                primeEditText.setText(listing.getPrice()+"");
+                if(listing.getEstateType().equals("Sale")){
+                    saleRadioButton.setChecked(true);
+                }else{
+                    rentRadioButton.setChecked(true);
+                }
+                if(listing instanceof House){
+                    houseRadioButton.setChecked(true);
+                    landRadioButton.setChecked(false);
+                }else{
+                    houseRadioButton.setChecked(false);
+                    landRadioButton.setChecked(true);
+                }
+                houseRadioButton.setEnabled(false);
+                landRadioButton.setEnabled(false);
+            }
+        }
+    }
 }

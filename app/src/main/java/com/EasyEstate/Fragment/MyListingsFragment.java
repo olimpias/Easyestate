@@ -12,21 +12,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.EasyEstate.Activity.ListingActivity;
 import com.EasyEstate.Activity.MainActivity;
 import com.EasyEstate.Activity.MyListingControlActivity;
 import com.EasyEstate.Adapter.EndlessScrollListener;
 import com.EasyEstate.Adapter.ListingOwnerAdapter;
 import com.EasyEstate.Database.DatabaseConnection;
 import com.EasyEstate.Database.UserDoesNotLoginException;
+import com.EasyEstate.Model.House;
 import com.EasyEstate.Model.Listing;
 import com.EasyEstate.R;
-
 import org.json.JSONException;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  * Created by canturker on 12/04/15.
  */
@@ -55,7 +55,19 @@ public class MyListingsFragment extends Fragment {
         listingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Start new Activity... to view Listing...
+                if(adapter.getItemViewType(position) == adapter.VIEW_TYPE_ACTIVITY){
+                    Intent intent = new Intent(getActivity(),ListingActivity.class);
+                    MainActivity.PAGE = MainActivity.INSERT_LISTING;
+                    intent.putExtra(ListingActivity.AD_ID,adapter.getListingList().get(position).getAdID());
+                    String type;
+                    if (adapter.getListingList().get(position) instanceof House){
+                        type ="0";
+                    }else{
+                        type = "1";
+                    }
+                    intent.putExtra(ListingActivity.AD_TYPE,type);
+                    getActivity().startActivityForResult(intent,MainActivity.INSERT_LISTING);
+                }
             }
         });
         return view;
@@ -68,13 +80,17 @@ public class MyListingsFragment extends Fragment {
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
 
             case R.id.AddListingButton:
                 Intent intent = new Intent(getActivity(),MyListingControlActivity.class);
-                MainActivity.PAGE = MainActivity.MY_ACCOUNT_POSITION;
-                startActivityForResult(intent,MainActivity.INSERT_LISTING);
+                MainActivity.PAGE = MainActivity.INSERT_LISTING;
+                getActivity().startActivityForResult(intent,MainActivity.INSERT_LISTING);
                 return true;
         }
         return super.onOptionsItemSelected(item);
