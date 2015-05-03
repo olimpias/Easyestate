@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -451,8 +452,46 @@ public class DatabaseConnection {
         }
         return listing;
     }
-    private boolean updateHouse(House house){
-        return false;
+    private boolean updateHouse(House house) throws IOException, JSONException {
+        httpPost = new HttpPost(URL+"updateHouse.php");
+        JSONObject jsonObject = new JSONObject();
+        ArrayList<NameValuePair> nameValuePairs = InitializingKey();
+        nameValuePairs.add(new BasicNameValuePair("id",house.getAdID()+""));
+        nameValuePairs.add(new BasicNameValuePair("description",house.getDescription()));
+        nameValuePairs.add(new BasicNameValuePair("title",house.getTitle()));
+        nameValuePairs.add(new BasicNameValuePair("price",house.getPrice()+""));
+        nameValuePairs.add(new BasicNameValuePair("squareMeter",house.getSquareMeter()+""));
+        if(house.getEstateType().equals("Sale")){
+            nameValuePairs.add(new BasicNameValuePair("estateType","1"));
+        }
+        else{
+            nameValuePairs.add(new BasicNameValuePair("estateType","0"));
+        }
+        nameValuePairs.add(new BasicNameValuePair("numberOfRoom",house.getNumberOfRoom()+""));
+        nameValuePairs.add(new BasicNameValuePair("numberOfBath",house.getNumberOfBath()+""));
+        nameValuePairs.add(new BasicNameValuePair("numberOfFloor",house.getNumberOfFloor()+""));
+        nameValuePairs.add(new BasicNameValuePair("currentFloor",house.getCurrentFloor()+""));
+        nameValuePairs.add(new BasicNameValuePair("houseAge",house.getHouseAge()+""));
+        nameValuePairs.add(new BasicNameValuePair("dues",house.getDues()+""));
+        nameValuePairs.add(new BasicNameValuePair("heating",house.getHeating()+""));
+        if(house.isLoanEligibilityHouse()) {
+            nameValuePairs.add(new BasicNameValuePair("loanEligibilityHouse", "1"));
+        }else {
+            nameValuePairs.add(new BasicNameValuePair("loanEligibilityHouse", "0"));
+        } if(house.isInSideSite()) {
+            nameValuePairs.add(new BasicNameValuePair("isInSideSite", "1"));
+        } else {
+            nameValuePairs.add(new BasicNameValuePair("isInSideSite", "0"));
+        }
+        nameValuePairs.add(new BasicNameValuePair("useStatus", house.getUseStatus()+""));
+        nameValuePairs.add(new BasicNameValuePair("longitude",house.getLocation().getLongitude()+""));
+        nameValuePairs.add(new BasicNameValuePair("latitude",house.getLocation().getLatitude()+""));
+        nameValuePairs.add(new BasicNameValuePair("address", house.getLocation().getAddress()));
+        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));
+        HttpResponse response = httpClient.execute(httpPost);
+        String result = getResponse(response);
+        Log.e(TAG,result);
+        return new JSONObject(result).getInt("code")==1 ;
     }
     private boolean updateLand(Land land) throws IOException, JSONException {
         httpPost = new HttpPost(URL+"updateLand.php");
