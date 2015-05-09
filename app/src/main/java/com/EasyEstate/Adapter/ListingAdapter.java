@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Created by canturker on 29/04/15.
  */
-public class ListingFavoriteAdapter extends BaseAdapter {
+public class ListingAdapter extends BaseAdapter {
     private List<Listing> listingList;
     private Activity context;
     protected int serverListSize = -1;
@@ -39,7 +39,7 @@ public class ListingFavoriteAdapter extends BaseAdapter {
     // data or a Progressbar
     public static final int VIEW_TYPE_LOADING = 0;
     public static final int VIEW_TYPE_ACTIVITY = 1;
-    public ListingFavoriteAdapter(List<Listing> listingList,Activity context) {
+    public ListingAdapter(List<Listing> listingList, Activity context) {
         this.listingList = listingList;
         this.context=context;
     }
@@ -92,21 +92,21 @@ public class ListingFavoriteAdapter extends BaseAdapter {
             convertView=inflater.inflate(R.layout.listingrepresent_in_myfavoritelisting,null);
             viewHolder=new ViewHolder();
             viewHolder.addressTextView = (TextView)convertView.findViewById(R.id.AddressTextView);
-            viewHolder.imageView = (ImageView)convertView.findViewById(R.id.profilePictureImageView);
+            viewHolder.imageView = (ImageView)convertView.findViewById(R.id.pictureImageView);
             viewHolder.informationTextView = (TextView)convertView.findViewById(R.id.informationAboutListing);
             viewHolder.priceTextView = (TextView)convertView.findViewById(R.id.priceTextView);
             viewHolder.titleTextView = (TextView)convertView.findViewById(R.id.TitleTextView);
+            convertView.setTag(viewHolder);
         }else{
             viewHolder=(ViewHolder)convertView.getTag();
         }
         final Listing listing = listingList.get(position);
         viewHolder.titleTextView.setText(listing.getTitle());
-        viewHolder.priceTextView.setText(listing.getPrice()+"");
+        viewHolder.priceTextView.setText("Price:"+listing.getPrice()+"");
         viewHolder.addressTextView.setText(listing.getLocation().getAddress());
         if(listing instanceof House){
-
-        }else{
-
+            String value = context.getResources().getStringArray(R.array.planets_array)[((House) listing).getNumberOfRoom()];
+            viewHolder.informationTextView.setText("Room:"+value);
         }
         if(listing.getImagesURL()!=null && listing.getImagesURL().size()!= 0){
             ImageLoad imageLoad = new ImageLoad(viewHolder.imageView,Listing.IMAGE_URL+listing.getImagesURL().get(0));

@@ -155,7 +155,7 @@ public class DatabaseConnection {
         nameValuePairs.add(new BasicNameValuePair("longitude",house.getLocation().getLongitude()+""));
         nameValuePairs.add(new BasicNameValuePair("latitude",house.getLocation().getLatitude()+""));
         nameValuePairs.add(new BasicNameValuePair("address", house.getLocation().getAddress()));
-        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));
         HttpResponse response = httpClient.execute(httpPost);
         String result = getResponse(response);
         Log.e(TAG,result);
@@ -313,6 +313,16 @@ public class DatabaseConnection {
      */
     public int OwnerTotalListingCount () throws UserDoesNotLoginException, IOException, JSONException {
         httpPost = new HttpPost(URL+"countOfTotalOwnerListing.php");
+        ArrayList<NameValuePair> nameValuePairs = InitializingKey();
+        nameValuePairs.add(new BasicNameValuePair("email",getUser().getEmail()));
+        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        HttpResponse response = httpClient.execute(httpPost);
+        String result = getResponse(response);
+        JSONObject jsonObject = new JSONObject(result);
+        return jsonObject.getInt("count");
+    }
+    public int TotalFavoriteListingCount() throws JSONException, IOException, UserDoesNotLoginException {
+        httpPost = new HttpPost(URL+"selectFavoriteListingCount.php");
         ArrayList<NameValuePair> nameValuePairs = InitializingKey();
         nameValuePairs.add(new BasicNameValuePair("email",getUser().getEmail()));
         httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
@@ -587,6 +597,125 @@ public class DatabaseConnection {
         }
         return listingList;
     }
+    public boolean insertFavoriteAdd (int adID) throws UserDoesNotLoginException, IOException, JSONException {
+        httpPost = new HttpPost(URL+"insertFavorite.php");
+        ArrayList<NameValuePair> nameValuePairs = InitializingKey();
+        nameValuePairs.add(new BasicNameValuePair("email",getUser().getEmail()));
+        nameValuePairs.add(new BasicNameValuePair("adID",adID+""));
+        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        HttpResponse response = httpClient.execute(httpPost);
+        String result = getResponse(response);
+        JSONObject jsonArray = new JSONObject(result);
+        return jsonArray.getInt("code") == 1;
 
+    }
+    public boolean deleteFavoriteAdd(int adID) throws UserDoesNotLoginException, JSONException, IOException {
+        httpPost = new HttpPost(URL+"deleteFavorite.php");
+        ArrayList<NameValuePair> nameValuePairs = InitializingKey();
+        nameValuePairs.add(new BasicNameValuePair("email",getUser().getEmail()));
+        nameValuePairs.add(new BasicNameValuePair("adID",adID+""));
+        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        HttpResponse response = httpClient.execute(httpPost);
+        String result = getResponse(response);
+        JSONObject jsonArray = new JSONObject(result);
+        return jsonArray.getInt("code") == 1;
+    }
+    public boolean isListingFavoriteAdd(int adID) throws UserDoesNotLoginException, JSONException, IOException {
+        httpPost = new HttpPost(URL+"isListingFavorite.php");
+        ArrayList<NameValuePair> nameValuePairs = InitializingKey();
+        nameValuePairs.add(new BasicNameValuePair("email",getUser().getEmail()));
+        nameValuePairs.add(new BasicNameValuePair("adID",adID+""));
+        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        HttpResponse response = httpClient.execute(httpPost);
+        String result = getResponse(response);
+        JSONObject jsonArray = new JSONObject(result);
+        return jsonArray.getInt("code") == 1;
+    }
+    public int searchQuery (String query,String detailedQuery) throws JSONException, IOException {
+        httpPost = new HttpPost(URL+"countSearchQuery.php");
+        ArrayList<NameValuePair> nameValuePairs = InitializingKey();
+        nameValuePairs.add(new BasicNameValuePair("query",query));
+        nameValuePairs.add(new BasicNameValuePair("detailQuery",detailedQuery));
+        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        HttpResponse response = httpClient.execute(httpPost);
+        String result = getResponse(response);
+        JSONObject jsonObject = new JSONObject(result);
+        return jsonObject.getInt("count");
+    }
+    public List<Listing> selectSearchQuery(String query,String detailedQuery,int offset) throws JSONException, IOException {
+        List<Listing> listingList = new ArrayList<>();
+        httpPost = new HttpPost(URL+"selectSearchQuery.php");
+        ArrayList<NameValuePair> nameValuePairs = InitializingKey();
+        nameValuePairs.add(new BasicNameValuePair("query",query));
+        nameValuePairs.add(new BasicNameValuePair("detailQuery",detailedQuery));
+        nameValuePairs.add(new BasicNameValuePair("offset", offset + ""));
+        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        HttpResponse response = httpClient.execute(httpPost);
+        String result = getResponse(response);
+        JSONArray jsonArray = new JSONArray(result);
+        Listing listing ;
+        for(int i = 0;i<jsonArray.length();i++){
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            if(jsonObject.getString("listingType").equals("0")){
+                listing = new House();
+            }else{
+                listing = new Land();
+            }
+            listing.setAdID(jsonObject.getInt("adID"));
+            listing.setLocation(new ListingLocation(jsonObject.getDouble("longitute"), jsonObject.getDouble("latitude"), jsonObject.getString("address")));
+            listing.setTitle(jsonObject.getString("title"));
+            listing.setPrice(jsonObject.getDouble("price"));
+            listing.setImagesURL(new ArrayList<String>());
+            if(!jsonObject.isNull("images")){
+                JSONArray images = jsonObject.getJSONArray("images");
+                for(int j = 0;j<images.length();j++){
+                    JSONObject jsonObject1 = (JSONObject)images.get(j);
+                    listing.getImagesURL().add(jsonObject1.getString("imageURL"));
+                }
+            }
+            if(jsonObject.getString("listingType").equals("0")){
+                ((House)listing).setNumberOfFloor(jsonObject.getInt("numberOfRoom"));
+            }
+            listingList.add(listing);
+        }
+        return listingList;
+    }
+    public List<Listing> selectSearchQueryMap(String query,String detailedQuery) throws JSONException, IOException {
+        List<Listing> listingList = new ArrayList<>();
+        httpPost = new HttpPost(URL+"selectSearchQueryMap.php");
+        ArrayList<NameValuePair> nameValuePairs = InitializingKey();
+        nameValuePairs.add(new BasicNameValuePair("query",query));
+        nameValuePairs.add(new BasicNameValuePair("detailQuery",detailedQuery));
+        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        HttpResponse response = httpClient.execute(httpPost);
+        String result = getResponse(response);
+        JSONArray jsonArray = new JSONArray(result);
+        Listing listing ;
+        for(int i = 0;i<jsonArray.length();i++){
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            if(jsonObject.getString("listingType").equals("0")){
+                listing = new House();
+            }else{
+                listing = new Land();
+            }
+            listing.setAdID(jsonObject.getInt("adID"));
+            listing.setLocation(new ListingLocation(jsonObject.getDouble("longitute"), jsonObject.getDouble("latitude"), jsonObject.getString("address")));
+            listing.setTitle(jsonObject.getString("title"));
+            listing.setPrice(jsonObject.getDouble("price"));
+            listing.setImagesURL(new ArrayList<String>());
+            if(!jsonObject.isNull("images")){
+                JSONArray images = jsonObject.getJSONArray("images");
+                for(int j = 0;j<images.length();j++){
+                    JSONObject jsonObject1 = (JSONObject)images.get(j);
+                    listing.getImagesURL().add(jsonObject1.getString("imageURL"));
+                }
+            }
+            if(jsonObject.getString("listingType").equals("0")){
+                ((House)listing).setNumberOfFloor(jsonObject.getInt("numberOfRoom"));
+            }
+            listingList.add(listing);
+        }
+        return listingList;
+    }
 }
 

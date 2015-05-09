@@ -5,8 +5,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-
-
 import com.EasyEstate.Fragment.MapFragment;
 import com.EasyEstate.R;
 
@@ -19,6 +17,7 @@ public static final String LATITUDE = "LATITUDE";
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_dislay);
         getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (findViewById(R.id.fragment_container) != null) {
             double longitute = getIntent().getDoubleExtra(LONGITUDE,0);
             double latitude = getIntent().getDoubleExtra(LATITUDE,0);
@@ -62,8 +61,9 @@ public static final String LATITUDE = "LATITUDE";
         if (id == R.id.action_settings) {
             return true;
         }
-        if(id == R.id.home){
+        if(id == android.R.id.home){
             onBackPressed();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

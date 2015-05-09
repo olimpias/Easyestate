@@ -183,9 +183,9 @@ public class InsertImageFragment extends Fragment {
             String message;
             if(MyListingControlActivity.isEditing())
             {
-                message = "Updating your Listing.Please Wait...";
+                message = "Updating Listing.Please Wait...";
             }else{
-                message = "Saving your Listing.Please Wait...";
+                message = "Saving Listing.Please Wait...";
             }
             dialog = new ProgressLoading(getActivity(),message);
             dialog.show();

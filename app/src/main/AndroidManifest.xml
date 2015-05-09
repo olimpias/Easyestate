@@ -72,14 +72,21 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.EasyEstate.Activity.MainActivity" />
         </activity>
-
         <activity
             android:name=".Activity.MapDisplayActivity"
-            android:label="@string/title_activity_map_dislay"
+            android:label="@string/title_activity_map_display"
             android:parentActivityName=".Activity.ListingActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.EasyEstate.Activity.ListingActivity" />
+        </activity>
+        <activity
+            android:name=".Activity.SearchActivity"
+            android:label="@string/title_activity_search"
+            android:parentActivityName=".Activity.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.EasyEstate.Activity.MainActivity" />
         </activity>
     </application>
 

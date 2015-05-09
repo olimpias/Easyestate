@@ -71,6 +71,29 @@
     <string name="General_INFO">General Info</string>
     <string name="adID">ID:</string>
     <string name="Contact">Contact For More Info</string>
-    <string name="title_activity_map_dislay">MapDislayActivity</string>
+    <string name="title_activity_map_display">MapDisplayActivity</string>
     <string name="DisplayOnMap">Display On Map</string>
+    <string name="Favorite">Favorite</string>
+    <string name="State">State:</string>
+    <string name="Province">Province:</string>
+    <string-array name="priceSale">
+        <item>Choose</item>
+        <item>-50000</item>
+        <item>50000-99999</item>
+        <item>100000-249999</item>
+        <item>250000-499999</item>
+        <item>500000-749999</item>
+        <item>750000-999999</item>
+        <item>+1000000</item>
+    </string-array>
+    <string-array name="priceRent">
+        <item>Choose</item>
+        <item>-1000</item>
+        <item>1000-2499</item>
+        <item>2500-4999</item>
+        <item>5000-7499</item>
+        <item>7500-9999</item>
+        <item>+10000</item>
+    </string-array>
+    <string name="title_activity_search">SearchActivity</string>
 </resources>

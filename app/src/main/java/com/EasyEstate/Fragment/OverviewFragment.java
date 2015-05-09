@@ -9,6 +9,8 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ import com.EasyEstate.Adapter.CirclePageIndicator;
 import com.EasyEstate.Adapter.ImageSliderAdapter;
 import com.EasyEstate.Adapter.PageIndicator;
 import com.EasyEstate.Database.DatabaseConnection;
+import com.EasyEstate.Database.UserDoesNotLoginException;
 import com.EasyEstate.Model.House;
 import com.EasyEstate.Model.Land;
 import com.EasyEstate.Model.Listing;
@@ -36,8 +39,6 @@ import java.net.URL;
  * Created by canturker on 30/04/15.
  */
 public class OverviewFragment extends Fragment {
-    private static final long ANIM_VIEWPAGER_DELAY = 5000;
-    private static final long ANIM_VIEWPAGER_DELAY_USER_VIEW = 10000;
     private ViewPager mViewPager;
     private PageIndicator mIndicator;
     private TextView descriptionTextView;
@@ -55,11 +56,24 @@ public class OverviewFragment extends Fragment {
     private boolean stopSliding = false;
     private Communicator communicator;
     private Activity activity;
+    private int favoriteSituation;
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         activity = getActivity();
+        setHasOptionsMenu(true);
+
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -73,6 +87,7 @@ public class OverviewFragment extends Fragment {
             list = new Land();
         }
         list.setAdID(id);
+        setHasOptionsMenu(true);
         mViewPager = (ViewPager) view.findViewById(R.id.view_pager);
         mIndicator = (CirclePageIndicator) view.findViewById(R.id.indicator);
         descriptionTextView = (TextView)view.findViewById(R.id.descriptionTextView);
@@ -133,7 +148,7 @@ public class OverviewFragment extends Fragment {
         }else{
             mViewPager.setAdapter( new ImageSliderAdapter(activity,list.getImagesURL(),OverviewFragment.this));
             mIndicator.setViewPager(mViewPager);
-            handler.postDelayed(animateViewPager, ANIM_VIEWPAGER_DELAY);
+           // handler.postDelayed(animateViewPager, ANIM_VIEWPAGER_DELAY);
         }
     }
     @Override
@@ -161,7 +176,16 @@ public class OverviewFragment extends Fragment {
         @Override
         protected Listing doInBackground(Listing... params) {
             try {
-                return DatabaseConnection.getConnection().SelectListing(params[0]);
+
+                Listing listing = DatabaseConnection.getConnection().SelectListing(params[0]);
+                try {
+                    if(listing != null && DatabaseConnection.getConnection().getUser()!=null){
+                        favoriteSituation = DatabaseConnection.getConnection().isListingFavoriteAdd(listing.getAdID()) ? 1:0;
+                    }
+                } catch (UserDoesNotLoginException e) {
+                    e.printStackTrace();
+                }
+                return listing;
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
@@ -175,7 +199,7 @@ public class OverviewFragment extends Fragment {
             super.onPostExecute(listing);
             if(listing!=null){
                 list = listing;
-                communicator.Respond(listing);
+                communicator.Respond(listing,favoriteSituation);
                 descriptionTextView.setText(listing.getDescription());
                 adIDTextView.setText(listing.getAdID()+"");
                 priceTextView.setText(listing.getPrice()+"");
@@ -183,6 +207,7 @@ public class OverviewFragment extends Fragment {
                 nameContactTextView.setText(listing.getListingOwner().getName());
                 emailContactTextView.setText(listing.getListingOwner().getEmail());
                 phoneContactTextView.setText(listing.getListingOwner().getPhone());
+                activity.setTitle(listing.getTitle());
                 new LoadImage().execute(listing.getListingOwner().getImageURL());
                 mViewPager.setAdapter(new ImageSliderAdapter(
                         activity, listing.getImagesURL(), OverviewFragment.this));

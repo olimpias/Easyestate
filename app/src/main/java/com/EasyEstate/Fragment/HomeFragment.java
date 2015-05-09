@@ -57,8 +57,8 @@ public class HomeFragment extends Fragment {
         @Override
         public void onClick(View v) {
             switch (v.getId()){
-                case R.id.search_button:
-
+                case R.id.searchButton:
+                    ((MainActivity)getActivity()).ChangeFragment(new SearchFragment(),MainActivity.SEARCH_LISTING);
                     break;
 
                 case R.id.NearbySearchButton :

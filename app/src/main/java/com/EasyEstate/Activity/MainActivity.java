@@ -25,6 +25,7 @@ import com.EasyEstate.Fragment.HomeFragment;
 import com.EasyEstate.Fragment.MyAccountFragment;
 import com.EasyEstate.Fragment.MyFavoritesFragment;
 import com.EasyEstate.Fragment.MyListingsFragment;
+import com.EasyEstate.Fragment.SearchFragment;
 import com.EasyEstate.Model.User;
 import com.EasyEstate.R;
 
@@ -44,9 +45,11 @@ public class MainActivity extends ActionBarActivity {
     public static final int MY_LISTING_POSITION = 3;
     protected static final String EMAIL ="EMAIL";
     protected static final int LOGIN_FLAG = 4;
-    protected static final String IS_IT_FIRST_LOGIN="FIRSTLOGIN";
+    protected static final String IS_IT_FIRST_LOGIN="FIRST_LOGIN";
     public  static final int INSERT_LISTING = 3;
+    public static final int FAVORITE_LISTING = 2;
     public static final int PROFILE_EDIT =1;
+    public static final int SEARCH_LISTING=5;
     protected static final  String SHARED_PREFERENCE_REF = "EASY_ESTATE";
     public static int PAGE = -1;
 
@@ -165,6 +168,8 @@ public class MainActivity extends ActionBarActivity {
             case 3:
                 fragment = new MyListingsFragment();
                 break;
+            case 4:
+                fragment = new SearchFragment();
             default:
                 fragment =null ;
                 break;
@@ -172,10 +177,13 @@ public class MainActivity extends ActionBarActivity {
 
         DirectFragment(fragment,position);
     }
-    private void ChangeFragment(Fragment fragment,int position){
+    public void ChangeFragment(Fragment fragment,int position){
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.content_frame,fragment).commit();
+        if(position < MENUS.length)
         setTitle(MENUS[position]);
+        else
+        setTitle("Search");
         drawerListView.setItemChecked(position,true);
         drawerLayout.closeDrawer(drawerListView);
     }
@@ -225,6 +233,14 @@ public class MainActivity extends ActionBarActivity {
                 }
             }
             if(requestCode == INSERT_LISTING){
+                if(PAGE != -1){
+                    selection(PAGE);
+                    PAGE = -1;
+                }else{
+                    selection(0);
+                }
+            }
+            if(requestCode == FAVORITE_LISTING){
                 if(PAGE != -1){
                     selection(PAGE);
                     PAGE = -1;

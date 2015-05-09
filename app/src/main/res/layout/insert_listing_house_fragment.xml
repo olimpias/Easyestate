@@ -53,7 +53,7 @@
                     android:id="@+id/numberOfBathSpinner"
                     android:entries="@array/planets_array"
                     android:spinnerMode="dialog"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1" />
             </TableRow>
             <TableRow
                 android:layout_width="match_parent"
