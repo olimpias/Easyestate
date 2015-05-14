@@ -63,6 +63,8 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/card_drawable"
+            android:layout_marginTop="10dp"
             android:padding="10dp">
 
             <TextView
@@ -70,6 +72,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/DescriptionTitle"
+                style="@style/listingActivityTitleStyle"
                 android:id="@+id/textView27"
                 android:paddingBottom="5dp"/>
 
@@ -77,6 +80,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="New Text"
+                style="@style/listingActivitySubTextStyle"
                 android:id="@+id/descriptionTextView" />
         </LinearLayout>
 
@@ -84,6 +88,8 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/card_drawable"
+            android:layout_marginTop="10dp"
             android:padding="10dp">
 
             <TextView
@@ -91,6 +97,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/General_INFO"
+                style="@style/listingActivityTitleStyle"
                 android:id="@+id/textView28" />
 
             <TableLayout
@@ -109,12 +116,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/adID"
+                        style="@style/listingActivityTextStyle"
                         android:id="@+id/textView31" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="New Text"
+                        style="@style/listingActivitySubTextStyle"
                         android:id="@+id/adIDTextView" />
                 </TableRow>
 
@@ -127,12 +136,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/Price"
+                        style="@style/listingActivityTextStyle"
                         android:id="@+id/textView33" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="New Text"
+                        style="@style/listingActivitySubTextStyle"
                         android:id="@+id/priceTextView" />
                 </TableRow>
                 <TableRow
@@ -144,12 +155,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/Estate_Type"
+                        style="@style/listingActivityTextStyle"
                         android:id="@+id/textView29" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="New Text"
+                        style="@style/listingActivitySubTextStyle"
                         android:id="@+id/estateTypeTextView" />
                 </TableRow>
             </TableLayout>
@@ -161,6 +174,8 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/card_drawable"
+            android:layout_marginTop="10dp"
             android:padding="10dp">
 
             <TextView
@@ -168,6 +183,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/Contact"
+                style="@style/listingActivityTitleStyle"
                 android:id="@+id/textView30" />
 
             <LinearLayout
@@ -195,12 +211,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/Name"
+                            style="@style/listingActivityTextStyle"
                             android:id="@+id/textView32" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="New Text"
+                            style="@style/listingActivitySubTextStyle"
                             android:id="@+id/contactNameTextView" />
                     </TableRow>
 
@@ -213,12 +231,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/email"
+                            style="@style/listingActivityTextStyle"
                             android:id="@+id/textView36" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="New Text"
+                            style="@style/listingActivitySubTextStyle"
                             android:id="@+id/contactEmailTextView" />
                     </TableRow>
 
@@ -231,12 +251,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/phone"
+                            style="@style/listingActivityTextStyle"
                             android:id="@+id/textView37" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="New Text"
+                            style="@style/listingActivitySubTextStyle"
                             android:id="@+id/contactPhoneTextView" />
                     </TableRow>
                 </TableLayout>
@@ -249,8 +271,10 @@
             android:layout_height="wrap_content">
 
             <Button
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/button_click_indicator"
                 android:text="@string/DisplayOnMap"
                 android:id="@+id/mapDisplayButton" />
         </LinearLayout>

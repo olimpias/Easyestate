@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="15dp"
+            android:background="@drawable/card_drawable"
             android:layout_marginBottom="10dp">
 
             <TextView
@@ -23,6 +24,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/DescriptionTitle"
+                style="@style/listingActivityTitleStyle"
                 android:id="@+id/textView35"
                 android:paddingBottom="5dp"/>
 
@@ -31,6 +33,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Small Text"
+                style="@style/listingActivityTextStyle"
                 android:id="@+id/descriptionTextView" />
         </LinearLayout>
 
@@ -38,11 +41,13 @@
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:padding="10dp">
+            android:background="@drawable/card_drawable"
+            android:padding="15dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
+                style="@style/listingActivityTitleStyle"
                 android:text="@string/Features" />
 
             <LinearLayout
@@ -64,6 +69,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/Size"
+                        style="@style/listingActivityTextStyle"
                         android:id="@+id/textView34"
                         />
 
@@ -71,6 +77,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="New Text"
+                        style="@style/listingActivitySubTextStyle"
                         android:id="@+id/sizeTextView" />
                 </TableRow>
                 <TableRow
@@ -83,12 +90,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/Estate_Type"
+                        style="@style/listingActivityTextStyle"
                         android:id="@+id/textView38" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="New Text"
+                        style="@style/listingActivitySubTextStyle"
                         android:id="@+id/estateTypeTextView" />
                 </TableRow>
                 <TableRow
@@ -101,12 +110,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/Room"
+                        style="@style/listingActivityTextStyle"
                         android:id="@+id/textView39" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="New Text"
+                        style="@style/listingActivitySubTextStyle"
                         android:id="@+id/roomTextView" />
                 </TableRow>
                 <TableRow
@@ -119,12 +130,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/Bath"
+                        style="@style/listingActivityTextStyle"
                         android:id="@+id/textView41" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="New Text"
+                        style="@style/listingActivitySubTextStyle"
                         android:id="@+id/bathTextView" />
                 </TableRow>
                 <TableRow
@@ -137,12 +150,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/AgeOfTheBuilding"
+                        style="@style/listingActivityTextStyle"
                         />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="New Text"
+                        style="@style/listingActivitySubTextStyle"
                         android:id="@+id/ageBuildingTextView" />
                 </TableRow>
                 <TableRow
@@ -155,12 +170,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/NumberOfFloor"
-                         />
+                        style="@style/listingActivityTextStyle"
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="New Text"
+                        style="@style/listingActivitySubTextStyle"
                         android:id="@+id/numberOfFloorTextView" />
                 </TableRow>
                 <TableRow
@@ -173,12 +190,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/CurrentFloor"
+                        style="@style/listingActivityTextStyle"
                         />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="New Text"
+                        style="@style/listingActivitySubTextStyle"
                         android:id="@+id/currentFloorTextView" />
                 </TableRow>
                 <TableRow
@@ -191,12 +210,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/Heating"
+                        style="@style/listingActivityTextStyle"
                         android:id="@+id/textView40" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="New Text"
+                        style="@style/listingActivitySubTextStyle"
                         android:id="@+id/heatingTextView" />
                 </TableRow>
                 <TableRow
@@ -209,12 +230,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/dues"
+                        style="@style/listingActivityTextStyle"
                         android:id="@+id/textView42" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="New Text"
+                        style="@style/listingActivitySubTextStyle"
                         android:id="@+id/duesTextView" />
                 </TableRow>
                 <TableRow
@@ -228,6 +251,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/Loan_Eligibility"
+                        style="@style/listingActivityTextStyle"
                         android:id="@+id/textView43"
                         android:layout_column="0" />
 
@@ -235,6 +259,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="New Text"
+                        style="@style/listingActivitySubTextStyle"
                         android:id="@+id/loanEligibilityTextView"
                         android:layout_column="1" />
                 </TableRow>
@@ -248,6 +273,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/In_The_Site"
+                        style="@style/listingActivityTextStyle"
                         android:id="@+id/textView44"
                         android:layout_column="0" />
 
@@ -255,6 +281,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="New Text"
+                        style="@style/listingActivitySubTextStyle"
                         android:id="@+id/isInsideSiteTextView"
                         android:layout_column="1" />
                 </TableRow>
@@ -268,6 +295,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/UseStatus"
+                        style="@style/listingActivityTextStyle"
                         android:id="@+id/textView45"
                         android:layout_column="0" />
 
@@ -275,6 +303,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="New Text"
+                        style="@style/listingActivitySubTextStyle"
                         android:id="@+id/useStatusTextView"
                         android:layout_column="1" />
                 </TableRow>

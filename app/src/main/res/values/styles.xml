@@ -1,8 +1,52 @@
-<resources>
+<resources >
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
     </style>
+    <style name="CustomActionBarTheme"
+        parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="actionBarStyle">@style/MyActionBar</item>
+    </style>
 
+    <!-- ActionBar styles -->
+    <style name="MyActionBar"
+        parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="background">@color/holo_blue_dark</item>
+    </style>
+
+
+    <style name="primaryTextStyle">
+        <item name="android:typeface">normal</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/dark_grey</item>
+    </style>
+    <style name="secondaryTextStyle">
+        <item name="android:typeface">normal</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/dark_slate_grey</item>
+    </style>
+    <style name="listingTitleStyle">
+        <item name="android:textColor">@color/orange</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="listingActivityTitleStyle">
+        <item name="android:typeface">normal</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:textColor">@color/dark_slate_grey</item>
+    </style>
+    <style name="listingActivityTextStyle">
+        <item name="android:typeface">normal</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+    </style>
+    <style name="listingActivitySubTextStyle">
+    <item name="android:typeface">normal</item>
+    <item name="android:textSize">13sp</item>
+    <item name="android:textColor">@android:color/black</item>
+    </style>
 </resources>

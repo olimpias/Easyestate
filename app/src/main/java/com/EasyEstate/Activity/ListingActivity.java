@@ -50,6 +50,7 @@ public class ListingActivity extends ActionBarActivity implements ActionBar.TabL
         viewPager.setAdapter(pageAdapter);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
+        actionBar.setStackedBackgroundDrawable(getResources().getDrawable(R.drawable.tab_indicator));
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         for(int i = 0 ; i < tabs.length ;i ++){
             actionBar.addTab(actionBar.newTab().setText(tabs[i]).setTabListener(this));

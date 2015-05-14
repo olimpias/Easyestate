@@ -6,14 +6,15 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="120dp"
+        android:padding="10dp"
+        android:background="@color/orange"
+        >
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/profilePictureImageView"
-            android:src="@mipmap/ic_launcher"
-            android:padding="5dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
 
@@ -26,7 +27,7 @@
         android:layout_height="wrap_content"
         android:stretchColumns="1"
         android:id="@+id/tableView"
-        android:padding="5dp">
+        android:padding="10dp">
 
 
         <TableRow
@@ -38,12 +39,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/email"
+                style="@style/primaryTextStyle"
                 android:id="@+id/TextView3" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Empty"
+                style="@style/secondaryTextStyle"
                 android:layout_weight="1"
                 android:id="@+id/emailTextView" />
 
@@ -60,12 +63,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Name"
+                style="@style/primaryTextStyle"
                 android:id="@+id/textView" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Empty"
+                style="@style/secondaryTextStyle"
                 android:layout_weight="1"
                 android:id="@+id/nameEditView" />
         </TableRow>
@@ -79,12 +84,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/phone"
+                style="@style/primaryTextStyle"
                 android:id="@+id/textView5" />
 
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Empty"
+                style="@style/secondaryTextStyle"
                 android:layout_weight="1"
                 android:id="@+id/phoneEditView" />
         </TableRow>
@@ -94,6 +101,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/Done"
+        android:background="@drawable/button_click_indicator"
         android:id="@+id/doneButton"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>

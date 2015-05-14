@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * Created by canturker on 12/04/15.
  */
-public class MyListingsFragment extends Fragment {
+public class  MyListingsFragment extends Fragment {
 
     private ListView listingListView;
     private ListingOwnerAdapter adapter ;

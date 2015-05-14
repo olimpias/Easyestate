@@ -45,8 +45,12 @@ public class DatabaseConnection {
         if(connection == null)connection = new DatabaseConnection();
         return connection;
     }
-    /*
-    Convert response inputStream to String return string
+
+    /**
+     *     Convert response inputStream to String return string
+     * @param response
+     * @return
+     * @throws IOException
      */
     private String getResponse(HttpResponse response) throws IOException {
         InputStream is =response.getEntity().getContent();
@@ -76,8 +80,14 @@ public class DatabaseConnection {
             return user;
         }
     }
-    /*
-    Insert listing and images to server.If it success returns true else false
+
+    /**
+     *     Insert listing and images to server.If it success returns true else false
+     * @param listing
+     * @param bitmapHashMap
+     * @return
+     * @throws IOException
+     * @throws JSONException
      */
     public boolean insertListing(Listing listing,Map<String,Bitmap> bitmapHashMap) throws IOException, JSONException {
         int id = -1;
@@ -96,8 +106,14 @@ public class DatabaseConnection {
         if(id == -1)return false;
         return true;
     }
-    /*
-    Upload Image to php server
+
+    /**
+     *     Upload Image to php server
+     * @param adID
+     * @param filename
+     * @param bitmap
+     * @param filepath
+     * @throws IOException
      */
     private void upLoadImage(int adID,String filename,Bitmap bitmap,String filepath) throws IOException {
         httpPost = new HttpPost(URL+"uploadImage.php");
@@ -117,9 +133,14 @@ public class DatabaseConnection {
         String result = getResponse(response);
         Log.e(TAG,result);
     }
-    /*
-    Insert house values to json and sends it to php server url
-    return new adID
+
+    /**
+     *  Insert house values to json and sends it to php server url
+     return new adID
+     * @param house
+     * @return
+     * @throws IOException
+     * @throws JSONException
      */
     private int insertHouse(House house) throws IOException, JSONException {
         httpPost = new HttpPost(URL+"insertHouse.php");
@@ -161,9 +182,14 @@ public class DatabaseConnection {
         Log.e(TAG,result);
         return new JSONObject(result).getInt("id");
     }
-    /*
-    Insert land values to json and sends it to php server url
-    return new adID
+
+    /**
+     * Insert land values to json and sends it to php server url
+     return new adID
+     * @param land
+     * @return
+     * @throws IOException
+     * @throws JSONException
      */
     private int insertLand(Land land) throws IOException, JSONException {
         httpPost = new HttpPost(URL+"insertLand.php");
@@ -206,7 +232,13 @@ public class DatabaseConnection {
         return new JSONObject(result).getInt("id");
     }
 
-
+    /**
+     * Deletes listing from database according to listing adID
+     * @param listing
+     * @return boolean according to result is succeed or not.
+     * @throws IOException
+     * @throws JSONException
+     */
     public boolean deleteListing(Listing listing) throws IOException, JSONException{
         ArrayList<NameValuePair> nameValuePairs = InitializingKey();
         nameValuePairs.add(new BasicNameValuePair("adID", listing.getAdID() + ""));
@@ -227,8 +259,13 @@ public class DatabaseConnection {
         nameValuePairs.add(new BasicNameValuePair("secretKey",secretKey));
         return nameValuePairs;
     }
-    /*
-       it uses in LoginUser Method checks if the email already exits in database
+
+    /**
+     * it uses in LoginUser Method checks if the email already exits in database
+     * @param email
+     * @return boolean according to result is succeed or not.
+     * @throws IOException
+     * @throws JSONException
      */
     private boolean isUserExit(String email) throws IOException, JSONException {
          httpPost = new HttpPost(URL+"isUserExits.php");
@@ -243,9 +280,14 @@ public class DatabaseConnection {
         }
         return false;
     }
-    /*
-    It logs in the user.Return value represents that if user is logging in first time or not
-    Return value true represents first time.False represent second or more time..
+
+    /**
+     * It logs in the user.Return value represents that if user is logging in first time or not
+     Return value true represents first time.False represent second or more time..
+     * @param user
+     * @return boolean according to result is succeed or not.
+     * @throws IOException
+     * @throws JSONException
      */
     public boolean LoginUser (User user) throws IOException, JSONException {
 
@@ -259,8 +301,13 @@ public class DatabaseConnection {
         }
 
     }
-    /*
-    Insert new User to database
+
+    /**
+     * Insert new User to database
+     * @param user
+     * @return  boolean according to result is succeed or not.
+     * @throws IOException
+     * @throws JSONException
      */
     private boolean InsertUser(User user) throws IOException, JSONException {
         httpPost = new HttpPost(URL+"insertUser.php");
@@ -278,6 +325,13 @@ public class DatabaseConnection {
         return false;
     }
 
+    /**
+     * update user according to his email
+     * @param user
+     * @return boolean according to result is succeed or not.
+     * @throws IOException
+     * @throws JSONException
+     */
     public boolean UpdateUser(User user) throws IOException, JSONException {
         httpPost = new HttpPost(URL+"updateUser.php");
         ArrayList<NameValuePair> nameValuePairs = InitializingKey();
@@ -292,6 +346,14 @@ public class DatabaseConnection {
         }
         return false;
     }
+
+    /**
+     * Collect user information from database and set values to user
+     * @param email
+     * @return boolean according to result is succeed or not.
+     * @throws IOException
+     * @throws JSONException
+     */
     public boolean SelectUser(String email) throws IOException, JSONException {
         httpPost = new HttpPost(URL+"selectUser.php");
         ArrayList<NameValuePair> nameValuePairs = InitializingKey();
@@ -308,8 +370,13 @@ public class DatabaseConnection {
         this.user.setPhone(jsonObject.getString("phone"));
         return true;
     }
-    /*
-    Returns the total number of login user inserted listing.
+
+    /**
+     *     Returns the total number of login user inserted listing.
+     * @return  total number of user's listings
+     * @throws UserDoesNotLoginException
+     * @throws IOException
+     * @throws JSONException
      */
     public int OwnerTotalListingCount () throws UserDoesNotLoginException, IOException, JSONException {
         httpPost = new HttpPost(URL+"countOfTotalOwnerListing.php");
@@ -321,6 +388,14 @@ public class DatabaseConnection {
         JSONObject jsonObject = new JSONObject(result);
         return jsonObject.getInt("count");
     }
+
+    /**
+     *
+     * @return total number of favorite listing of user
+     * @throws JSONException
+     * @throws IOException
+     * @throws UserDoesNotLoginException
+     */
     public int TotalFavoriteListingCount() throws JSONException, IOException, UserDoesNotLoginException {
         httpPost = new HttpPost(URL+"selectFavoriteListingCount.php");
         ArrayList<NameValuePair> nameValuePairs = InitializingKey();
@@ -331,8 +406,14 @@ public class DatabaseConnection {
         JSONObject jsonObject = new JSONObject(result);
         return jsonObject.getInt("count");
     }
-    /*
-    return List of Listings.User is owner of them.
+
+    /**
+     *     return List of Listings.User is owner of them.
+     * @param offset
+     * @return
+     * @throws UserDoesNotLoginException
+     * @throws IOException
+     * @throws JSONException
      */
     public List<Listing> getMyListings(int offset) throws UserDoesNotLoginException, IOException, JSONException {
         httpPost = new HttpPost(URL+"selectOwnerListings.php");
@@ -367,10 +448,15 @@ public class DatabaseConnection {
             listingList.add(listing);
         }
         return listingList;
-    }/*
-    *Return Listing, that all attributes are filled.
-    *
-    * */
+    }
+
+    /**
+     *     Return Listing, that all attributes are filled.
+     * @param listing
+     * @return
+     * @throws IOException
+     * @throws JSONException
+     */
     public Listing SelectListing(Listing listing) throws IOException, JSONException {
         httpPost = new HttpPost(URL+"selectListing.php");
         ArrayList<NameValuePair> nameValuePairs = InitializingKey();
@@ -462,6 +548,14 @@ public class DatabaseConnection {
         }
         return listing;
     }
+
+    /**
+     * Changes the house value
+     * @param house
+     * @return boolean
+     * @throws IOException
+     * @throws JSONException
+     */
     private boolean updateHouse(House house) throws IOException, JSONException {
         httpPost = new HttpPost(URL+"updateHouse.php");
         JSONObject jsonObject = new JSONObject();
@@ -503,6 +597,14 @@ public class DatabaseConnection {
         Log.e(TAG,result);
         return new JSONObject(result).getInt("code")==1 ;
     }
+
+    /**
+     * Changes the land
+     * @param land
+     * @return boolean
+     * @throws IOException
+     * @throws JSONException
+     */
     private boolean updateLand(Land land) throws IOException, JSONException {
         httpPost = new HttpPost(URL+"updateLand.php");
         JSONObject jsonObject = new JSONObject();
@@ -540,6 +642,16 @@ public class DatabaseConnection {
         Log.e(TAG,result);
         return new JSONObject(result).getInt("code")==1 ;
     }
+
+    /**
+     * changes the listing and pictures.It uses updateHouse() or updateLand() methods according to
+     * listing type.
+     * @param listing
+     * @param hashBitmap
+     * @return
+     * @throws IOException
+     * @throws JSONException
+     */
     public boolean updateListing(Listing listing,Map<String,Bitmap> hashBitmap) throws IOException, JSONException {
         boolean result = true;
         int id = listing.getAdID();
@@ -556,6 +668,14 @@ public class DatabaseConnection {
         }
         return result;
     }
+
+    /**
+     * It selects favorite listings with limit by using offset.
+     * @param offset
+     * @return List of listings
+     * @throws IOException
+     * @throws JSONException
+     */
     public List<Listing> selectFavoriteListing(int offset) throws IOException, JSONException {
         List<Listing> listingList = new ArrayList<>();
         httpPost = new HttpPost(URL+"selectFavoriteListing.php");
@@ -597,6 +717,15 @@ public class DatabaseConnection {
         }
         return listingList;
     }
+
+    /**
+     * Adds the listing to favorite of the user
+     * @param adID
+     * @return  boolean
+     * @throws UserDoesNotLoginException
+     * @throws IOException
+     * @throws JSONException
+     */
     public boolean insertFavoriteAdd (int adID) throws UserDoesNotLoginException, IOException, JSONException {
         httpPost = new HttpPost(URL+"insertFavorite.php");
         ArrayList<NameValuePair> nameValuePairs = InitializingKey();
@@ -609,6 +738,15 @@ public class DatabaseConnection {
         return jsonArray.getInt("code") == 1;
 
     }
+
+    /**
+     * Deletes the listing from user's favorites
+     * @param adID
+     * @return  boolean
+     * @throws UserDoesNotLoginException
+     * @throws JSONException
+     * @throws IOException
+     */
     public boolean deleteFavoriteAdd(int adID) throws UserDoesNotLoginException, JSONException, IOException {
         httpPost = new HttpPost(URL+"deleteFavorite.php");
         ArrayList<NameValuePair> nameValuePairs = InitializingKey();
@@ -620,6 +758,15 @@ public class DatabaseConnection {
         JSONObject jsonArray = new JSONObject(result);
         return jsonArray.getInt("code") == 1;
     }
+
+    /**
+     * Checks if the adID listing is favorite listing of user.
+     * @param adID
+     * @return  boolean
+     * @throws UserDoesNotLoginException
+     * @throws JSONException
+     * @throws IOException
+     */
     public boolean isListingFavoriteAdd(int adID) throws UserDoesNotLoginException, JSONException, IOException {
         httpPost = new HttpPost(URL+"isListingFavorite.php");
         ArrayList<NameValuePair> nameValuePairs = InitializingKey();
@@ -631,6 +778,15 @@ public class DatabaseConnection {
         JSONObject jsonArray = new JSONObject(result);
         return jsonArray.getInt("code") == 1;
     }
+
+    /**
+     * Searches count of listings according to query and detailed Query
+     * @param query
+     * @param detailedQuery
+     * @return  number of listings
+     * @throws JSONException
+     * @throws IOException
+     */
     public int searchQuery (String query,String detailedQuery) throws JSONException, IOException {
         httpPost = new HttpPost(URL+"countSearchQuery.php");
         ArrayList<NameValuePair> nameValuePairs = InitializingKey();
@@ -642,6 +798,16 @@ public class DatabaseConnection {
         JSONObject jsonObject = new JSONObject(result);
         return jsonObject.getInt("count");
     }
+
+    /**
+     * Searches   listings according to query and detailed Query with limit
+     * @param query
+     * @param detailedQuery
+     * @param offset
+     * @return List of listings
+     * @throws JSONException
+     * @throws IOException
+     */
     public List<Listing> selectSearchQuery(String query,String detailedQuery,int offset) throws JSONException, IOException {
         List<Listing> listingList = new ArrayList<>();
         httpPost = new HttpPost(URL+"selectSearchQuery.php");
@@ -680,6 +846,15 @@ public class DatabaseConnection {
         }
         return listingList;
     }
+
+    /**
+     * Searches listings with out limiting size of listings.
+     * @param query
+     * @param detailedQuery
+     * @return list of listings
+     * @throws JSONException
+     * @throws IOException
+     */
     public List<Listing> selectSearchQueryMap(String query,String detailedQuery) throws JSONException, IOException {
         List<Listing> listingList = new ArrayList<>();
         httpPost = new HttpPost(URL+"selectSearchQueryMap.php");
@@ -717,6 +892,17 @@ public class DatabaseConnection {
         }
         return listingList;
     }
+
+    /**
+     * Search nearby listings using min max values.
+     * @param minLat
+     * @param maxLat
+     * @param minLong
+     * @param maxLong
+     * @return  List of listings
+     * @throws JSONException
+     * @throws IOException
+     */
     public List<Listing> selectNearbySearchQuery (double minLat, double maxLat,double minLong,double maxLong) throws JSONException, IOException {
         List<Listing> listingList = new ArrayList<>();
         httpPost = new HttpPost(URL+"selectNearbySearchQueryMap.php");

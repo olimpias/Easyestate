@@ -25,6 +25,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textStyle="bold"
                 android:text="@string/Title"
+                android:textColor="@color/orange"
                 android:id="@+id/titleTextView" />
 
             <TextView

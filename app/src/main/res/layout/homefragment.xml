@@ -21,7 +21,7 @@
         android:id="@+id/searchButton"
         android:layout_centerVertical="true"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/button_shape"
+        android:background="@drawable/button_click_indicator"
         android:textColor="#FFFFFF"
         android:layout_alignRight="@+id/imageView"
         android:layout_alignEnd="@+id/imageView"
@@ -35,7 +35,7 @@
         android:id="@+id/NearbySearchButton"
         android:layout_below="@+id/searchButton"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/button_shape"
+        android:background="@drawable/button_click_indicator"
         android:textColor="#FFFFFF"
         android:layout_alignRight="@+id/searchButton"
         android:layout_alignEnd="@+id/searchButton"
@@ -53,6 +53,6 @@
         android:layout_alignLeft="@+id/NearbySearchButton"
         android:layout_alignStart="@+id/NearbySearchButton"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/button_shape"
+        android:background="@drawable/button_click_indicator"
         android:textColor="#FFFFFF"/>
 </RelativeLayout>

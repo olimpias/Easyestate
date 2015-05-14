@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <color name="blue_jay">#2B547E</color>
     <color name="holo_blue_dark">#ff0099cc</color>
     <color name="view_divider_color">#BABABA</color>
     <color name="view_divider_color_2">#DADADA</color>
-
+    <color name="dark_grey">#808080</color>
+    <color name="dark_slate_grey">#25383C</color>
+    <color name="orange">#FA9D00</color>
 </resources>

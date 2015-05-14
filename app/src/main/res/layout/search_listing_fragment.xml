@@ -23,7 +23,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Estate_Type" />
+                    android:text="@string/Estate_Type"
+                    style="@style/primaryTextStyle"
+                    />
                 <RadioGroup
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -33,6 +35,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/House"
+                        style="@style/secondaryTextStyle"
                         android:checked="true"
                         android:id="@+id/selectHouseRadioButton" />
 
@@ -41,6 +44,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/Land"
                         android:layout_weight="1"
+                        style="@style/secondaryTextStyle"
                         android:id="@+id/selectLandRadioButton" />
                 </RadioGroup>
 
@@ -54,12 +58,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/State"
+                    style="@style/primaryTextStyle"
                     />
 
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/stateEditText"
+                    style="@style/secondaryTextStyle"
                     android:layout_weight="1" />
 
 
@@ -73,12 +79,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/Province"
+                    style="@style/primaryTextStyle"
                     />
 
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/provinceEditText"
+                    style="@style/secondaryTextStyle"
                     android:layout_weight="1" />
 
 
@@ -91,6 +99,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/Housing_Type"
+                    style="@style/primaryTextStyle"
                     />
                 <RadioGroup
                     android:layout_width="match_parent"
@@ -104,6 +113,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/Sale"
                         android:checked="true"
+                        style="@style/secondaryTextStyle"
                         android:id="@+id/selectSaleRadioButton" />
 
                     <RadioButton
@@ -111,6 +121,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/Rent"
                         android:layout_weight="1"
+                        style="@style/secondaryTextStyle"
                         android:id="@+id/selectRentRadioButton" />
                 </RadioGroup>
 
@@ -124,7 +135,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/Price"
-                />
+                    style="@style/primaryTextStyle"
+                    />
 
                 <Spinner
                     android:layout_width="wrap_content"
@@ -132,6 +144,7 @@
                     android:id="@+id/priceSelectSpinner"
                     android:entries="@array/priceSale"
                     android:spinnerMode="dialog"
+                    style="@style/secondaryTextStyle"
                     android:layout_weight="1" />
             </TableRow>
 
@@ -141,13 +154,15 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_gravity="right"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:text="@string/SearchButton"
                 android:id="@+id/searchButton"
+                android:background="@drawable/button_click_indicator"
                 android:layout_gravity="right" />
         </LinearLayout>
     </LinearLayout>

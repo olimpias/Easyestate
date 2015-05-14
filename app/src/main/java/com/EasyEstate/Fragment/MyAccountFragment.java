@@ -20,6 +20,7 @@ import com.EasyEstate.Database.UserDoesNotLoginException;
 import com.EasyEstate.Model.User;
 import com.EasyEstate.R;
 import com.EasyEstate.SupportTool.BitmapTool;
+import com.EasyEstate.SupportTool.ProgressLoading;
 
 import org.json.JSONException;
 
@@ -63,9 +64,12 @@ public class MyAccountFragment extends Fragment {
         }
     }
     private class NetworkConnection extends AsyncTask<String,Void,User>{
+        ProgressLoading progressLoading;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            progressLoading = new ProgressLoading(getActivity(),"Uploading Data Please Wait...");
+            progressLoading.show();
         }
 
         @Override
@@ -89,6 +93,7 @@ public class MyAccountFragment extends Fragment {
         protected void onPostExecute(User user) {
             super.onPostExecute(user);
             if(user != null){
+                if(progressLoading!=null) progressLoading.dismiss();
                 if(user.getPhone() != null )
                 phoneTextView.setText(user.getPhone());
                 if(user.getName() != null)
