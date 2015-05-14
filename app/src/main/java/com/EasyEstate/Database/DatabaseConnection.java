@@ -636,7 +636,7 @@ public class DatabaseConnection {
         ArrayList<NameValuePair> nameValuePairs = InitializingKey();
         nameValuePairs.add(new BasicNameValuePair("query",query));
         nameValuePairs.add(new BasicNameValuePair("detailQuery",detailedQuery));
-        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));
         HttpResponse response = httpClient.execute(httpPost);
         String result = getResponse(response);
         JSONObject jsonObject = new JSONObject(result);
@@ -649,7 +649,7 @@ public class DatabaseConnection {
         nameValuePairs.add(new BasicNameValuePair("query",query));
         nameValuePairs.add(new BasicNameValuePair("detailQuery",detailedQuery));
         nameValuePairs.add(new BasicNameValuePair("offset", offset + ""));
-        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));
         HttpResponse response = httpClient.execute(httpPost);
         String result = getResponse(response);
         JSONArray jsonArray = new JSONArray(result);
@@ -686,7 +686,46 @@ public class DatabaseConnection {
         ArrayList<NameValuePair> nameValuePairs = InitializingKey();
         nameValuePairs.add(new BasicNameValuePair("query",query));
         nameValuePairs.add(new BasicNameValuePair("detailQuery",detailedQuery));
-        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));
+        HttpResponse response = httpClient.execute(httpPost);
+        String result = getResponse(response);
+        JSONArray jsonArray = new JSONArray(result);
+        Listing listing ;
+        for(int i = 0;i<jsonArray.length();i++){
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            if(jsonObject.getString("listingType").equals("0")){
+                listing = new House();
+            }else{
+                listing = new Land();
+            }
+            listing.setAdID(jsonObject.getInt("adID"));
+            listing.setLocation(new ListingLocation(jsonObject.getDouble("longitute"), jsonObject.getDouble("latitude"), jsonObject.getString("address")));
+            listing.setTitle(jsonObject.getString("title"));
+            listing.setPrice(jsonObject.getDouble("price"));
+            listing.setImagesURL(new ArrayList<String>());
+            if(!jsonObject.isNull("images")){
+                JSONArray images = jsonObject.getJSONArray("images");
+                for(int j = 0;j<images.length();j++){
+                    JSONObject jsonObject1 = (JSONObject)images.get(j);
+                    listing.getImagesURL().add(jsonObject1.getString("imageURL"));
+                }
+            }
+            if(jsonObject.getString("listingType").equals("0")){
+                ((House)listing).setNumberOfFloor(jsonObject.getInt("numberOfRoom"));
+            }
+            listingList.add(listing);
+        }
+        return listingList;
+    }
+    public List<Listing> selectNearbySearchQuery (double minLat, double maxLat,double minLong,double maxLong) throws JSONException, IOException {
+        List<Listing> listingList = new ArrayList<>();
+        httpPost = new HttpPost(URL+"selectNearbySearchQueryMap.php");
+        ArrayList<NameValuePair> nameValuePairs = InitializingKey();
+        nameValuePairs.add(new BasicNameValuePair("minLat",minLat+""));
+        nameValuePairs.add(new BasicNameValuePair("maxLat",maxLat+""));
+        nameValuePairs.add(new BasicNameValuePair("minLong",minLong+""));
+        nameValuePairs.add(new BasicNameValuePair("maxLong",maxLong+""));
+        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));
         HttpResponse response = httpClient.execute(httpPost);
         String result = getResponse(response);
         JSONArray jsonArray = new JSONArray(result);

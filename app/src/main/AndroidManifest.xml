@@ -88,6 +88,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.EasyEstate.Activity.MainActivity" />
         </activity>
+        <activity
+            android:name=".Activity.SearchNearbyMapActivity"
+            android:label="@string/title_activity_search_nearby_map"
+            android:parentActivityName=".Activity.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.EasyEstate.Activity.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

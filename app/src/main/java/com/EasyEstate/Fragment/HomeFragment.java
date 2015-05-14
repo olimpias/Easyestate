@@ -1,6 +1,7 @@
 package com.EasyEstate.Fragment;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.EasyEstate.Activity.MainActivity;
+import com.EasyEstate.Activity.SearchNearbyMapActivity;
 import com.EasyEstate.R;
 
 /**
@@ -62,7 +64,8 @@ public class HomeFragment extends Fragment {
                     break;
 
                 case R.id.NearbySearchButton :
-
+                    Intent intent = new Intent(getActivity(), SearchNearbyMapActivity.class);
+                    startActivity(intent);
                     break;
                 case R.id.MyAccountButton:
                     ((MainActivity)getActivity()).DirectFragment(new MyAccountFragment(),MainActivity.MY_ACCOUNT_POSITION);

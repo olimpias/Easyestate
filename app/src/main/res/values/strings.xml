@@ -96,4 +96,9 @@
         <item>+10000</item>
     </string-array>
     <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_search_nearby_map">SearchNearbyMapActivity</string>
+    <string name="Features">Features</string>
+    <string name="Size">Size:</string>
+    <string name="Room">Room:</string>
+    <string name="Bath">Bath:</string>
 </resources>
