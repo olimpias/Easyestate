@@ -62,9 +62,9 @@ public class DetailsLandFragment extends Fragment {
         provisionFloorTextView = (TextView)view.findViewById(R.id.provisionFloorTextView);
         loanEligibilityTextView = (TextView)view.findViewById(R.id.loanEligibilityTextView);
         parcelNOTextView = (TextView)view.findViewById(R.id.parcelNOTextView);
-        gabariTypes = getResources().getStringArray(R.array.planets_array);
-        deedStatusTypes = getResources().getStringArray(R.array.planets_array);
-        zoningStatusTypes = getResources().getStringArray(R.array.planets_array);
+        gabariTypes = getResources().getStringArray(R.array.gabari_array);
+        deedStatusTypes = getResources().getStringArray(R.array.deed_status_array);
+        zoningStatusTypes = getResources().getStringArray(R.array.zoning_status_array);
         return view;
     }
     public void ListingDataChanged(Listing listing){

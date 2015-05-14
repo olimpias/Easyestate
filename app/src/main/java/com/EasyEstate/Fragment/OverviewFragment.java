@@ -202,7 +202,7 @@ public class OverviewFragment extends Fragment {
                 communicator.Respond(listing,favoriteSituation);
                 descriptionTextView.setText(listing.getDescription());
                 adIDTextView.setText(listing.getAdID()+"");
-                priceTextView.setText(listing.getPrice()+"");
+                priceTextView.setText(listing.getPrice()+" TL");
                 estateTypeTextView.setText(listing.getEstateType());
                 nameContactTextView.setText(listing.getListingOwner().getName());
                 emailContactTextView.setText(listing.getListingOwner().getEmail());

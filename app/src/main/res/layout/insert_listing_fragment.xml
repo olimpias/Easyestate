@@ -109,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="numberSigned"
                 android:layout_weight="1"
-                android:maxLength="5"
+                android:maxLength="10"
                 style="@style/listingActivitySubTextStyle"
                 android:id="@+id/priceEditText" />
         </TableRow>

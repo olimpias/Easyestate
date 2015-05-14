@@ -10,6 +10,7 @@
 
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:src="@drawable/housepic"
         android:id="@+id/PictureImageView"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"

@@ -25,12 +25,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/NumberOfRooms"
+                    style="@style/listingActivityTextStyle"
                     android:id="@+id/textView17" />
 
                 <Spinner
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/numberOfRoomSpinner"
+                    style="@style/listingActivitySubTextStyle"
                     android:entries="@array/number_of_room_array"
                     android:spinnerMode="dialog"
                     android:layout_weight="1"/>
@@ -45,6 +47,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/NumberOfBath"
+                    style="@style/listingActivityTextStyle"
                     android:id="@+id/textView18" />
 
                 <Spinner
@@ -53,6 +56,7 @@
                     android:id="@+id/numberOfBathSpinner"
                     android:entries="@array/number_of_bath_array"
                     android:spinnerMode="dialog"
+                    style="@style/listingActivitySubTextStyle"
                     android:layout_weight="1" />
             </TableRow>
             <TableRow
@@ -65,6 +69,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/AgeOfTheBuilding"
+                    style="@style/listingActivityTextStyle"
                     android:id="@+id/textView19" />
 
                 <EditText
@@ -72,6 +77,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="numberSigned"
                     android:maxLength="4"
+                    style="@style/listingActivitySubTextStyle"
                     android:layout_span="0"
                     android:layout_weight="1"
                     android:id="@+id/ageOfBuildingEditText" />
@@ -86,6 +92,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/NumberOfFloor"
+                    style="@style/listingActivityTextStyle"
                     android:id="@+id/textView20" />
 
                 <EditText
@@ -93,6 +100,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="numberSigned"
                     android:maxLength="4"
+                    style="@style/listingActivitySubTextStyle"
                     android:layout_span="0"
                     android:layout_weight="1"
                     android:id="@+id/numberOfFloorEditText" />
@@ -107,6 +115,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    style="@style/listingActivityTextStyle"
                     android:text="@string/CurrentFloor"
                     android:id="@+id/textView21" />
 
@@ -116,6 +125,7 @@
                     android:inputType="numberSigned"
                     android:maxLength="4"
                     android:layout_span="0"
+                    style="@style/listingActivitySubTextStyle"
                     android:layout_weight="1"
                     android:id="@+id/currentFloorEditText" />
             </TableRow>
@@ -129,6 +139,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/dues"
+                    style="@style/listingActivityTextStyle"
                     android:id="@+id/textView22" />
 
                 <EditText
@@ -136,6 +147,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="numberSigned"
                     android:maxLength="4"
+                    style="@style/listingActivitySubTextStyle"
                     android:layout_span="0"
                     android:layout_weight="1"
                     android:id="@+id/duesEditText" />
@@ -151,6 +163,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/Heating"
+                    style="@style/listingActivityTextStyle"
                     android:id="@+id/textView23" />
 
                 <Spinner
@@ -158,6 +171,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/heatingSpinner"
                     android:layout_span="0"
+                    style="@style/listingActivitySubTextStyle"
                     android:entries="@array/heating_array"
                     android:spinnerMode="dialog"
                     android:layout_weight="1"/>
@@ -171,6 +185,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/Loan_Eligibility"
+                    style="@style/listingActivityTextStyle"
                     android:id="@+id/textView24"
                     />
 
@@ -193,6 +208,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/UseStatus"
+                    style="@style/listingActivityTextStyle"
                     android:id="@+id/textView25" />
 
                 <Spinner
@@ -200,6 +216,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/useStatusSpinner"
                     android:layout_span="0"
+                    style="@style/listingActivitySubTextStyle"
                     android:entries="@array/use_status_array"
                     android:spinnerMode="dialog"
                     android:layout_weight="1"/>
@@ -213,6 +230,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/In_The_Site"
+                    style="@style/listingActivityTextStyle"
                     android:id="@+id/textView26"
                     />
 
@@ -246,6 +264,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/next"
                     android:layout_weight="1"
+                    android:background="@drawable/button_click_indicator"
                     android:id="@+id/nextHouseButton" />
 
             </TableRow>

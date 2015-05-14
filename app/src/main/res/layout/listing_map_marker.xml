@@ -9,9 +9,10 @@
         android:layout_height="wrap_content"
         >
 
-        <ImageButton
+        <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:src="@drawable/housepic"
             android:id="@+id/listingImageButton" />
 
         <LinearLayout

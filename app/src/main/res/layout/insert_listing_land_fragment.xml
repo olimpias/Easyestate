@@ -23,6 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Zoning_Status"
+                style="@style/listingActivityTextStyle"
                 android:id="@+id/textView6" />
 
             <Spinner
@@ -31,6 +32,7 @@
                 android:id="@+id/ZoningStatusSpinner"
                 android:entries="@array/zoning_status_array"
                 android:spinnerMode="dialog"
+                style="@style/listingActivitySubTextStyle"
                 android:layout_weight="1"/>
 
         </TableRow>
@@ -45,13 +47,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/IslandNo"
+                style="@style/listingActivityTextStyle"
                 android:id="@+id/textView10" />
 
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="numberSigned"
+                android:maxLength="6"
                 android:ems="10"
+                style="@style/listingActivitySubTextStyle"
                 android:id="@+id/islandNoEditText" />
         </TableRow>
 
@@ -65,12 +70,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/ParcelNO"
+                style="@style/listingActivityTextStyle"
                 android:id="@+id/textView11" />
 
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="numberSigned"
+                style="@style/listingActivitySubTextStyle"
+                android:maxLength="5"
                 android:ems="10"
                 android:id="@+id/parcelNoEditText" />
         </TableRow>
@@ -84,6 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/LayoutNumber"
+                style="@style/listingActivityTextStyle"
                 android:id="@+id/textView12" />
 
             <EditText
@@ -91,6 +100,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="numberSigned"
                 android:ems="10"
+                style="@style/listingActivitySubTextStyle"
+                android:maxLength="5"
                 android:id="@+id/layoutNoEditText" />
         </TableRow>
         <TableRow
@@ -102,6 +113,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Gabari"
+                style="@style/listingActivityTextStyle"
                 android:id="@+id/textView13" />
 
             <Spinner
@@ -109,6 +121,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/GabariSpinner"
                 android:spinnerMode="dialog"
+                style="@style/listingActivitySubTextStyle"
                 android:entries="@array/gabari_array"
                 android:layout_weight="1"/>
         </TableRow>
@@ -121,6 +134,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Deed_Status"
+                style="@style/listingActivityTextStyle"
                 android:id="@+id/textView14" />
 
             <Spinner
@@ -129,6 +143,7 @@
                 android:id="@+id/deedStatusSpinner"
                 android:entries="@array/deed_status_array"
                 android:spinnerMode="dialog"
+                style="@style/listingActivitySubTextStyle"
                 android:layout_weight="1"/>
         </TableRow>
 
@@ -141,6 +156,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Provision_Floor"
+                style="@style/listingActivityTextStyle"
                 android:id="@+id/textView15"
                 />
 
@@ -159,6 +175,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Loan_Eligibility"
+                style="@style/listingActivityTextStyle"
                 android:id="@+id/textView16"
                 />
 
@@ -188,6 +205,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/next"
                 android:layout_weight="1"
+                android:background="@drawable/button_click_indicator"
                 android:id="@+id/nextLandButton" />
 
         </TableRow>

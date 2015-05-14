@@ -102,10 +102,10 @@ public class ListingAdapter extends BaseAdapter {
         }
         final Listing listing = listingList.get(position);
         viewHolder.titleTextView.setText(listing.getTitle());
-        viewHolder.priceTextView.setText("Price:"+listing.getPrice()+"");
+        viewHolder.priceTextView.setText("Price:"+listing.getPrice()+" TL");
         viewHolder.addressTextView.setText(listing.getLocation().getAddress());
         if(listing instanceof House){
-            String value = context.getResources().getStringArray(R.array.planets_array)[((House) listing).getNumberOfRoom()];
+            String value = context.getResources().getStringArray(R.array.number_of_room_array)[((House) listing).getNumberOfRoom()];
             viewHolder.informationTextView.setText("Room:"+value);
         }
         if(listing.getImagesURL()!=null && listing.getImagesURL().size()!= 0){

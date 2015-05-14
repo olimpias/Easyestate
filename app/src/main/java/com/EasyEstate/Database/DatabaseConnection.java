@@ -711,7 +711,7 @@ public class DatabaseConnection {
                 }
             }
             if(jsonObject.getString("listingType").equals("0")){
-                ((House)listing).setNumberOfFloor(jsonObject.getInt("numberOfRoom"));
+                ((House)listing).setNumberOfRoom(jsonObject.getInt("numberOfRoom"));
             }
             listingList.add(listing);
         }

@@ -66,10 +66,10 @@ public class DetailsHouseFragment extends Fragment {
         loanEligibilityTextView = (TextView)view.findViewById(R.id.loanEligibilityTextView);
         isInsideSiteTextView = (TextView)view.findViewById(R.id.isInsideSiteTextView);
         useStatusTextView = (TextView)view.findViewById(R.id.useStatusTextView);
-        heatingTypes = getResources().getStringArray(R.array.planets_array);
-        roomTypes = getResources().getStringArray(R.array.planets_array);
-        bathTypes = getResources().getStringArray(R.array.planets_array);
-        useStatusTypes = getResources().getStringArray(R.array.planets_array);
+        heatingTypes = getResources().getStringArray(R.array.heating_array);
+        roomTypes = getResources().getStringArray(R.array.number_of_room_array);
+        bathTypes = getResources().getStringArray(R.array.number_of_bath_array);
+        useStatusTypes = getResources().getStringArray(R.array.use_status_array);
         return view;
     }
     public void ListingDataChanged(Listing listing){
