@@ -49,6 +49,75 @@
         <item>Uranus</item>
         <item>Neptune</item>
     </string-array>
+    <string-array name="zoning_status_array">
+        <item>Commercial Housing</item>
+        <item>Vineyard/Garden</item>
+        <item>Residence</item>
+        <item>Field</item>
+        <item>Protected Area</item>
+        <item>Tourism</item>
+        <item>Mass Housing</item>
+        <item>Industry</item>
+    </string-array>
+    <string-array name="gabari_array">
+        <item>6.50</item>
+        <item>9.50</item>
+        <item>11.50</item>
+        <item>12.50</item>
+        <item>15.50</item>
+        <item>18.50</item>
+        <item>21.50</item>
+        <item>25.50</item>
+        <item>27.50</item>
+        <item>30.50</item>
+        <item>Unknown</item>
+    </string-array>
+    <string-array name="deed_status_array">
+        <item>Shareholding Deed</item>
+        <item>Detached Parcel</item>
+        <item>Allotment</item>
+    </string-array>
+    <string-array name="number_of_room_array">
+    <item>Studio(1+0)</item>
+    <item>1</item>
+    <item>1+1</item>
+    <item>2+1</item>
+    <item>2+2</item>
+    <item>3+1</item>
+    <item>3+2</item>
+    <item>4+1</item>
+    <item>4+1</item>
+    <item>4+2</item>
+    <item>4+3</item>
+    <item>4+4</item>
+    <item>5+1</item>
+    <item>5+2</item>
+    <item>5+3</item>
+    <item>5+4</item>
+    <item>More than 5</item>
+</string-array>
+    <string-array name="number_of_bath_array">
+        <item>None</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>More than 4</item>
+    </string-array>
+    <string-array name="heating_array">
+        <item>None</item>
+        <item>Stove</item>
+        <item>Natural Gas</item>
+        <item>Floor Heating System</item>
+        <item>Central Heating</item>
+        <item>Underfloor Heating</item>
+        <item>Air Conditioning</item>
+    </string-array>
+    <string-array name="use_status_array">
+        <item>Empty</item>
+        <item>Tenanted</item>
+        <item>Landholder</item>
+    </string-array>
     <string name="title_activity_my_listing_control">MyListingControlActivity</string>
     <string name="NumberOfRooms">Number of Room:</string>
     <string name="NumberOfBath">Number of Bath:</string>
